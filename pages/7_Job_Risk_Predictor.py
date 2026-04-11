@@ -16,6 +16,7 @@ from src.job_risk_model import (
     LOCATION_OPTIONS,
     predict_job_risk,
     what_if_improve_skills,
+    get_model_info,
 )
 from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout
 
@@ -47,6 +48,18 @@ st.markdown("""
 </div>""", unsafe_allow_html=True)
 
 st.caption("🔍 Risk estimates trained on **real market demand data** (29,000+ job postings) — ground truths derive from salary benchmarks and hiring frequency trends.")
+
+# Add model version info in an expander for debugging
+with st.expander("🔧 Model Information (Debug)", expanded=False):
+    model_info = get_model_info()
+    st.caption(f"**Model Version:** {model_info['version']}")
+    st.caption(f"**Training Samples:** {model_info['training_samples']:,}")
+    st.caption(f"**Experience Coefficient:** {model_info['experience_coefficient']:.4f}")
+    st.caption("*Negative coefficient means more experience reduces risk*")
+    if model_info['experience_coefficient'] > -0.25:
+        st.warning("⚠️ Old model detected! Experience coefficient is weak. Please refresh the page.")
+    else:
+        st.success("✅ Updated model loaded! Experience has strong impact.")
 
 
 

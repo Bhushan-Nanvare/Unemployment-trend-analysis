@@ -317,6 +317,9 @@ _PIPE: Optional[Pipeline] = None
 # recomputing them inside predict_job_risk() every call was pure waste.
 _FEATURE_MEANS: Optional[np.ndarray] = None
 
+# Model version for cache invalidation - increment when training logic changes
+MODEL_VERSION = "2.0.0"  # Updated: Fixed experience impact and training data
+
 
 def get_pipeline() -> Pipeline:
     global _PIPE, _FEATURE_MEANS
@@ -325,6 +328,19 @@ def get_pipeline() -> Pipeline:
         X_all, _ = _load_real_training_data()
         _FEATURE_MEANS = X_all.mean(axis=0)
     return _PIPE
+
+
+def get_model_info() -> Dict[str, Any]:
+    """Returns model version and coefficient information for debugging."""
+    pipe = get_pipeline()
+    clf: LogisticRegression = pipe.named_steps["clf"]
+    coefs = clf.coef_[0]
+    return {
+        "version": MODEL_VERSION,
+        "experience_coefficient": float(coefs[2]),  # experience_years is index 2
+        "coefficients": {name: float(coef) for name, coef in zip(FEATURE_NAMES, coefs)},
+        "training_samples": len(_load_real_training_data()[0]),
+    }
 
 
 def _get_feature_means() -> np.ndarray:
