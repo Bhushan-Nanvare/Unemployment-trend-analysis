@@ -1,0 +1,56 @@
+city_key,display_name,lat,lon,market_tier_index,state,cost_of_living_index
+bangalore,Bengaluru,12.9716,77.5946,0,Karnataka,68
+bengaluru,Bengaluru,12.9716,77.5946,0,Karnataka,68
+mumbai,Mumbai,19.0760,72.8777,0,Maharashtra,82
+pune,Pune,18.5204,73.8567,1,Maharashtra,58
+hyderabad,Hyderabad,17.3850,78.4867,0,Telangana,52
+chennai,Chennai,13.0827,80.2707,0,Tamil Nadu,55
+delhi,NCR / Delhi,28.6139,77.2090,0,Delhi,65
+new delhi,New Delhi,28.6139,77.2090,0,Delhi,65
+delhi ncr,NCR / Delhi,28.6139,77.2090,0,Delhi,65
+gurugram,Gurugram,28.4595,77.0266,0,Haryana,70
+gurgaon,Gurugram,28.4595,77.0266,0,Haryana,70
+noida,Noida,28.5355,77.3910,0,Uttar Pradesh,52
+kolkata,Kolkata,22.5726,88.3639,1,West Bengal,48
+ahmedabad,Ahmedabad,23.0225,72.5714,1,Gujarat,45
+chandigarh,Chandigarh,30.7333,76.7794,1,Chandigarh,55
+jaipur,Jaipur,26.9124,75.7873,1,Rajasthan,42
+lucknow,Lucknow,26.8467,80.9462,2,Uttar Pradesh,38
+kanpur,Kanpur,26.4499,80.3319,2,Uttar Pradesh,35
+nagpur,Nagpur,21.1458,79.0882,2,Maharashtra,40
+indore,Indore,22.7196,75.8577,2,Madhya Pradesh,38
+thane,Thane,19.2183,72.9781,1,Maharashtra,65
+bhopal,Bhopal,23.2599,77.4126,2,Madhya Pradesh,36
+visakhapatnam,Visakhapatnam,17.6868,83.2185,2,Andhra Pradesh,40
+pimpri-chinchwad,Pimpri-Chinchwad,18.6298,73.7997,1,Maharashtra,50
+patna,Patna,25.5941,85.1376,2,Bihar,32
+vadodara,Vadodara,22.3072,73.1812,2,Gujarat,40
+ghaziabad,Ghaziabad,28.6692,77.4538,1,Uttar Pradesh,48
+ludhiana,Ludhiana,30.9010,75.8573,2,Punjab,42
+agra,Agra,27.1767,78.0081,2,Uttar Pradesh,35
+nashik,Nashik,19.9975,73.7898,2,Maharashtra,38
+faridabad,Faridabad,28.4089,77.3178,1,Haryana,52
+meerut,Meerut,28.9845,77.7064,2,Uttar Pradesh,36
+rajkot,Rajkot,22.3039,70.8022,2,Gujarat,38
+kalyan-dombivali,Kalyan-Dombivli,19.2403,73.1305,2,Maharashtra,48
+vasai-virar,Vasai-Virar,19.4612,72.7985,2,Maharashtra,45
+varanasi,Varanasi,25.3176,82.9739,2,Uttar Pradesh,34
+srinagar,Srinagar,34.0837,74.7973,2,Jammu & Kashmir,40
+aurangabad,Aurangabad,19.8762,75.3433,2,Maharashtra,36
+dhanbad,Dhanbad,23.7957,86.4304,2,Jharkhand,32
+amritsar,Amritsar,31.6340,74.8723,2,Punjab,38
+navi mumbai,Navi Mumbai,19.0330,73.0297,1,Maharashtra,62
+allahabad,Prayagraj,25.4358,81.8463,2,Uttar Pradesh,33
+ranchi,Ranchi,23.3441,85.3096,2,Jharkhand,35
+howrah,Howrah,22.5958,88.2636,2,West Bengal,42
+coimbatore,Coimbatore,11.0168,76.9558,2,Tamil Nadu,42
+jabalpur,Jabalpur,23.1815,79.9864,2,Madhya Pradesh,32
+gwalior,Gwalior,26.2183,78.1828,2,Madhya Pradesh,33
+vijayawada,Vijayawada,16.5062,80.6480,2,Andhra Pradesh,38
+jodhpur,Jodhpur,26.2389,73.0243,2,Rajasthan,35
+madurai,Madurai,9.9252,78.1198,2,Tamil Nadu,36
+raipur,Raipur,21.2514,81.6296,2,Chhattisgarh,34
+kota,Kota,25.2138,75.8648,2,Rajasthan,36
+greater noida,Greater Noida,28.4744,77.5040,1,Uttar Pradesh,50
+mumbai suburbs,Mumbai Suburbs,19.1136,72.8697,1,Maharashtra,75
+remote,Remote / Pan-India,22.9734,78.6569,0,Pan-India,50

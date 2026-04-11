@@ -1,0 +1,543 @@
+"""
+Page 2 — Scenario Simulator
+Side-by-side scenario lab with live comparison charts, gauge, and metrics.
+"""
+import streamlit as st
+import requests
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.express as px
+from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout, API_BASE_URL
+
+st.set_page_config(page_title="Simulator | UIP", page_icon="🧪", layout="wide")
+st.markdown(DARK_CSS, unsafe_allow_html=True)
+
+# ─── Sidebar nav ──────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### 🧪 Simulator")
+    st.markdown("Configure two scenarios and compare their outcomes.")
+    st.markdown("---")
+    st.markdown("**🌐 Navigation**")
+    st.page_link("app.py", label="🏠 Home")
+    st.page_link("pages/1_Overview.py", label="📊 Overview")
+    st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")
+    st.page_link("pages/4_Career_Lab.py", label="💼 Career Lab")
+    st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
+    st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
+    st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
+    st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
+    st.page_link("pages/10_Skill_Obsolescence.py", label="⚡ Skill Obsolescence")
+
+# ─── Page hero ─────────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="page-hero">
+    <div class="hero-title">🧪 Scenario Simulator Lab</div>
+    <div class="hero-subtitle">Design economic shock scenarios and compare their unemployment trajectories side-by-side</div>
+</div>""", unsafe_allow_html=True)
+
+st.markdown("""
+<div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.2);
+            border-radius:14px; padding:1rem 1.4rem; margin-bottom:1.5rem;
+            display:flex; align-items:flex-start; gap:1rem;">
+    <div style="font-size:1.5rem; margin-top:0.1rem;">🧪</div>
+    <div>
+        <div style="font-size:0.78rem; font-weight:700; color:#818cf8; text-transform:uppercase;
+                    letter-spacing:1px; margin-bottom:0.35rem;">Simulation Mode</div>
+        <div style="font-size:0.87rem; color:#94a3b8; line-height:1.6;">
+            All results on this page are <strong style="color:#e2e8f0;">model-generated projections</strong>,
+            not observed data. Scenarios are computed using parametric shock equations seeded from India's
+            real World Bank unemployment baseline (~7% structural rate). Adjust sliders to explore hypothetical
+            futures. For real observed data, visit
+            <strong style="color:#06b6d4;">Sector Analysis → Live World Bank Data</strong> or
+            <strong style="color:#06b6d4;">Market Pulse → Live India Labor Data</strong>.
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+SCENARIO_PRESETS = {
+    # rr=0.05 matches the slider minimum — the old rr=0.0 was silently clamped
+    # to 0.05 by max(0.05, ...) below, creating a mismatch between the visible
+    # preset value and what was actually sent to the API.
+    "Baseline (Natural Flow)":  dict(si=0.0, sd=0, rr=0.05),
+    "Severe Economic Shock":    dict(si=0.5, sd=3, rr=0.2),
+    "Moderate Recession":       dict(si=0.3, sd=2, rr=0.3),
+    "Policy Intervention":      dict(si=0.2, sd=2, rr=0.45),
+    "Global Crisis":             dict(si=0.6, sd=4, rr=0.15),
+    "Rapid Recovery":           dict(si=0.2, sd=1, rr=0.55),
+}
+POLICY_OPTIONS = ["None", "Fiscal Stimulus", "Monetary Policy", "Labor Reforms", "Industry Support"]
+
+# ─── Configuration Panels ──────────────────────────────────────────────────────
+col_cfg_a, col_vs, col_cfg_b = st.columns([5, 1, 5])
+
+with col_cfg_a:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📊 Scenario A — Configure</div>', unsafe_allow_html=True)
+    preset_a = st.selectbox("Quick Preset", list(SCENARIO_PRESETS.keys()), key="preset_a")
+    pa = SCENARIO_PRESETS[preset_a]
+    si_a = st.slider("Shock Intensity", 0.0, 0.6, float(pa["si"]), 0.05, key="si_a",
+                     help="How severe the economic shock is (0 = none, 0.6 = catastrophic)")
+    sd_a = st.slider("Shock Duration (yrs)", 0, 5, int(pa["sd"]), key="sd_a")
+    rr_a = st.slider("Recovery Rate", 0.05, 0.6, max(0.05, float(pa["rr"])), 0.05, key="rr_a")
+    policy_a = st.selectbox("Policy Response", POLICY_OPTIONS, key="pol_a")
+    horizon_a = st.slider("Forecast Horizon (yrs)", 3, 10, 6, key="horiz_a")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with col_vs:
+    st.markdown("<br><br><br><br><br><br><br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="text-align:center; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+                width:44px; height:44px; border-radius:50%; display:flex; align-items:center;
+                justify-content:center; margin:0 auto; font-size:1rem; font-weight:800;
+                color:white; box-shadow:0 8px 24px rgba(99,102,241,0.4);">VS</div>
+    """, unsafe_allow_html=True)
+
+with col_cfg_b:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📈 Scenario B — Configure</div>', unsafe_allow_html=True)
+    preset_b = st.selectbox("Quick Preset", list(SCENARIO_PRESETS.keys()), index=1, key="preset_b")
+    pb = SCENARIO_PRESETS[preset_b]
+    si_b = st.slider("Shock Intensity", 0.0, 0.6, float(pb["si"]), 0.05, key="si_b")
+    sd_b = st.slider("Shock Duration (yrs)", 0, 5, int(pb["sd"]), key="sd_b")
+    rr_b = st.slider("Recovery Rate", 0.05, 0.6, max(0.05, float(pb["rr"])), 0.05, key="rr_b")
+    policy_b = st.selectbox("Policy Response", POLICY_OPTIONS, index=1, key="pol_b")
+    horizon_b = st.slider("Forecast Horizon (yrs)", 3, 10, 6, key="horiz_b")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+horizon = max(horizon_a, horizon_b)
+
+# ─── Run Button ───────────────────────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+col_run = st.columns([3, 2, 3])
+with col_run[1]:
+    run = st.button("🚀 Run Simulation", use_container_width=True)
+
+# ─── API helper ───────────────────────────────────────────────────────────────
+def fetch(si, sd, rr, pol, h):
+    try:
+        r = requests.post(f"{API_BASE_URL}/simulate",
+                          json={"shock_intensity": si, "shock_duration": sd,
+                                "recovery_rate": rr, "forecast_horizon": h,
+                                "policy_name": pol if pol != "None" else None},
+                          timeout=25)
+        if r.status_code == 200:
+            return r.json()
+    except Exception as e:
+        st.error(f"API Error: {e}")
+    return None
+
+# ─── Simulation state ─────────────────────────────────────────────────────────
+if run or "sim_a" not in st.session_state:
+    with st.spinner("⚡ Running simulations..."):
+        st.session_state.sim_baseline = fetch(0.0, 0, 0.0, "None", horizon)
+        st.session_state.sim_a = fetch(si_a, sd_a, rr_a, policy_a, horizon)
+        st.session_state.sim_b = fetch(si_b, sd_b, rr_b, policy_b, horizon)
+
+sim_base = st.session_state.get("sim_baseline")
+sim_a    = st.session_state.get("sim_a")
+sim_b    = st.session_state.get("sim_b")
+
+if not (sim_base and sim_a and sim_b):
+    st.warning("Run the simulation above or start the API backend.")
+    st.stop()
+
+base_df  = pd.DataFrame(sim_base["baseline"])
+scen_a_df = pd.DataFrame(sim_a["scenario"])
+scen_b_df = pd.DataFrame(sim_b["scenario"])
+idx_a = sim_a.get("indices", {})
+idx_b = sim_b.get("indices", {})
+
+peak_base = round(base_df["Predicted_Unemployment"].max(), 2)
+peak_a = round(scen_a_df["Scenario_Unemployment"].max(), 2)
+peak_b = round(scen_b_df["Scenario_Unemployment"].max(), 2)
+delta_a = round(peak_a - peak_base, 2)
+delta_b = round(peak_b - peak_base, 2)
+
+# ─── Result KPIs ──────────────────────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+c1, c2, c3, c4, c5 = st.columns(5)
+with c1:
+    st.markdown(render_kpi_card("📊", "Baseline Peak", f"{peak_base}%", delta_type="neutral"), unsafe_allow_html=True)
+with c2:
+    dt = "up" if delta_a > 0 else "down"
+    st.markdown(render_kpi_card("🔵", "Scenario A Peak", f"{peak_a}%", f"{'▲' if delta_a>0 else '▼'} {abs(delta_a)}pp", dt), unsafe_allow_html=True)
+with c3:
+    dt = "up" if delta_b > 0 else "down"
+    st.markdown(render_kpi_card("🟣", "Scenario B Peak", f"{peak_b}%", f"{'▲' if delta_b>0 else '▼'} {abs(delta_b)}pp", dt), unsafe_allow_html=True)
+with c4:
+    ew_a = idx_a.get("early_warning", "N/A")
+    st.markdown(render_kpi_card("🚦", "A — Risk", ew_a.split(" ",1)[-1] if " " in ew_a else ew_a, delta_type="neutral"), unsafe_allow_html=True)
+with c5:
+    ew_b = idx_b.get("early_warning", "N/A")
+    st.markdown(render_kpi_card("🚦", "B — Risk", ew_b.split(" ",1)[-1] if " " in ew_b else ew_b, delta_type="neutral"), unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ─── Comparison Chart ─────────────────────────────────────────────────────────
+col_main, col_side = st.columns([3, 1])
+
+with col_main:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📈 Trajectory Comparison</div>', unsafe_allow_html=True)
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=base_df["Year"], y=base_df["Predicted_Unemployment"],
+        mode="lines", name="Baseline",
+        line=dict(color="#64748b", width=2, dash="dot"),
+    ))
+    fig.add_trace(go.Scatter(
+        x=scen_a_df["Year"], y=scen_a_df["Scenario_Unemployment"],
+        mode="lines+markers", name=f"Scenario A · {policy_a}",
+        line=dict(color="#6366f1", width=3.5),
+        marker=dict(size=7, color="#818cf8"),
+        fill="tonexty", fillcolor="rgba(99,102,241,0.07)",
+    ))
+    fig.add_trace(go.Scatter(
+        x=scen_b_df["Year"], y=scen_b_df["Scenario_Unemployment"],
+        mode="lines+markers", name=f"Scenario B · {policy_b}",
+        line=dict(color="#8b5cf6", width=3.5),
+        marker=dict(size=7, color="#a78bfa"),
+    ))
+    fig.update_layout(**plotly_dark_layout(height=380))
+    fig.update_layout(xaxis_title="Year", yaxis_title="Unemployment Rate (%)")
+    st.plotly_chart(fig, use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with col_side:
+    st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">🏆 Peak Bar</div>', unsafe_allow_html=True)
+    bar_df = pd.DataFrame({
+        "Scenario": ["Baseline", "Scenario A", "Scenario B"],
+        "Peak %": [peak_base, peak_a, peak_b],
+        "Color": ["#64748b", "#6366f1", "#8b5cf6"]
+    })
+    fig_b = go.Figure(go.Bar(
+        x=bar_df["Peak %"], y=bar_df["Scenario"],
+        orientation="h",
+        marker_color=bar_df["Color"].tolist(),
+        text=[f"{v:.2f}%" for v in bar_df["Peak %"]],
+        textposition="outside",
+        textfont=dict(color="#e2e8f0"),
+    ))
+    fig_b.update_layout(**plotly_dark_layout(height=220))
+    fig_b.update_layout(xaxis_title="Peak %", margin=dict(l=5, r=40, t=5, b=5), showlegend=False)
+    st.plotly_chart(fig_b, use_container_width=True)
+
+    # Risk gauges
+    st.markdown("<br>", unsafe_allow_html=True)
+    for label, peak_val in [("Scenario A", peak_a), ("Scenario B", peak_b)]:
+        color = "#ef4444" if peak_val > 7 else "#f59e0b" if peak_val > 5 else "#10b981"
+        pct = min(int((peak_val / 12) * 100), 100)
+        st.markdown(f"""
+        <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+                <span style="color:#94a3b8; font-size:0.8rem; font-weight:600;">{label}</span>
+                <span style="color:{color}; font-size:0.8rem; font-weight:700;">{peak_val}%</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border-radius:999px; height:8px; overflow:hidden;">
+                <div style="width:{pct}%; height:100%; background:{color}; border-radius:999px;
+                            box-shadow:0 0 8px {color}; transition:width 0.6s ease;"></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ─── Parameter + Indices table ────────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+col_p, col_i = st.columns(2)
+
+with col_p:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">⚙️ Parameter Comparison</div>', unsafe_allow_html=True)
+    pdata = {
+        "Parameter": ["Shock Intensity", "Shock Duration", "Recovery Rate", "Policy"],
+        "Scenario A": [f"{si_a*100:.0f}%", f"{sd_a} yrs", f"{rr_a*100:.0f}%", policy_a],
+        "Scenario B": [f"{si_b*100:.0f}%", f"{sd_b} yrs", f"{rr_b*100:.0f}%", policy_b],
+    }
+    st.dataframe(pd.DataFrame(pdata), use_container_width=True, hide_index=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with col_i:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📊 Scenario Indices</div>', unsafe_allow_html=True)
+    idata = {
+        "Index": ["Stress Index (USI)", "Recovery Quality", "Policy Cushion", "Early Warning"],
+        "Scenario A": [
+            str(idx_a.get("unemployment_stress_index", "N/A")),
+            str(idx_a.get("rqi_label", "N/A")),
+            str(idx_a.get("policy_cushion_score", "N/A")),
+            str(idx_a.get("early_warning", "N/A")),
+        ],
+        "Scenario B": [
+            str(idx_b.get("unemployment_stress_index", "N/A")),
+            str(idx_b.get("rqi_label", "N/A")),
+            str(idx_b.get("policy_cushion_score", "N/A")),
+            str(idx_b.get("early_warning", "N/A")),
+        ],
+    }
+    st.dataframe(pd.DataFrame(idata), use_container_width=True, hide_index=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+# ─── Sensitivity Analysis Tab ─────────────────────────────────────────────────
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("""
+<div style="background:rgba(139,92,246,0.07); border:1px solid rgba(139,92,246,0.25);
+            border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+    <div style="font-size:0.82rem; font-weight:700; color:#a78bfa;
+                text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+        🔬 Sensitivity Analysis</div>
+    <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+        Understand which parameters have the biggest impact on peak unemployment.
+        This analysis varies each parameter independently to measure its influence on outcomes.
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Configuration for sensitivity analysis
+col_sens1, col_sens2 = st.columns([2, 1])
+
+with col_sens1:
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">⚙️ Configure Sensitivity Analysis</div>', unsafe_allow_html=True)
+    
+    sens_preset = st.selectbox("Base Scenario", list(SCENARIO_PRESETS.keys()), index=1, key="sens_preset")
+    ps = SCENARIO_PRESETS[sens_preset]
+    
+    col_s1, col_s2, col_s3 = st.columns(3)
+    with col_s1:
+        sens_si = st.slider("Base Shock Intensity", 0.0, 0.6, float(ps["si"]), 0.05, key="sens_si")
+    with col_s2:
+        sens_sd = st.slider("Base Shock Duration", 0, 5, int(ps["sd"]), key="sens_sd")
+    with col_s3:
+        sens_rr = st.slider("Base Recovery Rate", 0.05, 0.6, max(0.05, float(ps["rr"])), 0.05, key="sens_rr")
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with col_sens2:
+    st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📊 Analysis Info</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="font-size:0.85rem; color:#94a3b8; line-height:1.7;">
+        <strong style="color:#e2e8f0;">Tornado Chart:</strong> Shows parameter sensitivity ranking<br>
+        <strong style="color:#e2e8f0;">Heatmap:</strong> 2D parameter space exploration<br>
+        <strong style="color:#e2e8f0;">Safe Zone:</strong> Parameter combinations that keep UE < 8%
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# Run sensitivity analysis button
+col_run_sens = st.columns([3, 2, 3])
+with col_run_sens[1]:
+    run_sens = st.button("🔬 Run Sensitivity Analysis", use_container_width=True, key="run_sens_btn")
+
+# Run sensitivity analysis
+if run_sens or "sensitivity_data" not in st.session_state:
+    with st.spinner("⚡ Running sensitivity analysis..."):
+        try:
+            sens_response = requests.post(
+                f"{API_BASE_URL}/sensitivity_analysis",
+                json={
+                    "base_shock_intensity": sens_si,
+                    "base_shock_duration": sens_sd,
+                    "base_recovery_rate": sens_rr,
+                    "forecast_horizon": 6,
+                    "policy_name": None,
+                },
+                timeout=30
+            )
+            if sens_response.status_code == 200:
+                st.session_state.sensitivity_data = sens_response.json()
+            else:
+                st.error(f"API Error: {sens_response.status_code}")
+                st.session_state.sensitivity_data = None
+        except Exception as e:
+            st.error(f"Error: {e}")
+            st.session_state.sensitivity_data = None
+
+sens_data = st.session_state.get("sensitivity_data")
+
+if sens_data:
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # KPIs
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown(render_kpi_card("📊", "Base Peak UE", f"{sens_data['base_peak']}%", delta_type="neutral"), unsafe_allow_html=True)
+    with c2:
+        st.markdown(render_kpi_card("🎯", "Target Threshold", f"{sens_data['threshold']}%", delta_type="neutral"), unsafe_allow_html=True)
+    with c3:
+        safe_count = len(sens_data.get('safe_combinations', []))
+        total_count = safe_count + len(sens_data.get('unsafe_combinations', []))
+        safe_pct = (safe_count / total_count * 100) if total_count > 0 else 0
+        st.markdown(render_kpi_card("✓", "Safe Combinations", f"{safe_count}/{total_count}", f"{safe_pct:.0f}% safe", "down" if safe_pct > 50 else "up"), unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Tornado Chart
+    col_tornado, col_heatmap = st.columns([1, 1])
+    
+    with col_tornado:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">🌪️ Tornado Chart - Parameter Sensitivity</div>', unsafe_allow_html=True)
+        
+        tornado_df = pd.DataFrame(sens_data['tornado_data'])
+        
+        if not tornado_df.empty:
+            # Create tornado chart
+            fig_tornado = go.Figure()
+            
+            for _, row in tornado_df.iterrows():
+                param = row['parameter']
+                low_impact = row['low_impact']
+                high_impact = row['high_impact']
+                
+                # Add bars for negative and positive impact
+                fig_tornado.add_trace(go.Bar(
+                    name=param,
+                    y=[param],
+                    x=[abs(low_impact)],
+                    orientation='h',
+                    marker=dict(color='#ef4444'),
+                    text=[f"{low_impact:+.2f}%"],
+                    textposition='inside',
+                    hovertemplate=f"{param}<br>Low: {row['low_value']}<br>Impact: {low_impact:+.2f}%<extra></extra>",
+                    base=[-abs(low_impact)],
+                    showlegend=False,
+                ))
+                
+                fig_tornado.add_trace(go.Bar(
+                    name=param,
+                    y=[param],
+                    x=[abs(high_impact)],
+                    orientation='h',
+                    marker=dict(color='#10b981'),
+                    text=[f"{high_impact:+.2f}%"],
+                    textposition='inside',
+                    hovertemplate=f"{param}<br>High: {row['high_value']}<br>Impact: {high_impact:+.2f}%<extra></extra>",
+                    showlegend=False,
+                ))
+            
+            fig_tornado.update_layout(**plotly_dark_layout(height=300))
+            fig_tornado.update_layout(
+                xaxis_title="Impact on Peak Unemployment (%)",
+                yaxis_title="",
+                barmode='overlay',
+                xaxis=dict(zeroline=True, zerolinewidth=2, zerolinecolor='#94a3b8'),
+            )
+            st.plotly_chart(fig_tornado, use_container_width=True)
+            
+            st.caption("Red = Decreases peak UE | Green = Increases peak UE | Wider bar = More sensitive parameter")
+        else:
+            st.info("No tornado data available")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    with col_heatmap:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">🗺️ Heatmap - Shock Intensity × Recovery Rate</div>', unsafe_allow_html=True)
+        
+        heatmap_df = pd.DataFrame(sens_data['heatmap_data'])
+        
+        if not heatmap_df.empty:
+            # Pivot for heatmap
+            heatmap_pivot = heatmap_df.pivot(
+                index='recovery_rate',
+                columns='shock_intensity',
+                values='peak_unemployment'
+            )
+            
+            fig_heatmap = go.Figure(data=go.Heatmap(
+                z=heatmap_pivot.values,
+                x=heatmap_pivot.columns,
+                y=heatmap_pivot.index,
+                colorscale=[[0, '#10b981'], [0.5, '#f59e0b'], [1, '#ef4444']],
+                text=heatmap_pivot.values,
+                texttemplate='%{text:.1f}%',
+                textfont={"size": 10},
+                colorbar=dict(title="Peak UE (%)"),
+                hovertemplate='Intensity: %{x}<br>Recovery: %{y}<br>Peak UE: %{z:.2f}%<extra></extra>',
+            ))
+            
+            fig_heatmap.update_layout(**plotly_dark_layout(height=300))
+            fig_heatmap.update_layout(
+                xaxis_title="Shock Intensity",
+                yaxis_title="Recovery Rate",
+            )
+            st.plotly_chart(fig_heatmap, use_container_width=True)
+            
+            st.caption("Green = Safe (< 8%) | Yellow = Warning (8-10%) | Red = Danger (> 10%)")
+        else:
+            st.info("No heatmap data available")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Critical Thresholds
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">🎯 Critical Thresholds - Required Recovery Rates</div>', unsafe_allow_html=True)
+    
+    thresholds_df = pd.DataFrame(sens_data['critical_thresholds'])
+    
+    if not thresholds_df.empty:
+        col_thresh1, col_thresh2 = st.columns([2, 3])
+        
+        with col_thresh1:
+            st.dataframe(
+                thresholds_df[['shock_intensity', 'required_recovery_rate']].rename(columns={
+                    'shock_intensity': 'Shock Intensity',
+                    'required_recovery_rate': 'Required Recovery Rate'
+                }), use_container_width=True,
+                hide_index=True
+            )
+        
+        with col_thresh2:
+            fig_thresh = px.line(
+                thresholds_df,
+                x='shock_intensity',
+                y='required_recovery_rate',
+                markers=True,
+                title=f"Recovery Rate Needed to Stay Below {sens_data['threshold']}%"
+            )
+            fig_thresh.update_traces(line_color='#6366f1', marker=dict(size=10, color='#818cf8'))
+            fig_thresh.update_layout(**plotly_dark_layout(height=250))
+            fig_thresh.update_layout(
+                xaxis_title="Shock Intensity",
+                yaxis_title="Required Recovery Rate",
+            )
+            st.plotly_chart(fig_thresh, use_container_width=True)
+    
+    st.caption(f"**Interpretation:** For each shock intensity level, this shows the minimum recovery rate needed to keep peak unemployment below {sens_data['threshold']}%")
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Key Insights
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">💡 Key Insights</div>', unsafe_allow_html=True)
+    
+    tornado_df_sorted = pd.DataFrame(sens_data['tornado_data']).sort_values('total_range', ascending=False)
+    
+    if not tornado_df_sorted.empty:
+        most_sensitive = tornado_df_sorted.iloc[0]
+        least_sensitive = tornado_df_sorted.iloc[-1]
+        
+        insights = [
+            f"**Most Sensitive Parameter:** {most_sensitive['parameter']} (±{most_sensitive['total_range']:.2f}% impact)",
+            f"**Least Sensitive Parameter:** {least_sensitive['parameter']} (±{least_sensitive['total_range']:.2f}% impact)",
+            f"**Base Scenario Peak:** {sens_data['base_peak']}%",
+        ]
+        
+        if sens_data['base_peak'] < sens_data['threshold']:
+            insights.append(f"✓ **Current scenario is SAFE** - Peak UE ({sens_data['base_peak']}%) is below threshold ({sens_data['threshold']}%)")
+        else:
+            insights.append(f"⚠️ **Current scenario EXCEEDS threshold** - Peak UE ({sens_data['base_peak']}%) is above {sens_data['threshold']}%")
+        
+        for insight in insights:
+            st.markdown(f"• {insight}")
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+else:
+    st.info("Click 'Run Sensitivity Analysis' above to see parameter sensitivity results")

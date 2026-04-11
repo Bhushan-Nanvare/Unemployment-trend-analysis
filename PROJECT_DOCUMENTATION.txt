@@ -1,0 +1,1806 @@
+================================================================================
+  UNEMPLOYMENT INTELLIGENCE PLATFORM (UIP)
+  Comprehensive Project Documentation
+================================================================================
+
+Author       : Bhushan Nanavare
+Project Name : Unemployment Intelligence Platform (UIP)
+Version      : 2.0
+Document Date: 2025
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+  1.  Project Overview and Purpose
+  2.  Problem Statement
+  3.  System Architecture
+  4.  Technology Stack and Rationale
+  5.  Feature Descriptions (All 11 Pages)
+  6.  Data Sources
+  7.  Key Algorithms Explained
+  8.  User Flow and App Navigation
+  9.  API Endpoints Reference
+  10. Deployment Instructions
+  11. Common Q&A (20+ Questions)
+  12. Limitations and Future Scope
+
+================================================================================
+SECTION 1 - PROJECT OVERVIEW AND PURPOSE
+================================================================================
+
+The Unemployment Intelligence Platform (UIP) is a full-stack data analytics and
+AI-powered web application designed to analyze, simulate, forecast, and visualize
+unemployment trends with a primary focus on the Indian economy.
+
+The platform bridges the gap between raw economic data and actionable intelligence
+by combining real-world data from the World Bank Open API, India's Periodic Labour
+Force Survey (PLFS), and a real Naukri.com job postings dataset with machine
+learning models, AI-generated insights, and interactive visualizations.
+
+UIP is built for multiple audiences:
+  - Policy researchers and economists who need scenario simulation tools
+  - Job seekers who want to understand which skills and cities offer the best
+    career prospects
+  - Students and educators studying macroeconomics and labor markets
+  - Data science practitioners looking at applied ML in economics
+
+The platform is not just a dashboard. It is an interactive decision-support system
+that lets users ask "what if" questions, explore career paths, assess job risk,
+and receive AI-generated economic narratives powered by Groq LLaMA 3.1.
+
+Key highlights:
+  - 11 fully functional analytical pages
+  - Dual-mode operation: real World Bank data + parametric simulation
+  - AI insights via Groq LLaMA 3.1 with multi-provider fallback chain
+  - 29,425 real job postings from Naukri.com for job market analysis
+  - Geographic career advisor covering 55 Indian cities
+  - Logistic regression job risk predictor
+  - Phillips Curve, Monte Carlo simulation, and sensitivity analysis
+
+
+================================================================================
+SECTION 2 - PROBLEM STATEMENT
+================================================================================
+
+Traditional unemployment analysis tools suffer from several critical limitations:
+
+  1. Static dashboards: Most tools only show historical data without any
+     forward-looking simulation capability.
+
+  2. No "what-if" analysis: Economists and policymakers cannot test how a
+     sudden economic shock (like COVID-19, a financial crisis, or a policy
+     change) would affect unemployment over time.
+
+  3. Disconnected from job seekers: Macro-level unemployment data is rarely
+     translated into actionable career advice for individuals.
+
+  4. No AI narrative layer: Raw charts and numbers require expert interpretation.
+     Most platforms do not generate plain-language explanations.
+
+  5. India-specific gap: Most global tools do not account for India's unique
+     labor market characteristics - informal economy, state-level disparities,
+     sector-specific vulnerabilities, and PLFS survey data.
+
+  6. Skill obsolescence blind spot: Workers and students have no tool to
+     understand which skills are declining in demand and what to learn next.
+
+UIP addresses all of these gaps by providing:
+
+  - Parametric shock simulation with exponential decay recovery modeling
+  - Scenario A vs B comparison for policy evaluation
+  - Career path recommendations tied to sector stress levels
+  - AI-generated economic narratives via LLM integration
+  - State-level geographic career advisor with cost-of-living data
+  - Skill demand forecasting with 6-month outlook
+  - Job risk scoring for individual roles using logistic regression
+  - Phillips Curve analysis connecting inflation and unemployment
+  - Model validation with backtesting metrics (R-squared, MAE, MAPE)
+
+The core question UIP answers is: "Given current and projected economic
+conditions, what should a policymaker do, and what should a job seeker do?"
+
+
+================================================================================
+SECTION 3 - SYSTEM ARCHITECTURE
+================================================================================
+
+UIP follows a clean three-tier architecture: Frontend, Backend API, and Data Layer.
+The AI layer sits as a cross-cutting concern accessible from both frontend and backend.
+
+--- ASCII Architecture Diagram ---
+
+  +----------------------------------------------------------+
+  |                    USER BROWSER                          |
+  +----------------------------------------------------------+
+                           |
+                           v
+  +----------------------------------------------------------+
+  |              STREAMLIT FRONTEND (Port 8501)              |
+  |                                                          |
+  |  app.py  ->  pages/                                      |
+  |    01_Overview.py        07_Job_Risk_Predictor.py        |
+  |    02_Simulator.py       08_Job_Market_Pulse.py          |
+  |    03_Sector_Analysis.py 09_Geo_Career_Advisor.py        |
+  |    04_Career_Lab.py      10_Skill_Obsolescence.py        |
+  |    05_AI_Insights.py     11_Phillips_Curve.py            |
+  |    06_Model_Validation.py                                |
+  |                                                          |
+  |  Libraries: Plotly, Folium, Streamlit-Folium, Pandas     |
+  +----------------------------------------------------------+
+                           |
+                    HTTP REST calls
+                    (requests library)
+                           |
+                           v
+  +----------------------------------------------------------+
+  |              FASTAPI BACKEND (Port 8000)                 |
+  |                                                          |
+  |  Endpoints:                                              |
+  |    POST /simulate          POST /sensitivity_analysis    |
+  |    POST /backtest          GET  /validate                |
+  |    GET  /events            GET  /data-status             |
+  |                                                          |
+  |  Core Modules (src/):                                    |
+  |    live_data.py            forecasting.py                |
+  |    preprocessing.py        shock_scenario.py             |
+  |    scenario_metrics.py     sector_analysis.py            |
+  |    career_advisor.py       model_validator.py            |
+  |    llm_insights.py         story_generator.py            |
+  |    policy_playbook.py      historical_events.py          |
+  +----------------------------------------------------------+
+                           |
+              +------------+------------+
+              |                         |
+              v                         v
+  +---------------------+   +------------------------+
+  |   DATA LAYER        |   |   AI LAYER             |
+  |                     |   |                        |
+  |  World Bank API     |   |  Groq LLaMA 3.1        |
+  |  (primary, live)    |   |  (primary)             |
+  |                     |   |                        |
+  |  Local CSV fallback |   |  Gemini (fallback 1)   |
+  |  (india_unemp.csv)  |   |                        |
+  |                     |   |  OpenAI (fallback 2)   |
+  |  PLFS 2022-23 data  |   |                        |
+  |  (30 Indian states) |   |  Rule-based engine     |
+  |                     |   |  (always works)        |
+  |  Naukri.com dataset |   |                        |
+  |  (29,425 postings)  |   +------------------------+
+  |                     |
+  |  india_city_ref.csv |
+  |  (55 cities)        |
+  +---------------------+
+
+--- Data Flow ---
+
+  1. Streamlit page loads -> calls FastAPI endpoint via HTTP POST/GET
+  2. FastAPI fetches data from World Bank API (or falls back to local CSV)
+  3. Preprocessor cleans and normalizes the time series
+  4. ForecastingEngine generates baseline forecast
+  5. ShockScenario applies parametric shock overlay
+  6. ScenarioMetrics computes delta, indices, and risk scores
+  7. LLM Insights module calls Groq -> Gemini -> OpenAI -> Rule-based
+  8. Response JSON returned to Streamlit
+  9. Streamlit renders Plotly charts, Folium maps, and KPI cards
+
+--- Module Responsibilities ---
+
+  live_data.py        - World Bank API calls, CSV fallback logic
+  preprocessing.py    - Data cleaning, interpolation, normalization
+  forecasting.py      - Ensemble forecasting engine
+  shock_scenario.py   - Shock application with exponential decay
+  scenario_metrics.py - Delta computation, stress indices, RQI
+  sector_analysis.py  - World Bank sector data, employment/GDP shares
+  career_advisor.py   - Career path recommendations from sector stress
+  llm_insights.py     - Multi-provider LLM integration
+  model_validator.py  - Backtesting, R-squared, MAE, MAPE
+  policy_playbook.py  - Policy configurations and parameters
+  story_generator.py  - Narrative timeline generation
+
+
+================================================================================
+SECTION 4 - TECHNOLOGY STACK AND RATIONALE
+================================================================================
+
+--- Backend ---
+
+  Python 3.10+
+    Why: Dominant language for data science and ML. Rich ecosystem of libraries
+    for numerical computing, API development, and visualization. Readable syntax
+    makes the codebase maintainable.
+
+  FastAPI
+    Why: Modern, high-performance Python web framework. Automatic OpenAPI/Swagger
+    documentation at /docs. Pydantic-based request validation prevents bad inputs.
+    Async support for future scalability. Much faster than Flask for API workloads.
+    Chosen over Django REST Framework because UIP needs a lightweight API layer,
+    not a full web framework.
+
+  Uvicorn
+    Why: ASGI server required to run FastAPI. Lightweight and production-ready.
+    Supports hot reload during development with --reload flag.
+
+  Pydantic
+    Why: Data validation and serialization. Ensures API request bodies have
+    correct types and ranges before any computation begins.
+
+--- Data Processing ---
+
+  Pandas
+    Why: Industry-standard DataFrame library. Handles time series data, CSV
+    loading, merging, groupby operations, and data cleaning with minimal code.
+    The entire data pipeline from raw CSV to processed series uses Pandas.
+
+  NumPy
+    Why: Underlying numerical engine for array operations. Used in forecasting
+    algorithms for vectorized computations, exponential decay calculations,
+    and Monte Carlo simulation arrays.
+
+  Scikit-learn
+    Why: Provides LogisticRegression for the Job Risk Predictor. Also used for
+    train/test splitting, StandardScaler for feature normalization, and metrics
+    like accuracy and classification report. Chosen for its clean API and
+    well-tested implementations.
+
+  SciPy
+    Why: Used for statistical functions including correlation analysis in the
+    Phillips Curve page and distribution fitting for confidence bands.
+
+--- Frontend ---
+
+  Streamlit
+    Why: Enables rapid development of data apps in pure Python without any
+    HTML/CSS/JavaScript. Multi-page app support via the pages/ directory.
+    Built-in widgets (sliders, selectboxes, number inputs) map directly to
+    simulation parameters. Session state management for caching API responses.
+    Chosen over Dash because Streamlit requires less boilerplate and is faster
+    to iterate on.
+
+  Plotly
+    Why: Interactive charts with zoom, pan, hover tooltips, and export. Supports
+    line charts, bar charts, scatter plots, heatmaps, gauge charts, and tornado
+    charts. Integrates natively with Streamlit via st.plotly_chart().
+
+  Folium
+    Why: Python wrapper for Leaflet.js. Creates interactive choropleth maps and
+    marker clusters for the Geo Career Advisor page. Supports custom popups with
+    HTML content. Integrated into Streamlit via streamlit-folium.
+
+  streamlit-folium
+    Why: Bridge library that renders Folium maps inside Streamlit apps without
+    needing to export HTML files.
+
+  streamlit-lottie
+    Why: Renders Lottie JSON animations for visual polish on loading states and
+    empty states.
+
+--- AI Layer ---
+
+  Groq LLaMA 3.1
+    Why: Groq's inference hardware (LPU) delivers extremely fast token generation
+    compared to standard GPU inference. LLaMA 3.1 is an open-weight model with
+    strong reasoning capabilities for economic analysis. Free tier available.
+    Chosen as primary because of speed and cost-effectiveness.
+
+  Gemini (fallback 1)
+    Why: Google's multimodal LLM. Used as first fallback if Groq API is
+    unavailable or rate-limited. Strong at structured text generation.
+
+  OpenAI (fallback 2)
+    Why: Industry-standard LLM API. Used as second fallback. GPT-4 class models
+    provide high-quality economic narrative generation.
+
+  Rule-based engine (always-on fallback)
+    Why: Guarantees the app never breaks even if all LLM APIs are down. Generates
+    template-based insights using the computed indices and metrics. No API key
+    required. Ensures 100% uptime for the AI Insights feature.
+
+--- Data Sources ---
+
+  World Bank Open API
+    Why: Free, no API key required. Authoritative global economic data.
+    Covers unemployment, GDP growth, labor force participation, and youth
+    unemployment for 200+ countries with annual data going back to 1991.
+
+  python-dotenv
+    Why: Loads API keys (Groq, Gemini, OpenAI) from .env file. Keeps secrets
+    out of source code. Standard practice for 12-factor app configuration.
+
+  geopy
+    Why: Geocoding library used to resolve city names to coordinates for the
+    Geo Career Advisor map. Fallback when coordinates are not in the reference CSV.
+
+
+================================================================================
+SECTION 5 - FEATURE DESCRIPTIONS (ALL 11 PAGES)
+================================================================================
+
+--- Page 1: Overview ---
+
+Purpose:
+  The landing page of UIP. Provides a high-level snapshot of India's current
+  economic health and unemployment situation.
+
+What it shows:
+  - KPI Cards: Current unemployment rate, GDP growth rate, labor force
+    participation rate, and youth unemployment rate. Each card shows the
+    current value and year-over-year change with color coding (green = improving,
+    red = worsening).
+
+  - GDP Growth Chart: Interactive Plotly line chart showing India's GDP growth
+    rate over time. Annotated with major economic events (COVID-19, 2008 crisis,
+    demonetization, etc.).
+
+  - Recession Risk Score: A gauge chart (0-100) that combines GDP deceleration
+    and unemployment trend into a single risk score. Score above 60 triggers
+    a red warning. Computed as a weighted combination of:
+      * GDP growth below 5-year average (weight: 60%)
+      * Unemployment rate above 5-year average (weight: 40%)
+
+  - Unemployment Trend Chart: Historical unemployment rate with a forecast
+    overlay showing the next 6 years. Includes confidence bands from Monte
+    Carlo simulation (500 runs).
+
+  - Data source badge: Shows whether data is live from World Bank API or
+    loaded from local CSV fallback.
+
+Technical notes:
+  - Data fetched from World Bank indicator SL.UEM.TOTL.ZS (unemployment)
+    and NY.GDP.MKTP.KD.ZG (GDP growth)
+  - Recession risk score recalculated on every page load
+  - Confidence bands use 10th and 90th percentile of 500 Monte Carlo runs
+
+--- Page 2: Simulator ---
+
+Purpose:
+  The core analytical engine of UIP. Allows users to define two economic
+  scenarios (A and B) and compare their outcomes side by side.
+
+What it shows:
+  - Scenario Configuration Panel: Sliders for:
+      * Shock Intensity (0.05 to 0.60): How severe the economic shock is
+      * Shock Duration (0 to 5 years): How long the shock persists
+      * Recovery Rate (0.05 to 0.60): How fast the economy recovers
+      * Forecast Horizon (1 to 10 years): How far ahead to project
+      * Policy Selection: Choose from predefined policy interventions
+
+  - Scenario A vs B Comparison Chart: Overlaid line chart showing baseline,
+    Scenario A, and Scenario B unemployment trajectories.
+
+  - Metrics Table: Peak unemployment, time to recovery, unemployment stress
+    index, and recovery quality index for each scenario.
+
+  - Sensitivity Analysis: Tornado chart showing which parameter (shock
+    intensity, recovery rate, or shock duration) has the most impact on
+    peak unemployment. 2D heatmap of shock intensity vs recovery rate.
+
+  - Early Warning System: Traffic light indicator (green/yellow/red) based
+    on unemployment stress index and recovery quality.
+
+  - Story Timeline: Auto-generated narrative describing the economic journey
+    from shock to recovery in plain English.
+
+  - AI Insights: LLM-generated analysis of the scenario comparing both paths.
+
+Technical notes:
+  - Calls POST /simulate for each scenario
+  - Calls POST /sensitivity_analysis for tornado and heatmap data
+  - Scenario comparison is purely client-side after both API calls complete
+  - Policy playbook modifies recovery rate and shock duration parameters
+
+--- Page 3: Sector Analysis ---
+
+Purpose:
+  Breaks down India's economy by sector to show which industries are most
+  vulnerable to unemployment shocks and which are most resilient.
+
+What it shows:
+  - World Bank sector data: Employment share and GDP share for Agriculture,
+    Industry, and Services sectors.
+
+  - Employment vs GDP Share Chart: Scatter plot showing the mismatch between
+    how many people work in a sector vs how much it contributes to GDP.
+    Agriculture employs ~45% of workers but contributes ~15% of GDP - this
+    gap indicates structural vulnerability.
+
+  - Sector Stress Scores: Bar chart ranking sectors by their stress level
+    under the current or simulated shock scenario.
+
+  - Sector Employment Trends: Line charts showing how each sector's employment
+    share has changed over the past 20 years.
+
+  - Location Quotient Analysis: Shows which sectors are concentrated in which
+    regions, indicating regional economic dependencies.
+
+Technical notes:
+  - Uses World Bank indicators: SL.AGR.EMPL.ZS, SL.IND.EMPL.ZS, SL.SRV.EMPL.ZS
+  - Sector stress is computed in sector_analysis.py based on shock intensity
+    and sector-specific vulnerability coefficients
+  - Agriculture has highest vulnerability coefficient due to informal employment
+
+--- Page 4: Career Lab ---
+
+Purpose:
+  Translates macro-level sector stress into individual career path recommendations.
+  Answers the question: "Given current economic conditions, which career paths
+  are safest and which should I avoid?"
+
+What it shows:
+  - Career Path Recommendations: Ranked list of career paths with:
+      * Safety score (0-100)
+      * Sector alignment (which economic sector the career belongs to)
+      * Skill requirements
+      * Growth outlook (short-term and long-term)
+
+  - Sector Stress Heatmap: Visual grid showing stress levels across sectors
+    and how they map to career categories.
+
+  - Upskilling Suggestions: For each at-risk career path, suggests adjacent
+    skills that would improve resilience.
+
+  - Career Transition Paths: Shows viable transitions from high-risk to
+    low-risk careers based on skill overlap.
+
+Technical notes:
+  - career_advisor.py uses sector stress scores from sector_analysis.py
+  - Dynamic thresholds: recommendations change based on shock_intensity
+  - Career-to-sector mapping is a curated lookup table
+  - Upskilling suggestions are rule-based, not LLM-generated (for speed)
+
+--- Page 5: AI Insights ---
+
+Purpose:
+  Provides AI-generated economic analysis and narrative for the current
+  scenario using large language models.
+
+What it shows:
+  - Economic Narrative: 3-5 paragraph analysis of the current scenario
+    written in plain English. Covers:
+      * What the data shows
+      * Why unemployment is trending this way
+      * What sectors are most affected
+      * Policy recommendations
+      * Outlook for the next 1-3 years
+
+  - Key Takeaways: Bullet-point summary of the most important insights.
+
+  - Confidence Indicator: Shows which AI provider generated the response
+    (Groq, Gemini, OpenAI, or Rule-based).
+
+  - Regenerate Button: Allows users to request a fresh analysis.
+
+Technical notes:
+  - llm_insights.py implements the provider chain:
+      Groq LLaMA 3.1 -> Gemini -> OpenAI -> Rule-based
+  - Each provider is tried in order; if one fails (timeout, rate limit,
+    API error), the next is tried automatically
+  - Rule-based fallback uses template strings filled with computed metrics
+  - Prompt engineering: The LLM is given scenario name, unemployment stress
+    index, recovery quality index, and sector impact data as context
+  - Temperature set to 0.7 for creative but grounded responses
+
+--- Page 6: Model Validation ---
+
+Purpose:
+  Provides transparency about the forecasting model's accuracy. Allows users
+  to understand how well the model predicts real historical data.
+
+What it shows:
+  - Adaptive Backtesting: The model is trained on data up to a cutoff year
+    and tested on the most recent 3 years. Uses only the last 15 years of
+    data to avoid being anchored to outdated patterns.
+
+  - Validation Metrics:
+      * R-squared: How much variance the model explains (higher = better)
+      * MAE (Mean Absolute Error): Average prediction error in percentage points
+      * MAPE (Mean Absolute Percentage Error): Relative error as a percentage
+
+  - Actual vs Predicted Chart: Line chart overlaying real unemployment values
+    against model predictions for the test period.
+
+  - Residual Plot: Shows prediction errors over time to detect systematic bias.
+
+  - Model Assumptions Panel: Explains what the model assumes and where it
+    may be less accurate.
+
+Technical notes:
+  - Calls GET /validate endpoint
+  - Adaptive strategy: uses only recent 15 years to train, tests on last 3
+  - This prevents the model from being biased by 1990s-2000s patterns
+  - model_validator.py computes all metrics and returns validation report
+  - R-squared computed as 1 - (SS_res / SS_tot)
+
+--- Page 7: Job Risk Predictor ---
+
+Purpose:
+  Predicts the automation/displacement risk for a specific job role based on
+  five key features. Helps individuals assess how vulnerable their current
+  or target job is to economic shocks and automation.
+
+What it shows:
+  - Input Form: User enters values for five features:
+      * Routine Task Index (0-10): How repetitive/routine the job is
+      * Skill Level (1-5): Education and skill requirements
+      * Sector Stress Score (0-100): From the sector analysis
+      * Years of Experience (0-30): Proxy for job security
+      * Demand Growth Rate (-5 to +10%): Recent trend in job postings
+
+  - Risk Score: Probability output from logistic regression (0-100%)
+    with color-coded risk category (Low / Medium / High / Very High)
+
+  - Feature Importance: Bar chart showing which of the five features
+    contributed most to the risk score.
+
+  - Skill Demand Score: Separate scoring of how in-demand the skills
+    associated with this role are in the current job market.
+
+  - Recommendations: Actionable suggestions to reduce risk score.
+
+Technical notes:
+  - Logistic Regression model trained on 3,500 synthetic samples
+  - 5 features: routine_task_index, skill_level, sector_stress,
+    years_experience, demand_growth_rate
+  - Features normalized with StandardScaler before prediction
+  - Model trained at app startup and cached in session state
+  - Synthetic training data generated with realistic distributions
+    calibrated to Indian labor market research
+
+--- Page 8: Job Market Pulse ---
+
+Purpose:
+  Analyzes 29,425 real job postings from Naukri.com (July-August 2019) to
+  provide a ground-level view of the Indian job market. Shows which roles,
+  skills, companies, and locations are most active.
+
+What it shows:
+  - Top Job Roles: Bar chart of most frequently posted job titles.
+
+  - Top Skills in Demand: Word cloud and bar chart of skills mentioned
+    most frequently across all job postings.
+
+  - Salary Distribution: Histogram of salary ranges across job postings
+    with median and percentile markers.
+
+  - Top Hiring Companies: Ranked list of companies with most active postings.
+
+  - Experience Requirements: Distribution of required years of experience
+    across all postings.
+
+  - Location Heatmap: Geographic distribution of job postings across
+    Indian cities.
+
+  - Industry Breakdown: Pie chart of job postings by industry sector.
+
+  - Filters: Users can filter by industry, city, experience level, and
+    salary range to drill down into specific segments.
+
+Technical notes:
+  - Dataset: Naukri.com job postings from Kaggle (July-Aug 2019)
+  - 29,425 rows with columns: job_title, company, location, experience,
+    salary, skills, industry, date_posted
+  - Data loaded from local CSV (no API call needed)
+  - Text processing: skills column split and exploded for frequency analysis
+  - Salary ranges parsed from string format (e.g., "3-5 Lacs") to numeric
+
+--- Page 9: Geo Career Advisor ---
+
+Purpose:
+  Helps job seekers choose the best Indian city for their career based on
+  industry presence, cost of living, and local unemployment rates.
+
+What it shows:
+  - Interactive Folium Map: India map with markers for 55 cities. Each
+    marker popup shows:
+      * City name and state
+      * Cost of Living Index (base 50 = India average)
+      * Top industries present
+      * State unemployment rate (from PLFS 2022-23)
+      * Recommended career paths for that city
+
+  - City Comparison Table: Side-by-side comparison of selected cities
+    across all metrics.
+
+  - Industry Hub Analysis: Shows which cities are hubs for specific
+    industries (IT in Bengaluru/Hyderabad, Finance in Mumbai, etc.)
+
+  - Cost of Living vs Salary Chart: Scatter plot showing the relationship
+    between cost of living and average salaries in each city.
+
+  - State Unemployment Choropleth: Color-coded map of India showing
+    unemployment rates by state from PLFS data.
+
+  - Career Fit Score: For a given career path, ranks cities by how well
+    they match (industry presence + salary - cost of living).
+
+Technical notes:
+  - india_city_reference.csv: 55 cities with lat/lon, COL index, state
+  - PLFS 2022-23 data: state-level unemployment for 30 Indian states
+  - Folium MarkerCluster used for cities to avoid map clutter
+  - streamlit-folium renders the map inside Streamlit
+  - Location Quotient computed as: (city_industry_share / national_industry_share)
+    Values > 1.0 indicate an industry hub
+
+--- Page 10: Skill Obsolescence ---
+
+Purpose:
+  Tracks which skills are growing or declining in demand and forecasts
+  skill demand for the next 6 months. Helps workers and students decide
+  what to learn and what to deprioritize.
+
+What it shows:
+  - Skill Demand Trends: Line charts showing how demand for specific skills
+    has changed over the Naukri.com dataset period.
+
+  - Top Growing Skills: Skills with the highest positive demand trend.
+
+  - Declining Skills: Skills with negative demand trend (at risk of obsolescence).
+
+  - 6-Month Forecast: Projected demand index for top 20 skills using
+    exponential smoothing on the Naukri.com time series.
+
+  - Skill Cluster Map: Groups related skills together to show which
+    skill families are growing vs shrinking.
+
+  - Replacement Suggestions: For each declining skill, suggests modern
+    alternatives (e.g., "Manual Testing" -> "Selenium/Cypress automation").
+
+Technical notes:
+  - Skill demand computed from Naukri.com postings frequency over time
+  - 6-month forecast uses exponential smoothing (alpha=0.3)
+  - Skill clustering uses cosine similarity on co-occurrence matrix
+  - Replacement suggestions are a curated mapping table
+
+--- Page 11: Phillips Curve ---
+
+Purpose:
+  Analyzes the relationship between inflation and unemployment in India,
+  testing the classical Phillips Curve theory which predicts an inverse
+  relationship between the two.
+
+What it shows:
+  - Phillips Curve Scatter Plot: Inflation rate (Y-axis) vs unemployment
+    rate (X-axis) for each year in the dataset. Points colored by decade
+    to show how the relationship has evolved.
+
+  - Regression Line: Best-fit line through the scatter plot with
+    confidence interval shading.
+
+  - Correlation Statistics: Pearson correlation coefficient, p-value,
+    and interpretation of statistical significance.
+
+  - Time Series Overlay: Dual-axis chart showing inflation and unemployment
+    on the same timeline to visualize their co-movement.
+
+  - Regime Analysis: Identifies periods where the Phillips Curve held
+    (negative correlation) vs broke down (positive correlation or no
+    correlation), which is common in modern economies.
+
+  - India-Specific Commentary: Explains why India's Phillips Curve may
+    differ from textbook theory due to supply-side inflation, informal
+    economy, and structural unemployment.
+
+Technical notes:
+  - Inflation data from World Bank indicator FP.CPI.TOTL.ZG
+  - Unemployment data from World Bank indicator SL.UEM.TOTL.ZS
+  - Pearson correlation computed with scipy.stats.pearsonr
+  - Regression line uses numpy.polyfit (degree 1)
+  - Confidence interval computed using standard error of regression
+
+
+================================================================================
+SECTION 6 - DATA SOURCES
+================================================================================
+
+--- World Bank Open API ---
+
+  URL: https://api.worldbank.org/v2/country/{country}/indicator/{indicator}
+  Cost: Free, no API key required
+  Update frequency: Annual (data typically lags by 1-2 years)
+
+  Indicators used:
+    SL.UEM.TOTL.ZS  - Unemployment, total (% of labor force)
+    NY.GDP.MKTP.KD.ZG - GDP growth (annual %)
+    SL.TLF.CACT.ZS  - Labor force participation rate (%)
+    SL.UEM.1524.ZS  - Youth unemployment rate (% ages 15-24)
+    SL.AGR.EMPL.ZS  - Employment in agriculture (% of total)
+    SL.IND.EMPL.ZS  - Employment in industry (% of total)
+    SL.SRV.EMPL.ZS  - Employment in services (% of total)
+    FP.CPI.TOTL.ZG  - Inflation, consumer prices (annual %)
+
+  Why chosen:
+    - Authoritative source used by governments and researchers worldwide
+    - Free and open access with no rate limiting for reasonable usage
+    - Consistent methodology across countries and years
+    - JSON API format easy to consume with Python requests library
+    - Covers India data from 1991 to present (30+ years of history)
+
+  Fallback strategy:
+    - If World Bank API is unavailable (network error, timeout), the app
+      automatically loads from local CSV files in data/raw/
+    - The data source label on the Overview page shows which source is active
+    - Local CSV is a snapshot of the World Bank data, updated periodically
+
+--- PLFS 2022-23 (Periodic Labour Force Survey) ---
+
+  Source: Ministry of Statistics and Programme Implementation (MOSPI),
+          Government of India
+  Coverage: 30 Indian states and union territories
+  Metric: Unemployment rate by state (UPSS - Usual Principal and
+          Subsidiary Status methodology)
+
+  Why chosen:
+    - Only authoritative source for state-level unemployment in India
+    - World Bank only provides national-level data for India
+    - PLFS uses a large sample survey (>1 lakh households) making it
+      statistically reliable at state level
+    - 2022-23 is the most recent available annual report
+    - Essential for the Geo Career Advisor page's state unemployment layer
+
+  Limitations:
+    - Annual frequency only (no monthly or quarterly state data)
+    - UPSS methodology counts workers differently from ILO standard
+    - Does not capture informal/gig economy workers fully
+
+--- Naukri.com Dataset (Kaggle) ---
+
+  Source: Kaggle dataset of Naukri.com job postings
+  Size: 29,425 job postings
+  Period: July - August 2019
+  Columns: job_title, company, location, experience_required,
+           salary_range, skills_required, industry, date_posted
+
+  Why chosen:
+    - Real job postings data (not synthetic) from India's largest job portal
+    - Provides ground-truth view of actual skill demand in the Indian market
+    - Large enough sample (29K+ records) for meaningful statistical analysis
+    - Covers diverse industries, cities, and experience levels
+    - Freely available on Kaggle for research and educational use
+
+  Limitations:
+    - Snapshot from 2019 only (pre-COVID, may not reflect current market)
+    - Naukri.com skews toward formal sector and white-collar jobs
+    - Does not represent gig economy, agriculture, or informal sector
+    - Salary data is in ranges (not exact figures), requiring parsing
+
+--- india_city_reference.csv ---
+
+  Source: Curated by project author (Bhushan Nanavare)
+  Coverage: 55 Indian cities
+  Columns: city, state, latitude, longitude, cost_of_living_index,
+           top_industries, tier (1/2/3)
+
+  Cost of Living Index:
+    - Base value: 50 = India average
+    - Mumbai: ~85 (most expensive)
+    - Tier-3 cities: ~30-40 (below average)
+    - Computed from housing, food, transport, and utilities costs
+
+  Why chosen:
+    - No free API provides comprehensive COL data for Indian cities
+    - Curated dataset ensures accuracy for the specific cities covered
+    - Coordinates enable Folium map rendering
+    - Industry mapping enables Location Quotient computation
+
+
+================================================================================
+SECTION 7 - KEY ALGORITHMS EXPLAINED
+================================================================================
+
+--- 1. Ensemble Forecasting Engine ---
+
+  The baseline unemployment forecast uses a weighted ensemble of three methods.
+  No single method is perfect, so combining them reduces error.
+
+  Method 1: Trend + Mean Reversion (weight: 50%)
+    - Fits a linear trend to the last 10 years of data
+    - Adds a mean-reversion component: if current rate is above the long-run
+      average, the forecast pulls it back toward the mean
+    - Formula: forecast(t) = trend(t) + alpha * (mean - current_rate)
+    - Alpha (mean reversion speed) = 0.3
+    - Why: Captures the empirical observation that unemployment tends to
+      revert to a country-specific natural rate over time
+
+  Method 2: ARIMA-inspired (weight: 30%)
+    - Simplified ARIMA(1,1,0): uses first-order differencing and one
+      autoregressive term
+    - Captures momentum: if unemployment has been rising, it tends to
+      continue rising in the short term
+    - Why: Handles short-term autocorrelation in the time series
+
+  Method 3: Exponential Smoothing (weight: 20%)
+    - Holt's double exponential smoothing with trend component
+    - Smoothing parameter alpha = 0.4, trend parameter beta = 0.2
+    - Why: Robust to outliers and works well with short time series
+
+  Final forecast = 0.5 * Method1 + 0.3 * Method2 + 0.2 * Method3
+
+  Weights chosen by minimizing MAE on historical backtests across
+  multiple countries and time periods.
+
+--- 2. Shock Scenario Model ---
+
+  The shock model applies an economic shock on top of the baseline forecast.
+
+  Phase 1 - Immediate Impact:
+    - At shock start, unemployment jumps by shock_intensity percentage points
+    - Example: shock_intensity=0.3 means unemployment rises by 3 percentage
+      points immediately (e.g., from 7% to 10%)
+    - This models the immediate full-intensity impact of a crisis
+
+  Phase 2 - Sustained Shock:
+    - For shock_duration years, the shock remains at full intensity
+    - Unemployment stays elevated above baseline
+
+  Phase 3 - Exponential Recovery:
+    - After shock_duration years, unemployment decays back toward baseline
+    - Formula: shock(t) = shock_intensity * exp(-recovery_rate * (t - duration))
+    - Higher recovery_rate = faster return to baseline
+    - Example: recovery_rate=0.3 means ~26% of shock remains after 1 year,
+      ~7% after 2 years, ~2% after 3 years
+
+  Why exponential decay:
+    - Empirically, economic recoveries follow exponential patterns
+    - Matches historical data from 2008 financial crisis and COVID recovery
+    - Simple to parameterize and interpret
+
+--- 3. Recession Risk Score ---
+
+  Combines two signals into a single 0-100 score:
+
+  Signal 1: GDP Deceleration (weight: 60%)
+    - Compares current GDP growth to 5-year moving average
+    - If current growth < average - 1 standard deviation: high risk
+    - Normalized to 0-100 scale
+
+  Signal 2: Unemployment Trend (weight: 40%)
+    - Compares current unemployment to 5-year moving average
+    - If current rate > average + 0.5 percentage points: elevated risk
+    - Normalized to 0-100 scale
+
+  Final Score = 0.6 * GDP_signal + 0.4 * Unemployment_signal
+
+  Interpretation:
+    0-30:  Low risk (green)
+    31-60: Moderate risk (yellow)
+    61-100: High risk (red)
+
+--- 4. Job Risk Predictor (Logistic Regression) ---
+
+  Model: Logistic Regression (binary classification)
+  Training data: 3,500 synthetic samples
+  Features (5):
+    1. routine_task_index (0-10): Higher = more routine = higher risk
+    2. skill_level (1-5): Higher = more skilled = lower risk
+    3. sector_stress_score (0-100): From sector analysis
+    4. years_experience (0-30): More experience = lower risk
+    5. demand_growth_rate (-5 to +10): Positive = growing demand = lower risk
+
+  Target: Binary (1 = high risk, 0 = low risk)
+  Threshold: 0.5 probability
+
+  Training process:
+    - Synthetic data generated with realistic distributions
+    - Features scaled with StandardScaler (zero mean, unit variance)
+    - Logistic Regression with L2 regularization (C=1.0)
+    - 80/20 train/test split
+    - Typical accuracy: 82-87% on test set
+
+  Why logistic regression (not a neural network):
+    - Interpretable: coefficients show feature importance directly
+    - Fast to train and predict (no GPU needed)
+    - Works well with small datasets (3,500 samples)
+    - Probability output is well-calibrated
+    - Easy to explain to non-technical stakeholders
+
+--- 5. Sensitivity Analysis ---
+
+  Tornado Chart:
+    - Varies each parameter (shock_intensity, recovery_rate, shock_duration)
+      independently by +/- a fixed amount from the base value
+    - Measures the change in peak unemployment for each variation
+    - Parameters sorted by total impact range (most sensitive at top)
+    - Tells the user: "Which parameter matters most?"
+
+  2D Heatmap:
+    - Creates a 6x6 grid of shock_intensity (0.1 to 0.6) x recovery_rate
+      (0.1 to 0.6) combinations
+    - Runs the shock model for each combination
+    - Colors cells by peak unemployment
+    - Tells the user: "What combinations are safe vs dangerous?"
+
+  Safe Zone Analysis:
+    - Threshold: peak unemployment < 8%
+    - Binary search to find minimum recovery_rate needed for each
+      shock_intensity level to stay below threshold
+    - Provides critical threshold table for policy guidance
+
+--- 6. Monte Carlo Simulation ---
+
+  Used to generate confidence bands around the baseline forecast.
+
+  Process:
+    1. Run baseline forecast 500 times
+    2. Each run adds random noise drawn from N(0, historical_std)
+    3. At each forecast year, collect all 500 predicted values
+    4. Confidence band = 10th percentile to 90th percentile
+
+  Why 500 simulations:
+    - Sufficient for stable percentile estimates
+    - Runs in under 1 second on modern hardware
+    - More simulations (e.g., 10,000) would not meaningfully change the bands
+
+--- 7. Location Quotient ---
+
+  Measures how concentrated an industry is in a specific city compared
+  to the national average.
+
+  Formula:
+    LQ = (city_industry_employment / city_total_employment) /
+         (national_industry_employment / national_total_employment)
+
+  Interpretation:
+    LQ > 1.25: Strong industry hub (e.g., IT in Bengaluru)
+    LQ 0.75-1.25: Average concentration
+    LQ < 0.75: Below-average concentration
+
+  Used in Geo Career Advisor to identify which cities are hubs for
+  specific industries and career paths.
+
+--- 8. Phillips Curve Analysis ---
+
+  Tests the inverse relationship between inflation and unemployment.
+
+  Steps:
+    1. Fetch inflation and unemployment data for same years
+    2. Compute Pearson correlation coefficient
+    3. Fit linear regression: inflation = a + b * unemployment
+    4. Test statistical significance (p-value < 0.05 = significant)
+    5. Identify regime breaks where correlation changes sign
+
+  Expected result for India:
+    - Weak or mixed correlation due to supply-side inflation drivers
+    - Pre-2010: Some negative correlation (textbook Phillips Curve)
+    - Post-2010: Weaker relationship due to structural changes
+
+
+================================================================================
+SECTION 8 - USER FLOW AND APP NAVIGATION
+================================================================================
+
+--- First-Time User Journey ---
+
+  Step 1: Landing on Overview Page
+    - User opens http://localhost:8501
+    - Sees KPI cards with current unemployment, GDP growth, labor force
+      participation, and youth unemployment rates
+    - Recession Risk Score gauge gives immediate sense of economic health
+    - Data source badge confirms whether live or cached data is shown
+    - User gets oriented to India's current economic situation
+
+  Step 2: Exploring the Simulator
+    - User navigates to Simulator page from left sidebar
+    - Configures Scenario A: moderate shock (intensity=0.2, duration=1, recovery=0.3)
+    - Configures Scenario B: severe shock (intensity=0.4, duration=2, recovery=0.2)
+    - Clicks "Compare Scenarios"
+    - Sees side-by-side forecast lines showing how each scenario plays out
+    - Reads the story timeline: "Year 1: Shock hits. Unemployment rises to X%..."
+    - Checks sensitivity analysis to understand which parameter matters most
+    - Reads AI-generated insights comparing both scenarios
+
+  Step 3: Understanding Sector Impact
+    - Navigates to Sector Analysis
+    - Sees which sectors (Agriculture, Industry, Services) are most stressed
+    - Understands the employment-GDP mismatch in Agriculture
+    - Identifies Services sector as most resilient
+
+  Step 4: Getting Career Advice
+    - Navigates to Career Lab
+    - Sees career paths ranked by safety score under current conditions
+    - Identifies high-risk careers to avoid and safe careers to pursue
+    - Gets upskilling suggestions for their current career
+
+  Step 5: Checking Job Risk
+    - Navigates to Job Risk Predictor
+    - Enters their job's characteristics (routine level, skill level, etc.)
+    - Gets a risk score and actionable recommendations
+    - Understands which features are driving their risk
+
+  Step 6: Exploring the Job Market
+    - Navigates to Job Market Pulse
+    - Filters by their industry and city
+    - Sees which skills are most in demand
+    - Checks salary distribution for their target role
+
+  Step 7: Choosing a City
+    - Navigates to Geo Career Advisor
+    - Sees the India map with 55 city markers
+    - Clicks on cities to see cost of living, industries, and unemployment
+    - Compares 3-4 cities side by side
+    - Gets a career fit score for their target role in each city
+
+  Step 8: Future-Proofing Skills
+    - Navigates to Skill Obsolescence
+    - Sees which skills are growing vs declining
+    - Gets 6-month forecast for their current skills
+    - Identifies replacement skills for declining ones
+
+  Step 9: Understanding the Big Picture
+    - Navigates to Phillips Curve
+    - Understands the inflation-unemployment tradeoff
+    - Sees how India's economy has evolved over decades
+
+  Step 10: Trusting the Model
+    - Navigates to Model Validation
+    - Checks R-squared, MAE, MAPE metrics
+    - Sees actual vs predicted chart for recent years
+    - Gains confidence in the forecast accuracy
+
+--- Navigation Structure ---
+
+  The Streamlit sidebar shows all 11 pages. Pages are numbered for clarity.
+  Users can jump to any page at any time - there is no forced linear flow.
+  Session state preserves scenario configurations when switching pages.
+
+--- Typical Analyst Workflow ---
+
+  1. Start with Overview to understand current conditions
+  2. Go to Simulator to model a specific scenario of interest
+  3. Check Sector Analysis to understand which industries are affected
+  4. Use AI Insights to get a narrative summary
+  5. Validate model credibility on Model Validation page
+  6. Export charts as PNG using Plotly's built-in download button
+
+--- Typical Job Seeker Workflow ---
+
+  1. Start with Job Market Pulse to see current demand
+  2. Use Job Risk Predictor to assess their current role
+  3. Check Skill Obsolescence to plan learning
+  4. Use Geo Career Advisor to choose a city
+  5. Use Career Lab to identify safe career paths
+
+
+================================================================================
+SECTION 9 - API ENDPOINTS REFERENCE
+================================================================================
+
+Base URL: http://localhost:8000
+API Documentation (Swagger UI): http://localhost:8000/docs
+API Documentation (ReDoc): http://localhost:8000/redoc
+
+--- POST /simulate ---
+
+  Description: Run a full unemployment scenario simulation including baseline
+               forecast, shock scenario, sector analysis, career advice, and
+               AI insights.
+
+  Request Body (JSON):
+    {
+      "shock_intensity": 0.25,      // float, 0.05-0.60, required
+      "shock_duration": 2,          // int, 0-5, required
+      "recovery_rate": 0.30,        // float, 0.05-0.60, required
+      "forecast_horizon": 6,        // int, 1-10, optional (default: 6)
+      "policy_name": "Fiscal Stimulus" // string, optional (default: null)
+    }
+
+  Response (JSON):
+    {
+      "baseline": [...],            // Array of {Year, Predicted_Unemployment}
+      "baseline_confidence": [...], // Array with lower/upper confidence bands
+      "scenario": [...],            // Array of {Year, Scenario_Unemployment}
+      "metrics": [...],             // Delta metrics between baseline and scenario
+      "policy": {...},              // Policy configuration if policy_name provided
+      "indices": {
+        "unemployment_stress_index": 35.2,
+        "recovery_quality_index": 0.72,
+        "rqi_label": "Good Recovery",
+        "early_warning": "Yellow Watch"
+      },
+      "sector_impact": [...],       // Sector stress scores
+      "career_advice": [...],       // Career path recommendations
+      "ai_insights": "...",         // LLM-generated narrative text
+      "story": [...],               // Timeline story events
+      "data_source": "World Bank Live API"
+    }
+
+  Example curl:
+    curl -X POST http://localhost:8000/simulate \
+      -H "Content-Type: application/json" \
+      -d '{"shock_intensity": 0.3, "shock_duration": 2, "recovery_rate": 0.25}'
+
+--- POST /backtest ---
+
+  Description: Run backtesting to evaluate model accuracy on historical data.
+
+  Request Body (JSON):
+    {
+      "test_years": 5   // int, 1-10, optional (default: 5)
+    }
+
+  Response (JSON):
+    {
+      "historical": [...],   // Actual unemployment values for test period
+      "backtest": [...],     // Predicted values for same period
+      "mae": 0.312,          // Mean Absolute Error (percentage points)
+      "mape": 4.87           // Mean Absolute Percentage Error (%)
+    }
+
+--- GET /validate ---
+
+  Description: Run adaptive model validation using recent 15 years of data,
+               testing on the last 3 years.
+
+  Request: No body required (GET request)
+
+  Response (JSON):
+    {
+      "r_squared": 0.847,
+      "mae": 0.289,
+      "mape": 3.92,
+      "actual": [...],
+      "predicted": [...],
+      "validation_period": "2020-2022",
+      "training_period": "2008-2019"
+    }
+
+--- GET /events ---
+
+  Description: Returns a list of historical economic events annotated on charts.
+
+  Request: No body required
+
+  Response (JSON):
+    {
+      "events": [
+        {"year": 2008, "label": "Global Financial Crisis", "type": "shock"},
+        {"year": 2020, "label": "COVID-19 Pandemic", "type": "shock"},
+        ...
+      ]
+    }
+
+--- POST /sensitivity_analysis ---
+
+  Description: Perform sensitivity analysis by varying shock parameters
+               independently. Returns tornado chart data and 2D heatmap data.
+
+  Request Body (JSON):
+    {
+      "base_shock_intensity": 0.25,   // float, required
+      "base_shock_duration": 2,       // int, required
+      "base_recovery_rate": 0.30,     // float, required
+      "forecast_horizon": 6,          // int, optional (default: 6)
+      "policy_name": null             // string, optional
+    }
+
+  Response (JSON):
+    {
+      "base_peak": 9.45,
+      "tornado_data": [
+        {
+          "parameter": "Shock Intensity",
+          "low_value": 0.05,
+          "high_value": 0.45,
+          "low_impact": -1.2,
+          "high_impact": 2.8,
+          "total_range": 4.0
+        },
+        ...
+      ],
+      "heatmap_data": [
+        {"shock_intensity": 0.1, "recovery_rate": 0.1, "peak_unemployment": 8.2},
+        ...
+      ],
+      "safe_combinations": [...],
+      "unsafe_combinations": [...],
+      "critical_thresholds": [
+        {
+          "shock_intensity": 0.3,
+          "required_recovery_rate": 0.28,
+          "description": "For shock intensity 0.3, need recovery rate >= 0.28..."
+        }
+      ],
+      "threshold": 8.0
+    }
+
+--- GET /data-status ---
+
+  Description: Check whether the app is using live World Bank data or
+               local CSV fallback.
+
+  Request: No body required
+
+  Response (JSON):
+    {
+      "source": "World Bank Live API",
+      "country": "India"
+    }
+
+--- Policy Names (valid values for policy_name field) ---
+
+  "None"                  - No policy intervention
+  "Fiscal Stimulus"       - Government spending increase
+  "Monetary Easing"       - Interest rate reduction
+  "Job Guarantee Program" - Direct public employment
+  "Skill Development"     - Training and reskilling programs
+  "Export Promotion"      - Trade-focused recovery
+
+
+================================================================================
+SECTION 10 - DEPLOYMENT INSTRUCTIONS
+================================================================================
+
+--- Prerequisites ---
+
+  - Python 3.10 or higher
+  - pip (Python package manager)
+  - Git (for cloning the repository)
+  - Internet connection (for World Bank API calls)
+  - Optional: Groq API key (for AI Insights; app works without it)
+
+--- Step 1: Clone the Repository ---
+
+  git clone <repository-url>
+  cd san
+
+--- Step 2: Create a Virtual Environment (Recommended) ---
+
+  On Windows:
+    python -m venv venv
+    venv\Scripts\activate
+
+  On macOS/Linux:
+    python3 -m venv venv
+    source venv/bin/activate
+
+--- Step 3: Install Dependencies ---
+
+  pip install -r requirements.txt
+
+  This installs:
+    streamlit, fastapi, uvicorn, pandas, numpy, plotly, scikit-learn,
+    folium, geopy, streamlit-folium, scipy, python-dotenv, requests,
+    streamlit-lottie
+
+--- Step 4: Configure Environment Variables ---
+
+  Create a .env file in the project root (san/) with:
+
+    GROQ_API_KEY=your_groq_api_key_here
+    GEMINI_API_KEY=your_gemini_api_key_here
+    OPENAI_API_KEY=your_openai_api_key_here
+
+  Note: All API keys are optional. If not provided, the app uses the
+  rule-based fallback for AI Insights. All other features work without
+  any API keys.
+
+  Get a free Groq API key at: https://console.groq.com
+
+--- Step 5: Start the FastAPI Backend ---
+
+  Open Terminal 1:
+    uvicorn src.api:app --reload --port 8000
+
+  Expected output:
+    INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+    INFO:     Started reloader process
+    INFO:     Application startup complete.
+
+  Verify backend is running:
+    Open http://localhost:8000/docs in browser
+    You should see the Swagger UI with all endpoints listed
+
+--- Step 6: Start the Streamlit Frontend ---
+
+  Open Terminal 2 (keep Terminal 1 running):
+    streamlit run app.py
+
+  Expected output:
+    You can now view your Streamlit app in your browser.
+    Local URL: http://localhost:8501
+    Network URL: http://192.168.x.x:8501
+
+  The app will automatically open in your default browser.
+
+--- Step 7: Verify Everything Works ---
+
+  1. Overview page loads with KPI cards (may take 5-10 seconds for
+     World Bank API call on first load)
+  2. Navigate to Simulator, set parameters, click Compare
+  3. Check that charts render correctly
+  4. Navigate to Geo Career Advisor and verify the map loads
+  5. Check AI Insights page - should show either LLM response or
+     rule-based fallback
+
+--- Troubleshooting Common Issues ---
+
+  Issue: "Connection refused" on Streamlit
+    Fix: Make sure FastAPI backend is running on port 8000 first
+
+  Issue: "ModuleNotFoundError"
+    Fix: Ensure virtual environment is activated and requirements installed
+
+  Issue: World Bank data not loading
+    Fix: Check internet connection. App will fall back to local CSV automatically.
+
+  Issue: Folium map not rendering
+    Fix: Run: pip install streamlit-folium --upgrade
+
+  Issue: AI Insights shows "Rule-based fallback"
+    Fix: Add GROQ_API_KEY to .env file. This is expected behavior without a key.
+
+  Issue: Port 8000 already in use
+    Fix: Kill existing process or use: uvicorn src.api:app --port 8001
+         Then update the API_URL in app.py to match
+
+--- Running Both Services with a Single Command (Optional) ---
+
+  Create a start.sh file:
+    #!/bin/bash
+    uvicorn src.api:app --reload --port 8000 &
+    streamlit run app.py
+
+  Run: bash start.sh
+
+  On Windows, create start.bat:
+    start uvicorn src.api:app --reload --port 8000
+    streamlit run app.py
+
+--- Production Deployment Notes ---
+
+  For production deployment (not development):
+
+  Backend:
+    uvicorn src.api:app --host 0.0.0.0 --port 8000 --workers 4
+    (Remove --reload flag in production)
+
+  Frontend:
+    streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+
+  Environment:
+    - Set API keys as environment variables (not .env file) in production
+    - Use a reverse proxy (nginx) to serve both services under one domain
+    - Consider Docker containerization for consistent deployment
+
+  Docker (basic setup):
+    Create Dockerfile:
+      FROM python:3.11-slim
+      WORKDIR /app
+      COPY requirements.txt .
+      RUN pip install -r requirements.txt
+      COPY . .
+      EXPOSE 8000 8501
+      CMD ["bash", "start.sh"]
+
+
+================================================================================
+SECTION 11 - COMMON Q&A (INTERVIEW AND PRESENTATION QUESTIONS)
+================================================================================
+
+This section covers 25+ questions you are likely to be asked about this project
+in interviews, presentations, or academic evaluations.
+
+--- General Project Questions ---
+
+Q1: What is the Unemployment Intelligence Platform and what problem does it solve?
+
+A: UIP is a full-stack data analytics platform that combines real economic data,
+   machine learning, and AI to analyze and simulate unemployment trends in India.
+   It solves three problems: (1) policymakers have no tool to simulate "what-if"
+   economic scenarios, (2) job seekers cannot translate macro data into personal
+   career decisions, and (3) existing tools lack AI-generated narrative explanations
+   that make data accessible to non-experts.
+
+---
+
+Q2: Why did you choose India as the focus country?
+
+A: India has unique labor market characteristics that make it an interesting case
+   study: a large informal economy (~90% of workers), significant state-level
+   disparities, a young population with high youth unemployment, and a structural
+   mismatch where Agriculture employs ~45% of workers but contributes only ~15%
+   of GDP. These complexities make India more analytically interesting than
+   developed economies with more homogeneous labor markets. Additionally, PLFS
+   data provides state-level granularity not available for most countries.
+
+---
+
+Q3: How does the app handle the case when the World Bank API is down?
+
+A: The live_data.py module implements a try/except pattern. It first attempts
+   to fetch data from the World Bank API. If the request fails (network error,
+   timeout, HTTP error), it automatically loads from a local CSV file in
+   data/raw/. The data source label on the Overview page shows which source
+   is active. This ensures the app is always functional regardless of API
+   availability.
+
+---
+
+Q4: What is the architecture of the application?
+
+A: Three-tier architecture. Frontend: Streamlit multi-page app on port 8501,
+   using Plotly for charts and Folium for maps. Backend: FastAPI REST API on
+   port 8000, handling all computation. Data Layer: World Bank API (primary)
+   with local CSV fallback, plus PLFS data, Naukri.com dataset, and city
+   reference CSV. AI Layer: Groq LLaMA 3.1 as primary, with Gemini, OpenAI,
+   and rule-based engine as fallbacks.
+
+---
+
+Q5: Why FastAPI instead of Flask or Django?
+
+A: FastAPI offers three key advantages over Flask: automatic request validation
+   via Pydantic models (no manual input checking), automatic Swagger/OpenAPI
+   documentation at /docs, and async support for future scalability. Compared
+   to Django REST Framework, FastAPI is much lighter and faster to set up for
+   a pure API service. For UIP's use case (a computation API, not a full web
+   app), FastAPI is the right tool.
+
+---
+
+Q6: Why Streamlit instead of React or Vue.js?
+
+A: Streamlit allows building interactive data apps in pure Python without any
+   frontend development skills. Since UIP is a data science project, not a
+   product requiring custom UI, Streamlit dramatically reduces development time.
+   The built-in widgets (sliders, selectboxes) map directly to simulation
+   parameters. The tradeoff is less UI flexibility, but for an analytics
+   platform, Streamlit's capabilities are sufficient.
+
+---
+
+--- Algorithm and Technical Questions ---
+
+Q7: How does the forecasting model work?
+
+A: It uses a weighted ensemble of three methods. Method 1 (50% weight): Trend
+   plus mean reversion - fits a linear trend and adds a pull toward the
+   long-run average unemployment rate. Method 2 (30% weight): ARIMA-inspired
+   with first-order differencing and one autoregressive term to capture
+   momentum. Method 3 (20% weight): Holt's double exponential smoothing for
+   robustness to outliers. The weights were chosen by minimizing MAE on
+   historical backtests.
+
+---
+
+Q8: How does the shock simulation work?
+
+A: The shock model has three phases. Phase 1: Immediate impact - unemployment
+   jumps by shock_intensity percentage points at the start of the shock.
+   Phase 2: Sustained shock - unemployment stays elevated for shock_duration
+   years. Phase 3: Exponential recovery - after the shock duration, unemployment
+   decays back toward baseline using the formula: shock(t) = shock_intensity *
+   exp(-recovery_rate * (t - duration)). This models how real economies recover
+   from crises like the 2008 financial crisis or COVID-19.
+
+---
+
+Q9: Why logistic regression for the Job Risk Predictor instead of a neural network?
+
+A: Three reasons. First, interpretability: logistic regression coefficients
+   directly show which features drive risk, which is important for giving
+   actionable recommendations. Second, data size: with only 3,500 training
+   samples, a neural network would overfit. Logistic regression is appropriate
+   for this scale. Third, speed: logistic regression predicts in microseconds,
+   making the UI feel instant. The accuracy (82-87%) is sufficient for a
+   decision-support tool.
+
+---
+
+Q10: What is the Recovery Quality Index (RQI)?
+
+A: RQI measures not just whether unemployment recovers, but how well it
+   recovers. It combines the speed of recovery (how quickly unemployment
+   returns to baseline) with the depth of recovery (how close it gets to
+   the pre-shock level). A fast but incomplete recovery scores lower than
+   a slower but complete recovery. Labels: "Fast Recovery" (RQI > 0.8),
+   "Good Recovery" (0.6-0.8), "Slow Recovery" (0.4-0.6), "Poor Recovery"
+   (< 0.4).
+
+---
+
+Q11: How does the sensitivity analysis work?
+
+A: It uses two approaches. Tornado chart: varies each parameter (shock
+   intensity, recovery rate, shock duration) independently by a fixed amount
+   while holding others constant, measures the change in peak unemployment,
+   and ranks parameters by total impact range. The parameter with the widest
+   range is most sensitive. 2D Heatmap: creates a 6x6 grid of shock intensity
+   vs recovery rate combinations, runs the shock model for each, and colors
+   cells by peak unemployment. This shows which combinations are safe vs
+   dangerous.
+
+---
+
+Q12: How are the confidence bands computed?
+
+A: Monte Carlo simulation with 500 runs. Each run adds random noise drawn
+   from a normal distribution with mean 0 and standard deviation equal to
+   the historical standard deviation of the unemployment series. At each
+   forecast year, the 10th and 90th percentiles of the 500 predicted values
+   form the confidence band. This represents the range of plausible outcomes
+   given historical volatility.
+
+---
+
+Q13: What is the Location Quotient and how is it used?
+
+A: Location Quotient (LQ) measures how concentrated an industry is in a
+   specific city compared to the national average. Formula: LQ = (city
+   industry share / city total employment) / (national industry share /
+   national total employment). LQ > 1.25 means the city is a hub for that
+   industry. Used in Geo Career Advisor to identify which cities are best
+   for specific career paths. For example, Bengaluru has LQ > 3 for IT,
+   making it the top recommendation for software careers.
+
+---
+
+Q14: How does the AI Insights fallback chain work?
+
+A: The llm_insights.py module tries providers in order: (1) Groq LLaMA 3.1 -
+   fastest, cheapest, primary choice. (2) Gemini - Google's LLM, first fallback
+   if Groq fails. (3) OpenAI - industry standard, second fallback. (4) Rule-based
+   engine - template strings filled with computed metrics, always works, no API
+   needed. Each provider is wrapped in try/except. If one raises any exception
+   (timeout, rate limit, API error), the next is tried. The UI shows which
+   provider generated the response.
+
+---
+
+--- Data Questions ---
+
+Q15: Why use the Naukri.com dataset from 2019? Isn't it outdated?
+
+A: The 2019 dataset is used because it is the largest freely available real
+   job postings dataset for India (29,425 records). More recent datasets are
+   either proprietary or much smaller. The 2019 data is still valuable for
+   understanding structural patterns in the Indian job market (which industries
+   hire most, which skills are valued, salary distributions) that change slowly.
+   The limitation is acknowledged in the app - it may not reflect post-COVID
+   shifts in remote work and tech hiring. Future scope includes updating with
+   more recent data.
+
+---
+
+Q16: What is the PLFS and why is it used?
+
+A: PLFS stands for Periodic Labour Force Survey, conducted by MOSPI (Ministry
+   of Statistics and Programme Implementation), Government of India. It is the
+   only authoritative source for state-level unemployment data in India. The
+   World Bank only provides national-level data. PLFS 2022-23 covers 30 states
+   and union territories with unemployment rates computed using the UPSS
+   (Usual Principal and Subsidiary Status) methodology, which counts a person
+   as employed if they worked for the majority of the reference year.
+
+---
+
+Q17: How is the Cost of Living Index computed?
+
+A: The COL index is a curated composite score for 55 Indian cities with base
+   50 = India average. It incorporates housing costs (rent for a 2BHK apartment),
+   food costs (monthly grocery and restaurant expenses), transportation costs
+   (monthly commute), and utilities. Mumbai scores ~85 (most expensive), while
+   Tier-3 cities score 30-40. The index was compiled from publicly available
+   cost-of-living surveys and real estate data. It is stored in
+   india_city_reference.csv and loaded at app startup.
+
+---
+
+--- Design and Architecture Questions ---
+
+Q18: How does the app handle errors gracefully?
+
+A: Multiple layers of error handling. Data layer: World Bank API failure falls
+   back to local CSV. AI layer: LLM failures cascade through the provider chain
+   to rule-based fallback. API layer: FastAPI Pydantic validation rejects
+   malformed requests before computation. Frontend: Streamlit try/except blocks
+   show user-friendly error messages instead of stack traces. The app is designed
+   to never show a blank page or crash - there is always a fallback.
+
+---
+
+Q19: Why is the backend a separate FastAPI service instead of running everything
+     in Streamlit?
+
+A: Separation of concerns. The FastAPI backend handles all computation (forecasting,
+   shock simulation, ML inference, LLM calls) while Streamlit handles only
+   presentation. This means: (1) The API can be tested independently with curl
+   or Postman. (2) The same API could power a mobile app or different frontend
+   in the future. (3) Computation is not blocked by Streamlit's single-threaded
+   execution model. (4) The Swagger UI at /docs provides free API documentation.
+
+---
+
+Q20: How does the multi-page Streamlit app work?
+
+A: Streamlit's multi-page feature uses a pages/ directory. Each .py file in
+   pages/ becomes a separate page accessible from the sidebar. The main app.py
+   is the entry point (Overview page). Streamlit automatically generates the
+   sidebar navigation from the filenames. Session state (st.session_state) is
+   shared across pages, allowing scenario configurations set on the Simulator
+   page to be accessible on other pages.
+
+---
+
+Q21: What is the Unemployment Stress Index?
+
+A: The Unemployment Stress Index (USI) is a composite metric computed in
+   scenario_metrics.py. It combines: (1) Peak unemployment above baseline
+   (how high unemployment goes), (2) Duration of elevated unemployment (how
+   long it stays high), and (3) Rate of increase (how fast it rises). The
+   index is normalized to 0-100. USI > 40 triggers a red "High Risk" early
+   warning. USI 20-40 triggers yellow "Watch". USI < 20 is green "Stable".
+
+---
+
+Q22: How does the Phillips Curve analysis handle India's unique inflation dynamics?
+
+A: India's inflation is heavily influenced by food prices (which have a ~45%
+   weight in CPI) and supply-side shocks (monsoon failures, oil prices). These
+   are not driven by demand-side factors that the Phillips Curve models. The
+   app acknowledges this by showing regime analysis - identifying periods where
+   the classical inverse relationship held vs broke down. Post-2010, India shows
+   a weaker Phillips Curve relationship, which the app explains in the commentary
+   section.
+
+---
+
+Q23: What makes this project different from a simple unemployment dashboard?
+
+A: Five key differentiators. (1) Simulation: Users can model future scenarios,
+   not just view historical data. (2) AI narrative: LLM-generated explanations
+   make data accessible to non-economists. (3) Individual relevance: Job risk
+   predictor and career advisor translate macro data to personal decisions.
+   (4) Geographic granularity: 55-city advisor with cost-of-living data.
+   (5) Skill intelligence: Skill obsolescence forecasting helps workers
+   future-proof their careers.
+
+---
+
+Q24: How would you scale this application to handle 10,000 concurrent users?
+
+A: Several changes would be needed. Backend: Replace single Uvicorn process
+   with multiple workers (--workers 4+) or deploy on Kubernetes with horizontal
+   scaling. Add Redis caching for World Bank API responses (data changes annually,
+   so cache for 24 hours). Use async FastAPI endpoints for LLM calls. Frontend:
+   Deploy Streamlit on Streamlit Cloud or behind a load balancer. Database: Move
+   from in-memory computation to a PostgreSQL database for pre-computed scenarios.
+   CDN: Serve static assets (Lottie animations, reference CSVs) from a CDN.
+
+---
+
+Q25: What are the main limitations of the forecasting model?
+
+A: Four main limitations. (1) No causal variables: The model uses only historical
+   unemployment data, not GDP, inflation, or policy variables as inputs. A VAR
+   (Vector Autoregression) model would be more accurate. (2) Annual frequency:
+   World Bank data is annual, so the model cannot capture monthly or quarterly
+   dynamics. (3) India-specific calibration: The model is calibrated for India
+   and may not work well for other countries without recalibration. (4) Structural
+   breaks: The model assumes the future will resemble the past. Major structural
+   changes (automation, demographic shifts) are not captured.
+
+---
+
+Q26: How is the model validated and what are the accuracy metrics?
+
+A: Adaptive backtesting strategy: uses only the most recent 15 years of data
+   to train (avoiding anchoring to outdated patterns), then tests on the last
+   3 years. Metrics: R-squared (how much variance is explained, higher is better),
+   MAE (mean absolute error in percentage points, lower is better), MAPE (mean
+   absolute percentage error as %, lower is better). Typical results for India:
+   R-squared ~0.85, MAE ~0.3 percentage points, MAPE ~4%. These are acceptable
+   for a decision-support tool, though not production-grade forecasting.
+
+---
+
+Q27: Why use an ensemble model instead of a single best model?
+
+A: Ensemble models consistently outperform single models in forecasting because
+   different methods capture different patterns. Trend+mean-reversion captures
+   long-run equilibrium. ARIMA captures short-term momentum. Exponential smoothing
+   handles recent data robustly. When one method makes a large error, the others
+   compensate. This is the same principle used in weather forecasting (ensemble
+   of models) and financial forecasting. The 50/30/20 weights were chosen by
+   minimizing MAE on historical backtests.
+
+
+================================================================================
+SECTION 12 - LIMITATIONS AND FUTURE SCOPE
+================================================================================
+
+--- Current Limitations ---
+
+  Data Limitations:
+    - World Bank data is annual frequency only. Monthly or quarterly data would
+      enable more responsive forecasting and better capture of business cycles.
+    - Naukri.com dataset is from 2019 (pre-COVID). Post-pandemic shifts in
+      remote work, tech hiring, and gig economy are not reflected.
+    - PLFS data has a 1-2 year lag. Real-time state unemployment is not available.
+    - Cost of Living Index is manually curated and may not reflect current prices.
+    - Only covers India. Multi-country comparison is not supported.
+
+  Model Limitations:
+    - Forecasting model uses only unemployment history, not causal variables
+      (GDP, inflation, interest rates, policy changes).
+    - Shock model assumes immediate full-intensity impact. In reality, shocks
+      often build gradually.
+    - Job Risk Predictor trained on synthetic data. Real labeled data from
+      actual job displacement events would improve accuracy.
+    - Skill obsolescence forecast uses simple exponential smoothing. A more
+      sophisticated NLP-based approach analyzing job description text would
+      be more accurate.
+
+  Technical Limitations:
+    - No user authentication. All users see the same data and cannot save
+      their scenarios.
+    - No database. All computation is in-memory and not persisted.
+    - Single-country focus limits comparative analysis.
+    - LLM responses are not cached, so repeated requests incur API costs.
+    - Streamlit's single-threaded model can cause slow page loads when
+      multiple users access simultaneously.
+
+  Coverage Limitations:
+    - Informal economy (~90% of India's workforce) is largely invisible in
+      the data. PLFS captures some informal workers but not all.
+    - Gig economy workers (Uber, Swiggy, Zomato drivers) are not represented
+      in the Naukri.com dataset.
+    - Agricultural employment seasonality is not modeled.
+
+--- Future Scope ---
+
+  Short-term Improvements (1-3 months):
+    - Add monthly data source (CMIE Unemployment Rate for India) for higher
+      frequency analysis
+    - Update Naukri.com dataset with more recent job postings (2023-2024)
+    - Add user authentication with saved scenarios using SQLite or PostgreSQL
+    - Implement LLM response caching to reduce API costs
+    - Add export functionality: download charts as PNG, data as CSV/Excel
+    - Add more countries beyond India for comparative analysis
+
+  Medium-term Features (3-6 months):
+    - Causal forecasting model: VAR (Vector Autoregression) incorporating
+      GDP, inflation, interest rates, and policy variables as inputs
+    - Real-time data integration: Connect to RBI (Reserve Bank of India)
+      data API for monetary policy indicators
+    - NLP-based skill analysis: Use BERT or similar models to extract skills
+      from job description text rather than relying on structured skill fields
+    - Mobile-responsive UI: Streamlit's default layout is not mobile-friendly;
+      custom CSS or migration to a React frontend would improve mobile UX
+    - Scenario sharing: Allow users to share scenario configurations via URL
+    - Alert system: Email/SMS alerts when recession risk score crosses threshold
+
+  Long-term Vision (6-12 months):
+    - Multi-country platform: Extend to BRICS countries (Brazil, Russia, China,
+      South Africa) with country-specific models and data sources
+    - Real-time job market integration: Live API connection to Naukri.com,
+      LinkedIn, or Indeed for real-time job posting analysis
+    - Personalized career roadmap: Based on user's current skills and target
+      role, generate a step-by-step learning path with course recommendations
+    - Policy simulation with causal inference: Use difference-in-differences
+      or synthetic control methods to estimate the actual impact of past
+      policy interventions
+    - Informal economy modeling: Incorporate NSSO (National Sample Survey
+      Office) data to model informal sector employment dynamics
+    - Predictive hiring demand: Use leading indicators (business confidence
+      surveys, PMI data) to forecast hiring demand 3-6 months ahead
+    - Integration with government portals: Connect to NCS (National Career
+      Service) portal for official job vacancy data
+
+  Research Extensions:
+    - Publish the ensemble forecasting methodology as a research paper
+      comparing it against ARIMA, LSTM, and Prophet baselines
+    - Conduct a user study to evaluate whether the career advisor recommendations
+      improve job search outcomes
+    - Develop a formal model of the informal-formal employment transition
+      using the PLFS panel data
+
+================================================================================
+END OF DOCUMENT
+================================================================================
+
+Document prepared by: Bhushan Nanavare
+Project: Unemployment Intelligence Platform (UIP)
+For questions or clarifications, refer to the source code in src/ directory
+and the API documentation at http://localhost:8000/docs when the app is running.
+
+================================================================================

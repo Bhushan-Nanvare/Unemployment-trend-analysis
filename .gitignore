@@ -1,0 +1,49 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+env/
+venv/
+.DS_Store
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.pytest_cache/
+.local/
+*.log
+*.sqlite
+
+# Large raw Kaggle file (not needed — converted version is in data/market_pulse/)
+marketing_sample_for_naukri_com-jobs__20190701_20190830__30k_data.csv
+
+# World Bank zip archive (not needed at runtime)
+data/API_SL.TLF.ACTI.1524.ZS_DS2_en_csv_v2_5033.zip
+data/API_SL.TLF.ACTI.1524.ZS_DS2_en_csv_v2_5033/
+
+# Dev/planning docs (not needed for deployment)
+fetureFetures
+GEO_ENHANCEMENTS_SUMMARY.md
+IMPLEMENTATION_COMPLETE.md
+SIMULATOR_IMPROVEMENTS_PLAN.md
+SIMULATOR_MOCKUPS.md
+SIMULATOR_RECOMMENDATIONS.md
+SENSITIVITY_ANALYSIS_COMPLETE.md
+VERIFICATION_CHECKLIST.md
+VERIFY_SENSITIVITY.md
+VISUAL_GUIDE.md
+
+# Test scripts
+test_geo_tabs.py
+test_sensitivity_api.py
+test_sensitivity_complete.py
+
+# Attached assets
+attached_assets/
+
+# Replit-specific
+.replit
+replit.nix
+replit.md
