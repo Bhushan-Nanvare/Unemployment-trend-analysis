@@ -114,15 +114,18 @@ with col_run[1]:
     run = st.button("🚀 Run Simulation", use_container_width=True)
 
 # ─── API helper ───────────────────────────────────────────────────────────────
+from src.api import simulate_scenario, ScenarioRequest
+
 def fetch(si, sd, rr, pol, h):
     try:
-        r = requests.post(f"{API_BASE_URL}/simulate",
-                          json={"shock_intensity": si, "shock_duration": sd,
-                                "recovery_rate": rr, "forecast_horizon": h,
-                                "policy_name": pol if pol != "None" else None},
-                          timeout=25)
-        if r.status_code == 200:
-            return r.json()
+        req = ScenarioRequest(
+            shock_intensity=si,
+            shock_duration=sd,
+            recovery_rate=rr,
+            forecast_horizon=h,
+            policy_name=pol if pol != "None" else None
+        )
+        return simulate_scenario(req)
     except Exception as e:
         st.error(f"API Error: {e}")
     return None
@@ -337,22 +340,15 @@ with col_run_sens[1]:
 if run_sens or "sensitivity_data" not in st.session_state:
     with st.spinner("⚡ Running sensitivity analysis..."):
         try:
-            sens_response = requests.post(
-                f"{API_BASE_URL}/sensitivity_analysis",
-                json={
-                    "base_shock_intensity": sens_si,
-                    "base_shock_duration": sens_sd,
-                    "base_recovery_rate": sens_rr,
-                    "forecast_horizon": 6,
-                    "policy_name": None,
-                },
-                timeout=30
+            from src.api import sensitivity_analysis, SensitivityRequest
+            sens_req = SensitivityRequest(
+                base_shock_intensity=sens_si,
+                base_shock_duration=sens_sd,
+                base_recovery_rate=sens_rr,
+                forecast_horizon=6,
+                policy_name=None
             )
-            if sens_response.status_code == 200:
-                st.session_state.sensitivity_data = sens_response.json()
-            else:
-                st.error(f"API Error: {sens_response.status_code}")
-                st.session_state.sensitivity_data = None
+            st.session_state.sensitivity_data = sensitivity_analysis(sens_req)
         except Exception as e:
             st.error(f"Error: {e}")
             st.session_state.sensitivity_data = None

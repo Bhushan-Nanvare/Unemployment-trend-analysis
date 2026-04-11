@@ -48,20 +48,19 @@ st.markdown("""
 
 
 # ─── Data fetching ─────────────────────────────────────────────────────────────
+from src.api import simulate_scenario, ScenarioRequest
+
 @st.cache_data(ttl=60)
 def get_insights_data(si, sd, rr, pol):
     try:
-        r = requests.post(
-            f"{API_BASE_URL}/simulate",
-            json={"shock_intensity": si, "shock_duration": sd,
-                  "recovery_rate": rr, "forecast_horizon": 7,
-                  "policy_name": pol if pol != "None" else None},
-            timeout=20,
+        req = ScenarioRequest(
+            shock_intensity=si, shock_duration=sd,
+            recovery_rate=rr, forecast_horizon=7,
+            policy_name=pol if pol != "None" else None
         )
-        if r.status_code == 200:
-            return r.json()
-    except Exception:
-        pass
+        return simulate_scenario(req)
+    except Exception as e:
+        print(f"Error calling simulate_scenario: {e}")
     return None
 
 
@@ -72,17 +71,14 @@ def get_policy_comparison_data(si, sd, rr):
     results = {}
     for p in policies:
         try:
-            r = requests.post(
-                f"{API_BASE_URL}/simulate",
-                json={"shock_intensity": si, "shock_duration": sd,
-                      "recovery_rate": rr, "forecast_horizon": 7,
-                      "policy_name": p},
-                timeout=20,
+            req = ScenarioRequest(
+                shock_intensity=si, shock_duration=sd,
+                recovery_rate=rr, forecast_horizon=7,
+                policy_name=p
             )
-            if r.status_code == 200:
-                results[p] = r.json()
-        except Exception:
-            pass
+            results[p] = simulate_scenario(req)
+        except Exception as e:
+            print(f"Error calling simulate_scenario: {e}")
     return results
 
 
@@ -93,24 +89,22 @@ def get_sensitivity_data(sd, rr):
     rows = []
     for si in levels:
         try:
-            r = requests.post(
-                f"{API_BASE_URL}/simulate",
-                json={"shock_intensity": si, "shock_duration": sd,
-                      "recovery_rate": rr, "forecast_horizon": 6},
-                timeout=15,
+            req = ScenarioRequest(
+                shock_intensity=si, shock_duration=sd,
+                recovery_rate=rr, forecast_horizon=6,
+                policy_name=None
             )
-            if r.status_code == 200:
-                d = r.json()
-                idx = d.get("indices", {})
-                rows.append({
-                    "Shock Intensity": f"{int(si*100)}%",
-                    "Peak Δ (pp)": idx.get("peak_delta", "—"),
-                    "Stress Index": idx.get("unemployment_stress_index", "—"),
-                    "Recovery Quality": idx.get("rqi_label", "—"),
-                    "Early Warning": idx.get("early_warning", "—"),
-                })
-        except Exception:
-            pass
+            d = simulate_scenario(req)
+            idx = d.get("indices", {})
+            rows.append({
+                "Shock Intensity": f"{int(si*100)}%",
+                "Peak Δ (pp)": idx.get("peak_delta", "—"),
+                "Stress Index": idx.get("unemployment_stress_index", "—"),
+                "Recovery Quality": idx.get("rqi_label", "—"),
+                "Early Warning": idx.get("early_warning", "—"),
+            })
+        except Exception as e:
+            print(f"Error calling simulate_scenario: {e}")
     return rows
 
 

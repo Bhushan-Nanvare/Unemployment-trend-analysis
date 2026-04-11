@@ -44,17 +44,20 @@ tab_sim, tab_live = st.tabs(["🧪 Scenario Simulation", "🌐 Live World Bank D
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_sim:
 
+from src.api import simulate_scenario, ScenarioRequest
+
     @st.cache_data(ttl=60)
     def get_sector_data(si, rr):
         try:
-            r = requests.post(f"{API_BASE_URL}/simulate",
-                              json={"shock_intensity": si, "shock_duration": 2,
-                                    "recovery_rate": rr, "forecast_horizon": 6},
-                              timeout=20)
-            if r.status_code == 200:
-                return r.json()
-        except Exception:
-            pass
+            req = ScenarioRequest(
+                shock_intensity=si,
+                shock_duration=2,
+                recovery_rate=rr,
+                forecast_horizon=6
+            )
+            return simulate_scenario(req)
+        except Exception as e:
+            print(f"Error calling simulate_scenario: {e}")
         return None
 
 

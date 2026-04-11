@@ -22,17 +22,20 @@ st.set_page_config(page_title="Overview | UIP", page_icon="📊", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
 # ─── Data fetching ─────────────────────────────────────────────────────────────
+from src.api import simulate_scenario, ScenarioRequest
+
 @st.cache_data(ttl=120)
 def get_baseline(horizon: int):
     try:
-        r = requests.post(f"{API_BASE_URL}/simulate",
-                          json={"shock_intensity": 0.0, "shock_duration": 0,
-                                "recovery_rate": 0.0, "forecast_horizon": horizon},
-                          timeout=20)
-        if r.status_code == 200:
-            return r.json()
-    except:
-        pass
+        req = ScenarioRequest(
+            shock_intensity=0.0,
+            shock_duration=0,
+            recovery_rate=0.0,
+            forecast_horizon=horizon
+        )
+        return simulate_scenario(req)
+    except Exception as e:
+        print(f"Error calling simulate_scenario: {e}")
     return None
 
 # ─── Sidebar controls ──────────────────────────────────────────────────────────

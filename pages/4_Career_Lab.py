@@ -35,17 +35,20 @@ st.markdown("""
 </div>""", unsafe_allow_html=True)
 
 
+from src.api import simulate_scenario, ScenarioRequest
+
 @st.cache_data(ttl=60)
 def get_career_data(si, rr):
     try:
-        r = requests.post(f"{API_BASE_URL}/simulate",
-                          json={"shock_intensity": si, "shock_duration": 2,
-                                "recovery_rate": rr, "forecast_horizon": 6},
-                          timeout=20)
-        if r.status_code == 200:
-            return r.json()
-    except:
-        pass
+        req = ScenarioRequest(
+            shock_intensity=si,
+            shock_duration=2,
+            recovery_rate=rr,
+            forecast_horizon=6
+        )
+        return simulate_scenario(req)
+    except Exception as e:
+        print(f"Error calling simulate_scenario: {e}")
     return None
 
 data = get_career_data(shock_intensity, recovery_rate)
