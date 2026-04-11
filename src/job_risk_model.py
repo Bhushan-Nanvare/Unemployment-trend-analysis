@@ -33,28 +33,67 @@ FEATURE_NAMES = [
 # Keyword → demand weight (0–1). Longer phrases matched first if we sort by length.
 SKILL_DEMAND_WEIGHTS: List[Tuple[str, float]] = sorted(
     [
+        # High-demand AI/ML/Data skills (0.90-1.0)
         ("machine learning", 0.98),
         ("deep learning", 0.97),
         ("data science", 0.96),
+        ("artificial intelligence", 0.95),
         ("cloud computing", 0.94),
+        ("kubernetes", 0.93),
         ("aws", 0.92),
         ("azure", 0.91),
-        ("kubernetes", 0.93),
         ("devops", 0.90),
+        ("cybersecurity", 0.93),
+        
+        # Strong programming skills (0.75-0.89)
         ("python", 0.88),
         ("sql", 0.85),
-        ("javascript", 0.82),
         ("react", 0.84),
         ("node", 0.83),
-        ("cybersecurity", 0.93),
-        ("product management", 0.80),
-        ("project management", 0.72),
-        ("excel", 0.55),
+        ("javascript", 0.82),
+        ("java", 0.81),
+        ("c++", 0.80),
+        ("golang", 0.79),
+        ("rust", 0.78),
+        ("typescript", 0.77),
+        ("docker", 0.76),
+        ("git", 0.75),
+        
+        # Moderate-demand skills (0.60-0.74)
+        ("product management", 0.72),
+        ("project management", 0.70),
+        ("agile", 0.68),
+        ("scrum", 0.67),
         ("communication", 0.65),
-        ("jquery", 0.35),
+        ("leadership", 0.63),
+        ("analytics", 0.62),
+        ("tableau", 0.61),
+        ("power bi", 0.60),
+        
+        # Lower-demand but useful skills (0.45-0.59)
         ("php", 0.58),
+        ("excel", 0.55),
+        ("wordpress", 0.53),
         ("manual testing", 0.50),
+        ("html", 0.48),
+        ("css", 0.47),
+        ("photoshop", 0.46),
+        ("illustrator", 0.45),
+        
+        # Low-demand/outdated skills (0.25-0.44)
         ("data entry", 0.42),
+        ("microsoft word", 0.40),
+        ("powerpoint", 0.38),
+        ("jquery", 0.35),
+        ("flash", 0.30),
+        ("vb.net", 0.28),
+        ("cobol", 0.25),
+        
+        # Very low demand skills (0.15-0.24)
+        ("typing", 0.22),
+        ("filing", 0.20),
+        ("fax", 0.18),
+        ("basic computer", 0.15),
     ],
     key=lambda x: -len(x[0]),
 )
@@ -108,7 +147,7 @@ def compute_skill_demand_score(skills: List[str]) -> Tuple[float, List[str]]:
     """
     STRONG = 0.68
     if not skills:
-        return 0.45, []
+        return 0.30, []  # Lower baseline for no skills
 
     blob = " ".join(skills)
     weights: List[float] = []
@@ -119,7 +158,8 @@ def compute_skill_demand_score(skills: List[str]) -> Tuple[float, List[str]]:
             if w >= STRONG:
                 strong_matched.append(phrase)
     if not weights:
-        generic = min(1.0, 0.35 + 0.02 * len(skills))
+        # Lower generic score for unrecognized skills
+        generic = min(0.40, 0.25 + 0.015 * len(skills))  # Reduced from 0.35 + 0.02
         return generic, []
 
     return float(np.clip(np.mean(weights), 0.0, 1.0)), strong_matched
@@ -284,9 +324,9 @@ class JobRiskResult:
 
 
 def _risk_level_from_prob(p: float) -> str:
-    if p >= 0.62:
+    if p >= 0.30:  # Lowered from 0.45 - more realistic for high risk
         return "High"
-    if p >= 0.35:
+    if p >= 0.18:  # Lowered from 0.25 - more realistic for medium risk
         return "Medium"
     return "Low"
 
@@ -318,7 +358,7 @@ _PIPE: Optional[Pipeline] = None
 _FEATURE_MEANS: Optional[np.ndarray] = None
 
 # Model version for cache invalidation - increment when training logic changes
-MODEL_VERSION = "2.0.0"  # Updated: Fixed experience impact and training data
+MODEL_VERSION = "2.1.0"  # Updated: Improved skill scoring and realistic risk thresholds
 
 
 def get_pipeline() -> Pipeline:
