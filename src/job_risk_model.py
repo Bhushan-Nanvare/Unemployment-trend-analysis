@@ -227,32 +227,39 @@ def _load_real_training_data(n_samples: int = 5000, random_state: int = 42) -> T
         X_list.append([skill_score, ind_growth, exp, edu, loc])
 
         # --- Silver Label Logic ---
-        # Risk is 1 if (Low Salary AND poor skill score) OR (Generic title AND low industry growth)
+        # Recalibrated to ensure experience and growth strictly reduce risk.
         is_generic = "Other" in row.get("role_bucket", "Other")
         is_low_sal = sal < (global_median * 0.8)
         
-        # Combining factors into a vulnerability probability
-        vuln_prob = 0.3
-        if is_low_sal: vuln_prob += 0.4
-        if is_generic: vuln_prob += 0.2
-        if skill_score < 0.5: vuln_prob += 0.2
-        if ind_growth < 0.6: vuln_prob += 0.1
+        # Base probability (low)
+        vuln_prob = 0.1
         
+        # 1. Experience & Education (Strongest - more reduces risk)
+        # Experience ranges clip to 0-40.
+        vuln_prob += (1.0 - (exp / 45.0)) * 0.35
+        vuln_prob += (1.0 - (edu / 5.0)) * 0.15
+        
+        # 2. Industry Growth factor (Higher growth reduces risk)
+        vuln_prob += (1.0 - ind_growth) * 0.25
+        
+        # 3. Location factor (Tier 1 is 0, Rural is 2)
+        vuln_prob += (loc / 2.0) * 0.15
+        
+        # 4. Skill Score factor
+        vuln_prob += (1.0 - skill_score) * 0.25
+        
+        # 5. Salary proxy (Real data signal)
+        if is_low_sal: vuln_prob += 0.1
+        if is_generic: vuln_prob += 0.1
+        
+        vuln_prob = np.clip(vuln_prob, 0.05, 0.95)
         y_list.append(1 if (rng.random() < vuln_prob) else 0)
 
     return np.array(X_list), np.array(y_list)
 
 
-def _synthetic_dataset(n_samples: int = 2000, random_state: int = 42) -> Tuple[np.ndarray, np.ndarray]:
-    """Simplified fallback synthetic data generator."""
-    rng = np.random.default_rng(random_state)
-    skill = rng.uniform(0.15, 1.0, n_samples)
-    ind = rng.uniform(0.35, 0.98, n_samples)
-    exp = rng.integers(0, 36, n_samples).astype(np.float64)
-    edu = rng.integers(0, 5, n_samples).astype(np.float64)
-    loc = rng.integers(0, 3, n_samples).astype(np.float64)
-
-    logit = 1.5 - 2.5*skill - 1.8*ind - 0.1*exp/10.0 + 0.5*loc
+    # Ensure synthetic fallback data also respects the desired model behavior
+    logit = 2.0 - 3.5*skill - 2.5*ind - 2.5*(exp/40.0) - 1.5*(edu/5.0) + 1.2*(loc/2.0)
     p = 1.0 / (1.0 + np.exp(-logit))
     y = (rng.random(n_samples) < p).astype(np.int32)
     return np.column_stack([skill, ind, exp, edu, loc]), y
