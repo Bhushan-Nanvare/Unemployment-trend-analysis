@@ -1,23 +1,128 @@
 """
 skill_obsolescence.py
 
-Detects declining and emerging skills from job-posting time-series data using
-linear regression on log1p-transformed mention counts (bucketted by month or week).
-
-Returns:
-  summary_df  — one row per skill with slope, p_value, category, first/last mentions,
-                estimated_months_to_fade / estimated_months_to_emerge
-  pivot_df    — rows=bucket, columns=skills, values=mention counts
+Analyzes skill demand patterns from job postings to identify high-demand vs low-demand skills.
+Since the available data has a narrow time range (33 days), we focus on skill popularity 
+and market demand analysis rather than time-series trend detection.
 """
 from __future__ import annotations
 
-import math
-from typing import Tuple
-
-import numpy as np
 import pandas as pd
+import numpy as np
+from typing import Optional
 
 from src.job_market_pulse import phrase_in_blob, skill_phrase_list
+
+
+def analyze_skill_demand_patterns(
+    df: pd.DataFrame,
+    top_k: int = 25,
+    min_mentions: int = 20,
+    demand_threshold: float = 3.0
+) -> Optional[pd.DataFrame]:
+    """
+    Analyze skill demand patterns from job postings.
+    
+    Parameters:
+    -----------
+    df : pd.DataFrame
+        Job postings DataFrame with _text and salary columns
+    top_k : int
+        Number of top skills to analyze
+    min_mentions : int
+        Minimum mentions required for a skill to be included
+    demand_threshold : float
+        Percentage threshold for high-demand classification
+        
+    Returns:
+    --------
+    pd.DataFrame with columns:
+        - skill: skill name
+        - mentions: total mentions
+        - demand_percentage: percentage of jobs mentioning this skill
+        - job_coverage: percentage coverage
+        - avg_salary_lpa: average salary for jobs mentioning this skill
+        - category: High-Demand, Moderate-Demand, Low-Demand, or Emerging
+    """
+    
+    if df.empty or "_text" not in df.columns:
+        return None
+    
+    skills = skill_phrase_list()
+    total_jobs = len(df)
+    
+    # Calculate salary data
+    salary_min = pd.to_numeric(df.get("salary_min_lpa"), errors="coerce")
+    salary_max = pd.to_numeric(df.get("salary_max_lpa"), errors="coerce")
+    df_with_salary = df.copy()
+    df_with_salary["salary_mid"] = (salary_min + salary_max) / 2.0
+    
+    skill_stats = []
+    
+    for skill in skills:
+        # Count mentions
+        mentions = 0
+        salary_values = []
+        
+        for _, row in df.iterrows():
+            text = row.get("_text", "")
+            if phrase_in_blob(skill, text):
+                mentions += 1
+                # Collect salary if available
+                salary_mid = df_with_salary.loc[row.name, "salary_mid"]
+                if pd.notna(salary_mid) and salary_mid > 0:
+                    salary_values.append(salary_mid)
+        
+        if mentions >= min_mentions:
+            demand_percentage = (mentions / total_jobs) * 100
+            job_coverage = (mentions / total_jobs) * 100
+            avg_salary = np.mean(salary_values) if salary_values else 0
+            
+            # Categorize skills
+            if demand_percentage >= demand_threshold * 2:  # 6%+
+                category = "High-Demand"
+            elif demand_percentage >= demand_threshold:  # 3%+
+                category = "Moderate-Demand"
+            elif demand_percentage >= 1.0:  # 1%+
+                category = "Low-Demand"
+            else:
+                category = "Emerging"
+            
+            skill_stats.append({
+                "skill": skill,
+                "mentions": mentions,
+                "demand_percentage": round(demand_percentage, 2),
+                "job_coverage": round(job_coverage, 2),
+                "avg_salary_lpa": round(avg_salary, 1) if avg_salary > 0 else 0,
+                "category": category,
+                "salary_jobs": len(salary_values)
+            })
+    
+    if not skill_stats:
+        return None
+    
+    # Create DataFrame and sort by mentions
+    results_df = pd.DataFrame(skill_stats)
+    results_df = results_df.sort_values("mentions", ascending=False).head(top_k)
+    
+    return results_df
+
+
+def detect_skill_obsolescence(
+    df: pd.DataFrame,
+    freq: str = "M",
+    top_k: int = 12,
+    min_total_mentions: int = 6,
+    alpha: float = 0.05,
+    slope_threshold_log: float = 0.02,
+    category_min_change_ratio: float = 1.8,
+    fade_threshold_mentions: int = 1,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Legacy function for backward compatibility.
+    Returns empty DataFrames since time-series analysis isn't possible with current data.
+    """
+    return pd.DataFrame(), pd.DataFrame()
 
 
 def _bucket_series(df: pd.DataFrame, freq: str) -> pd.DataFrame:
@@ -79,110 +184,3 @@ def _months_to_threshold(
     weeks_per_step = 4.0 if freq == "M" else 1.0
     months = steps * weeks_per_step / 4.0
     return round(months, 1)
-
-
-def detect_skill_obsolescence(
-    df: pd.DataFrame,
-    freq: str = "M",
-    top_k: int = 12,
-    min_total_mentions: int = 6,
-    alpha: float = 0.05,
-    slope_threshold_log: float = 0.02,
-    category_min_change_ratio: float = 1.8,
-    fade_threshold_mentions: int = 1,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Parameters
-    ----------
-    df                        : prepared jobs DataFrame (must have _text, post_date)
-    freq                      : 'M' (monthly) or 'W' (weekly)
-    top_k                     : analyse the top-K skills by total mention count
-    min_total_mentions        : discard skills below this total
-    alpha                     : p-value threshold for the linregress significance test
-    slope_threshold_log       : minimum |slope| on log1p(counts) to be flagged
-    category_min_change_ratio : last/first ratio needed to label Emerging/Declining
-    fade_threshold_mentions   : mentions-per-bucket target used for fade estimate
-
-    Returns
-    -------
-    (summary_df, pivot_df)
-    """
-    from scipy import stats as scipy_stats
-
-    pivot = _bucket_series(df, freq)
-    if pivot.empty:
-        return pd.DataFrame(), pd.DataFrame()
-
-    totals = pivot.sum().sort_values(ascending=False)
-    top_skills = totals[totals >= min_total_mentions].head(top_k).index.tolist()
-    if not top_skills:
-        return pd.DataFrame(), pivot
-
-    pivot = pivot[top_skills]
-    t = np.arange(len(pivot), dtype=float)
-
-    # Compute a consistent emergence target BEFORE the skill loop.
-    # Previously, each skill's target was last_v * 2, meaning a skill at 50
-    # mentions had to reach 100 while a skill at 5 only needed to reach 10 —
-    # making estimated months structurally incomparable across skills.
-    # Using the 75th-percentile last-bucket value gives every skill the same bar:
-    # "reach top-quartile demand among all analysed skills."
-    last_vals_all = [float(pivot[sk].values[-1]) for sk in top_skills]
-    target_emerge = float(np.percentile(last_vals_all, 75)) if last_vals_all else 0.0
-
-    rows = []
-
-    for skill in top_skills:
-        raw = pivot[skill].values.astype(float)
-        total = int(raw.sum())
-        first_v = float(raw[0])
-        last_v = float(raw[-1])
-
-        log_vals = np.log1p(raw)
-        if len(t) >= 3:
-            result = scipy_stats.linregress(t, log_vals)
-            slope_log = float(result.slope)
-            p_val = float(result.pvalue)
-        elif len(t) == 2:
-            slope_log = float(log_vals[1] - log_vals[0])
-            p_val = 1.0
-        else:
-            slope_log = 0.0
-            p_val = 1.0
-
-        slope_raw = float(np.polyfit(t, raw, 1)[0]) if len(t) >= 2 else 0.0
-
-        significant = p_val < alpha and abs(slope_log) >= slope_threshold_log
-
-        if significant and slope_log > 0:
-            ratio_ok = (last_v >= first_v * category_min_change_ratio) if first_v > 0 else (last_v > 0)
-            category = "Emerging" if ratio_ok else "Stable"
-        elif significant and slope_log < 0:
-            ratio_ok = (last_v <= first_v / category_min_change_ratio) if last_v > 0 else True
-            category = "Declining" if ratio_ok else "Stable"
-        else:
-            category = "Stable"
-
-        months_fade = _months_to_threshold(last_v, slope_raw, fade_threshold_mentions, freq, "fade")
-        # Use the pre-computed 75th-percentile target for a consistent emergence bar.
-        months_emerge = _months_to_threshold(last_v, slope_raw, target_emerge, freq, "emerge")
-
-        rows.append({
-            "skill": skill,
-            "category": category,
-            "total_mentions": total,
-            "first_mentions": int(first_v),
-            "last_mentions": int(last_v),
-            "slope_mentions_per_step": round(slope_raw, 3),
-            "slope_log": round(slope_log, 4),
-            "p_value": round(p_val, 4),
-            "estimated_months_to_fade": months_fade,
-            "estimated_months_to_emerge": months_emerge,
-        })
-
-    summary_df = (
-        pd.DataFrame(rows)
-        .sort_values(["category", "p_value"], ascending=[True, True])
-        .reset_index(drop=True)
-    )
-    return summary_df, pivot
