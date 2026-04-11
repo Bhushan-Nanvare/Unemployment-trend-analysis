@@ -158,7 +158,7 @@ def build_feature_row(
     return row, meta
 
 
-def _load_real_training_data(n_samples: int = 5000, random_state: int = 42) -> Tuple[np.ndarray, np.ndarray]:
+def _load_real_training_data(n_samples: int = 10000, random_state: int = 42) -> Tuple[np.ndarray, np.ndarray]:
     """
     Loads real job postings CSV and creates a 'silver-labeled' training set.
     Risk Label (y):
@@ -209,12 +209,15 @@ def _load_real_training_data(n_samples: int = 5000, random_state: int = 42) -> T
         if pd.isna(sal): sal = global_median
         
         # Heuristic: salary correlates with exp/edu in real markets
-        exp_base = np.clip((sal / 20.0) * 15, 0, 25)
-        exp = float(rng.normal(exp_base, 3.0))
+        # Improved formula to generate more realistic experience distribution (0-40 years)
+        # Salary range in dataset is typically 2-30 LPA
+        exp_base = np.clip((sal / 2.5) * 3.5, 0, 35)  # More realistic mapping
+        exp = float(rng.normal(exp_base, 4.0))  # Increased variance
         exp = np.clip(exp, 0, 40)
 
-        edu_base = np.clip((sal / 15.0) * 3, 1, 4)
-        edu = float(rng.integers(int(edu_base-1), int(edu_base+1)))
+        # Education also scales with salary but with more variance
+        edu_base = np.clip((sal / 8.0) * 2.5, 0, 4)
+        edu = float(rng.integers(max(0, int(edu_base-1)), min(4, int(edu_base+2))))
         edu = np.clip(edu, 0, 4)
 
         # 4. Location
@@ -231,26 +234,30 @@ def _load_real_training_data(n_samples: int = 5000, random_state: int = 42) -> T
         is_generic = "Other" in row.get("role_bucket", "Other")
         is_low_sal = sal < (global_median * 0.8)
         
-        # Base probability (low)
-        vuln_prob = 0.1
+        # Base probability (moderate)
+        vuln_prob = 0.35
         
-        # 1. Experience & Education (Strongest - more reduces risk)
-        # Experience ranges clip to 0-40.
-        vuln_prob += (1.0 - (exp / 45.0)) * 0.35
-        vuln_prob += (1.0 - (edu / 5.0)) * 0.15
+        # 1. Experience & Education (STRONGEST FACTORS - more reduces risk significantly)
+        # Experience ranges 0-40, normalize and apply strong weight
+        exp_factor = np.clip(exp / 40.0, 0, 1)  # 0 to 1
+        vuln_prob -= exp_factor * 0.45  # Strong negative impact (up to -45%)
+        
+        # Education 0-4, normalize and apply moderate weight
+        edu_factor = np.clip(edu / 4.0, 0, 1)  # 0 to 1
+        vuln_prob -= edu_factor * 0.25  # Moderate negative impact (up to -25%)
         
         # 2. Industry Growth factor (Higher growth reduces risk)
-        vuln_prob += (1.0 - ind_growth) * 0.25
+        vuln_prob -= (ind_growth - 0.6) * 0.8  # Normalized around 0.6 baseline
         
         # 3. Location factor (Tier 1 is 0, Rural is 2)
-        vuln_prob += (loc / 2.0) * 0.15
+        vuln_prob += (loc / 2.0) * 0.20
         
-        # 4. Skill Score factor
-        vuln_prob += (1.0 - skill_score) * 0.25
+        # 4. Skill Score factor (Higher skills reduce risk)
+        vuln_prob -= (skill_score - 0.5) * 0.6  # Normalized around 0.5 baseline
         
         # 5. Salary proxy (Real data signal)
-        if is_low_sal: vuln_prob += 0.1
-        if is_generic: vuln_prob += 0.1
+        if is_low_sal: vuln_prob += 0.15
+        if is_generic: vuln_prob += 0.12
         
         vuln_prob = np.clip(vuln_prob, 0.05, 0.95)
         y_list.append(1 if (rng.random() < vuln_prob) else 0)
