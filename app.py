@@ -270,10 +270,10 @@ if baseline_preview:
         )
         fig.update_xaxes(showgrid=False, showticklabels=True, linecolor="rgba(255,255,255,0.05)")
         fig.update_yaxes(showgrid=True, gridcolor="rgba(255,255,255,0.04)", title_text="Unemployment %")
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown("<div style='color:#94a3b8; font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem;'>📈 BASELINE FORECAST PREVIEW</div>", unsafe_allow_html=True)
         st.plotly_chart(fig, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        
 
 # ─── Navigation Cards ─────────────────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)

@@ -115,7 +115,7 @@ st.markdown(
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ─── Main Chart ─────────────────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📈 Unemployment Forecast Trajectory</div>', unsafe_allow_html=True)
 
 years  = baseline_df["Year"].tolist()
@@ -185,7 +185,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # ─── GDP Growth vs Unemployment Chart ─────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">💹 GDP Growth vs Unemployment Rate — India</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">
@@ -270,7 +270,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Recession Risk Indicator ───────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">🚨 Recession Risk Indicator</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="font-size:0.85rem; color:#64748b; margin-bottom:1rem; line-height:1.6;">
@@ -426,7 +426,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 col_l, col_r = st.columns([1, 1])
 
 with col_l:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📋 Scenario Indices</div>', unsafe_allow_html=True)
     idx_rows = [
         ("Unemployment Stress Index", indices.get("unemployment_stress_index", "N/A")),
@@ -445,7 +445,7 @@ with col_l:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_r:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📊 Forecast Data Table</div>', unsafe_allow_html=True)
     display_df = baseline_df[["Year", "Predicted_Unemployment"]].rename(
         columns={"Predicted_Unemployment": "Unemployment Rate (%)"}
@@ -455,7 +455,7 @@ with col_r:
 
 # ─── Evidence-Based Real-Data Forecast ─────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">🔮 Real-Data Forecast</div>',
             unsafe_allow_html=True)
 

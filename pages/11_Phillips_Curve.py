@@ -106,7 +106,7 @@ with col4:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Phillips Curve Scatter ─────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📉 Phillips Curve — Inflation vs Unemployment</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="font-size:0.85rem; color:#64748b; margin-bottom:1rem; line-height:1.6;">
@@ -161,7 +161,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Time Series Dual Axis ──────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📈 Unemployment & Inflation Over Time</div>', unsafe_allow_html=True)
 
 fig_ts = go.Figure()
@@ -210,7 +210,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Decade Comparison ──────────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📊 Phillips Curve by Decade</div>', unsafe_allow_html=True)
 
 df["Decade"] = (df["Year"] // 10 * 10).astype(str) + "s"
@@ -254,7 +254,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Export ─────────────────────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📥 Export Data</div>', unsafe_allow_html=True)
 
 csv_bytes = df[["Year", "UE", "Inflation", "GDP_Growth"]].rename(columns={

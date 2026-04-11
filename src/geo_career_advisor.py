@@ -87,6 +87,8 @@ def normalize_city_key(raw: str) -> str:
         "gurgaon": "gurugram",
         "ncr": "delhi",
         "new delhi": "delhi",
+        "delhi ncr": "delhi",
+        "delhi/ncr": "delhi",
     }
     return aliases.get(s, s)
 

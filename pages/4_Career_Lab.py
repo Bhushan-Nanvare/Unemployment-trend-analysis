@@ -83,7 +83,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 col_l, col_r = st.columns([1, 1])
 
 with col_l:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📊 Sector Opportunity vs Risk</div>', unsafe_allow_html=True)
 
     if not sector_df.empty:
@@ -119,7 +119,7 @@ with col_l:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_r:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🎓 In-Demand Skills Ranking</div>', unsafe_allow_html=True)
 
     if skills:
@@ -151,7 +151,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 col_g, col_rsk = st.columns(2)
 
 with col_g:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🌱 Growth Sectors</div>', unsafe_allow_html=True)
     if growth_sectors:
         for idx, s in enumerate(growth_sectors):
@@ -174,7 +174,7 @@ with col_g:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_rsk:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">⚠️ At-Risk Sectors</div>', unsafe_allow_html=True)
     if risk_sectors:
         for idx, s in enumerate(risk_sectors):
@@ -201,7 +201,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 col_sw, col_nar = st.columns([1, 1])
 
 with col_sw:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🏅 Your Skill Roadmap</div>', unsafe_allow_html=True)
     if skills:
         chips = "".join([f'<span class="skill-chip">{s}</span>' for s in skills])
@@ -211,7 +211,7 @@ with col_sw:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_nar:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📝 Career Guidance Narrative</div>', unsafe_allow_html=True)
     st.markdown(f"""
     <div style="background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.15);

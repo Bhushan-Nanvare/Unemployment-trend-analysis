@@ -105,7 +105,7 @@ else:
 user_ck = normalize_city_key(home_display)
 
 # Map Options UI
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 col_m1, col_m2 = st.columns([1, 1])
 with col_m1:
     st.markdown('<div class="section-title">Hiring intensity map</div>', unsafe_allow_html=True)
@@ -192,7 +192,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ── City posting volume + salary chart ────────────────────────────────────────
 if not agg.empty:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown(
         '<div class="section-title">📊 City hiring volume & median salary</div>',
         unsafe_allow_html=True,
@@ -526,7 +526,7 @@ with tab4:
     # ── National unemployment trend sparkline
     if wb_data.get("Unemployment Rate (%)") is not None:
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">📈 India Unemployment Trend (World Bank, 1991–2023)</div>',
                     unsafe_allow_html=True)
         ue_series = wb_data["Unemployment Rate (%)"]
@@ -560,7 +560,7 @@ with tab4:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── State-level unemployment breakdown (PLFS 2022-23)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🗺️ State-Level Unemployment — PLFS 2022-23 (UPS, 15+ yrs)</div>',
                 unsafe_allow_html=True)
 
@@ -619,7 +619,7 @@ with tab4:
 
     # ── Region comparison
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🏙️ Average Unemployment by Region</div>',
                 unsafe_allow_html=True)
     region_avg = (
@@ -646,7 +646,7 @@ with tab4:
 
     # ── Export
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📥 Export State Data</div>', unsafe_allow_html=True)
     csv_bytes = state_df.to_csv(index=False).encode()
     st.download_button(

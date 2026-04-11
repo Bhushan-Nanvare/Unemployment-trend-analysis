@@ -99,7 +99,7 @@ from src.api import simulate_scenario, ScenarioRequest
     col_heat, col_radar = st.columns([3, 2])
 
     with col_heat:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">🌡️ Stress vs Resilience Heatmap</div>', unsafe_allow_html=True)
         heat_df     = df[["Sector", "Stress_Score", "Resilience_Score"]].copy()
         heat_matrix = heat_df.set_index("Sector").T
@@ -128,7 +128,7 @@ from src.api import simulate_scenario, ScenarioRequest
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_radar:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">🕸️ Resilience Radar</div>', unsafe_allow_html=True)
         sectors        = df["Sector"].tolist()
         resilience_vals = df["Resilience_Score"].tolist()
@@ -166,7 +166,7 @@ from src.api import simulate_scenario, ScenarioRequest
         st.markdown("</div>", unsafe_allow_html=True)
 
     # ─── Treemap ────────────────────────────────────────────────────────────────
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🗺️ Sector Impact Treemap</div>', unsafe_allow_html=True)
     fig_tree = px.treemap(
         df, path=["Sector"], values="Stress_Score",
@@ -311,7 +311,7 @@ with tab_live:
     col_emp, col_gdp = st.columns(2)
 
     with col_emp:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">👷 Employment Share by Sector (%)</div>', unsafe_allow_html=True)
         emp_df = live_df.dropna(subset=["Employment_Share"]).sort_values("Employment_Share", ascending=True)
         if emp_df.empty:
@@ -340,7 +340,7 @@ with tab_live:
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_gdp:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">💰 GDP Contribution by Sector (%)</div>', unsafe_allow_html=True)
         gdp_df = live_df.dropna(subset=["GDP_Share"]).sort_values("GDP_Share", ascending=True)
         if gdp_df.empty:
@@ -372,7 +372,7 @@ with tab_live:
     scatter_df = live_df.dropna(subset=["Employment_Share", "GDP_Share"])
     if not scatter_df.empty:
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown(
             '<div class="section-title">📌 Employment Share vs GDP Contribution</div>',
             unsafe_allow_html=True,
@@ -412,7 +412,7 @@ with tab_live:
 
     # ─── Raw data table ──────────────────────────────────────────────────────────
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📋 Raw Indicator Values</div>', unsafe_allow_html=True)
     display_df = live_df.copy()
     display_df["Employment_Share"] = display_df["Employment_Share"].apply(

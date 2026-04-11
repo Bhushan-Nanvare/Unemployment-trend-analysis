@@ -82,7 +82,7 @@ with tab_postings:
     filtered = df if loc == "All locations" else df[df["location"].astype(str) == loc]
 
     # ── Dataset snapshot
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">Dataset snapshot</div>', unsafe_allow_html=True)
     k1, k2, k3 = st.columns(3)
     with k1:
@@ -109,7 +109,7 @@ with tab_postings:
     # ── Skill demand + role families
     col_a, col_b = st.columns(2)
     with col_a:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">Top skills (listing mentions)</div>', unsafe_allow_html=True)
         if skills.empty:
             st.info("No skill phrases matched.")
@@ -125,7 +125,7 @@ with tab_postings:
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_b:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">Top job role families</div>', unsafe_allow_html=True)
         if roles.empty:
             st.info("No roles to chart.")
@@ -143,7 +143,7 @@ with tab_postings:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Skill momentum
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📈 Skill demand momentum (recent vs earlier weeks)</div>', unsafe_allow_html=True)
     mom_df = skill_momentum(filtered, top_n_skills=top_n)
     if mom_df.empty:
@@ -179,7 +179,7 @@ with tab_postings:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Weekly demand trend
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">Weekly demand trend (top skills)</div>', unsafe_allow_html=True)
     trend_df = weekly_skill_trends(filtered, top_n_skills=trend_skills)
     if trend_df.empty:
@@ -200,7 +200,7 @@ with tab_postings:
     # ── Location demand
     loc_counts = location_demand_counts(filtered)
     if not loc_counts.empty and loc == "All locations":
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">📍 Postings by location</div>', unsafe_allow_html=True)
         lf = loc_counts.reset_index()
         lf.columns = ["location", "postings"]
@@ -214,7 +214,7 @@ with tab_postings:
         st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Salary insight
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">Salary insight (median LPA by role)</div>', unsafe_allow_html=True)
     sal = salary_summary_by_role(filtered)
     if sal.empty:
@@ -232,7 +232,7 @@ with tab_postings:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Skill gap analyzer
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🎯 Personal skill gap analyzer</div>', unsafe_allow_html=True)
     st.caption("Enter your current skills and see which top in-demand skills you have and which are gaps.")
     user_skill_input = st.text_input("Your skills (comma-separated)",
@@ -276,7 +276,7 @@ with tab_postings:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Export
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📥 Export market data</div>', unsafe_allow_html=True)
     if not skills.empty:
         export_parts = []
@@ -383,7 +383,7 @@ with tab_live:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── Indicator selector + time-series chart
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📈 Historical Trend — Select Indicator</div>',
                 unsafe_allow_html=True)
 
@@ -430,7 +430,7 @@ with tab_live:
     col_l, col_r = st.columns(2)
 
     with col_l:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">👥 Unemployment by Gender & Age Group</div>',
                     unsafe_allow_html=True)
         breakdown_labels = [
@@ -460,7 +460,7 @@ with tab_live:
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_r:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">📊 Latest Snapshot — All Indicators</div>',
                     unsafe_allow_html=True)
         snapshot_rows = []
@@ -494,7 +494,7 @@ with tab_live:
 
     # ── Export live data
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📥 Export Live Data</div>', unsafe_allow_html=True)
     export_frames = []
     for lbl, series in live_data.items():

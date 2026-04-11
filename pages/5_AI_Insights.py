@@ -255,7 +255,7 @@ with col_tl:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_chart:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📈 Scenario Trajectory</div>', unsafe_allow_html=True)
 
     if not scen_df.empty and "Scenario_Unemployment" in scen_df.columns:

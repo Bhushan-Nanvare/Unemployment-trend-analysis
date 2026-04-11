@@ -54,7 +54,7 @@ st.caption("🔍 Risk estimates trained on **real market demand data** (29,000+ 
 col_form, col_out = st.columns([1, 1])
 
 with col_form:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">Your profile</div>', unsafe_allow_html=True)
     skills = st.text_area(
         "Skills (comma-separated)",
@@ -70,7 +70,7 @@ with col_form:
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">What-if: add skills</div>', unsafe_allow_html=True)
     extra_skills = st.text_input(
         "Skills to simulate adding",
@@ -83,7 +83,7 @@ with col_form:
 
 # ─── Results Panel ─────────────────────────────────────────────────────────────
 with col_out:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">Results</div>', unsafe_allow_html=True)
 
     if run:

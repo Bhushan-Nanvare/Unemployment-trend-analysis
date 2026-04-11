@@ -120,7 +120,7 @@ emerging = summary_df[summary_df["category"] == "Emerging"].sort_values(
 stable = summary_df[summary_df["category"] == "Stable"]
 
 # ── KPI summary ───────────────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">Analysis summary</div>', unsafe_allow_html=True)
 k1, k2, k3, k4 = st.columns(4)
 k1.metric("Skills analysed", len(summary_df))
@@ -135,7 +135,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📉 Declining skills</div>', unsafe_allow_html=True)
     if declining.empty:
         st.info("No statistically significant declines found for the selected settings.")
@@ -160,7 +160,7 @@ with col1:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🌱 Emerging skills</div>', unsafe_allow_html=True)
     if emerging.empty:
         st.info("No statistically significant emergence found for the selected settings.")
@@ -187,7 +187,7 @@ with col2:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Trend scatter: slope vs total mentions ─────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown(
     '<div class="section-title">📊 Trend landscape: slope vs total mentions</div>',
     unsafe_allow_html=True,
@@ -225,7 +225,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Multi-skill timeline ───────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📈 Skill timeline comparison</div>', unsafe_allow_html=True)
 skill_options = (
     summary_df.sort_values("total_mentions", ascending=False)["skill"].head(30).tolist()
@@ -270,7 +270,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Personal skills-at-risk checker ───────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown(
     '<div class="section-title">🎯 Your skills at risk</div>',
     unsafe_allow_html=True,
@@ -359,7 +359,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Skill Demand Forecast (6 months ahead) ─────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">🔮 Skill Demand Forecast — 6 Months Ahead</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="font-size:0.85rem; color:#64748b; margin-bottom:1rem; line-height:1.6;">
@@ -460,7 +460,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Export ─────────────────────────────────────────────────────────────────────
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">📥 Export results</div>', unsafe_allow_html=True)
 export_parts = ["=== SKILL OBSOLESCENCE SUMMARY ===\n", summary_df.to_csv(index=False)]
 if not pivot.empty:

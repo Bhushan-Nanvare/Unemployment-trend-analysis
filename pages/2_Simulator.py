@@ -72,7 +72,7 @@ POLICY_OPTIONS = ["None", "Fiscal Stimulus", "Monetary Policy", "Labor Reforms",
 col_cfg_a, col_vs, col_cfg_b = st.columns([5, 1, 5])
 
 with col_cfg_a:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📊 Scenario A — Configure</div>', unsafe_allow_html=True)
     preset_a = st.selectbox("Quick Preset", list(SCENARIO_PRESETS.keys()), key="preset_a")
     pa = SCENARIO_PRESETS[preset_a]
@@ -94,7 +94,7 @@ with col_vs:
     """, unsafe_allow_html=True)
 
 with col_cfg_b:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📈 Scenario B — Configure</div>', unsafe_allow_html=True)
     preset_b = st.selectbox("Quick Preset", list(SCENARIO_PRESETS.keys()), index=1, key="preset_b")
     pb = SCENARIO_PRESETS[preset_b]
@@ -181,7 +181,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 col_main, col_side = st.columns([3, 1])
 
 with col_main:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📈 Trajectory Comparison</div>', unsafe_allow_html=True)
 
     fig = go.Figure()
@@ -252,7 +252,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 col_p, col_i = st.columns(2)
 
 with col_p:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">⚙️ Parameter Comparison</div>', unsafe_allow_html=True)
     pdata = {
         "Parameter": ["Shock Intensity", "Shock Duration", "Recovery Rate", "Policy"],
@@ -263,7 +263,7 @@ with col_p:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col_i:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">📊 Scenario Indices</div>', unsafe_allow_html=True)
     idata = {
         "Index": ["Stress Index (USI)", "Recovery Quality", "Policy Cushion", "Early Warning"],
@@ -303,7 +303,7 @@ st.markdown("""
 col_sens1, col_sens2 = st.columns([2, 1])
 
 with col_sens1:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">⚙️ Configure Sensitivity Analysis</div>', unsafe_allow_html=True)
     
     sens_preset = st.selectbox("Base Scenario", list(SCENARIO_PRESETS.keys()), index=1, key="sens_preset")
@@ -376,7 +376,7 @@ if sens_data:
     col_tornado, col_heatmap = st.columns([1, 1])
     
     with col_tornado:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">🌪️ Tornado Chart - Parameter Sensitivity</div>', unsafe_allow_html=True)
         
         tornado_df = pd.DataFrame(sens_data['tornado_data'])
@@ -432,7 +432,7 @@ if sens_data:
         st.markdown("</div>", unsafe_allow_html=True)
     
     with col_heatmap:
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        
         st.markdown('<div class="section-title">🗺️ Heatmap - Shock Intensity × Recovery Rate</div>', unsafe_allow_html=True)
         
         heatmap_df = pd.DataFrame(sens_data['heatmap_data'])
@@ -472,7 +472,7 @@ if sens_data:
     
     # Critical Thresholds
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">🎯 Critical Thresholds - Required Recovery Rates</div>', unsafe_allow_html=True)
     
     thresholds_df = pd.DataFrame(sens_data['critical_thresholds'])
@@ -510,7 +510,7 @@ if sens_data:
     
     # Key Insights
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="section-title">💡 Key Insights</div>', unsafe_allow_html=True)
     
     tornado_df_sorted = pd.DataFrame(sens_data['tornado_data']).sort_values('total_range', ascending=False)
