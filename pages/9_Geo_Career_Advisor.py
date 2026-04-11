@@ -202,6 +202,7 @@ if not agg.empty:
     agg_disp = agg_disp.sort_values("postings", ascending=False).head(15)
 
     fig_city = go.Figure()
+    fig_city = go.Figure()
     fig_city.add_trace(go.Bar(
         x=agg_disp["City"],
         y=agg_disp["postings"],
@@ -212,26 +213,40 @@ if not agg.empty:
         ],
         text=agg_disp["postings"],
         textposition="outside",
+        hovertemplate="<b>%{x}</b><br>Postings: %{y}<extra></extra>",
     ))
-    if "median_lpa" in agg_disp.columns and agg_disp["median_lpa"].notna().any():
-        fig_city.add_trace(go.Scatter(
-            x=agg_disp["City"],
-            y=agg_disp["median_lpa"],
-            name="Median salary (LPA)",
-            mode="lines+markers",
-            marker=dict(color="#34d399", size=8),
-            line=dict(color="#34d399", width=2),
-            yaxis="y2",
-        ))
-        fig_city.update_layout(
-            yaxis2=dict(
-                title="Median LPA",
-                overlaying="y",
-                side="right",
-                showgrid=False,
-                color="#34d399",
+    
+    # Only add salary line if we have meaningful salary data
+    salary_data = agg_disp.dropna(subset=["median_lpa"])
+    if len(salary_data) >= 3 and "median_lpa" in agg_disp.columns:
+        # Filter to cities with reasonable salary coverage (>10% of jobs have salary data)
+        if "salary_coverage_pct" in agg_disp.columns:
+            salary_data = salary_data[salary_data["salary_coverage_pct"] >= 10]
+        
+        if len(salary_data) >= 3:
+            fig_city.add_trace(go.Scatter(
+                x=salary_data["City"],
+                y=salary_data["median_lpa"],
+                name=f"Median salary (LPA) - {len(salary_data)} cities",
+                mode="lines+markers",
+                marker=dict(color="#34d399", size=8),
+                line=dict(color="#34d399", width=2),
+                yaxis="y2",
+                hovertemplate="<b>%{x}</b><br>Median: %{y:.1f} LPA<extra></extra>",
+            ))
+            fig_city.update_layout(
+                yaxis2=dict(
+                    title="Median LPA",
+                    overlaying="y",
+                    side="right",
+                    showgrid=False,
+                    color="#34d399",
+                )
             )
-        )
+        else:
+            st.caption("⚠️ Insufficient salary data for trend line (need ≥3 cities with >10% salary coverage)")
+    else:
+        st.caption("⚠️ No salary data available for median salary trend line")
     fig_city.update_layout(**plotly_dark_layout(height=380))
     fig_city.update_layout(
         xaxis_title="City",
@@ -240,7 +255,33 @@ if not agg.empty:
         barmode="group",
     )
     st.plotly_chart(fig_city, use_container_width=True)
-    st.caption("Cyan bar = your selected city.")
+    
+    # Add data quality indicators
+    col_qual1, col_qual2, col_qual3 = st.columns(3)
+    with col_qual1:
+        total_cities = len(agg_disp)
+        cities_with_coords = len(agg_disp.dropna(subset=["lat", "lon"]))
+        coord_pct = cities_with_coords / total_cities * 100 if total_cities > 0 else 0
+        st.metric("Cities with coordinates", f"{cities_with_coords}/{total_cities}", f"{coord_pct:.0f}%")
+    
+    with col_qual2:
+        if "salary_coverage_pct" in agg_disp.columns:
+            avg_salary_coverage = agg_disp["salary_coverage_pct"].mean()
+            cities_with_salary = len(agg_disp.dropna(subset=["median_lpa"]))
+            st.metric("Avg salary coverage", f"{avg_salary_coverage:.1f}%", f"{cities_with_salary} cities")
+        else:
+            st.metric("Salary data", "Limited", "Check source")
+    
+    with col_qual3:
+        if "salary_count" in agg_disp.columns:
+            total_salary_jobs = agg_disp["salary_count"].sum()
+            total_jobs = agg_disp["postings"].sum()
+            overall_coverage = total_salary_jobs / total_jobs * 100 if total_jobs > 0 else 0
+            st.metric("Overall salary coverage", f"{overall_coverage:.1f}%", f"{total_salary_jobs:,} jobs")
+        else:
+            st.metric("Data quality", "Unknown", "")
+    
+    st.caption("Cyan bar = your selected city. Salary trend requires ≥3 cities with >10% salary coverage.")
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 

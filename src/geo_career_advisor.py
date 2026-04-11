@@ -79,17 +79,88 @@ def normalize_city_key(raw: str) -> str:
     if not raw or not str(raw).strip():
         return ""
     s = str(raw).strip().lower()
+    
+    # Comprehensive city aliases and normalizations
     aliases = {
+        # Bangalore variations
         "bengaluru": "bangalore",
         "blr": "bangalore",
+        "bangalore/bengaluru": "bangalore",
+        
+        # Hyderabad variations  
         "hyd": "hyderabad",
+        "secunderabad": "hyderabad",
+        
+        # Mumbai variations
         "bombay": "mumbai",
-        "gurgaon": "gurugram",
-        "ncr": "delhi",
+        "mumbai/pune": "mumbai",
+        
+        # Delhi/NCR variations
         "new delhi": "delhi",
-        "delhi ncr": "delhi",
+        "delhi ncr": "delhi", 
         "delhi/ncr": "delhi",
+        "ncr": "delhi",
+        "ncr delhi": "delhi",
+        "delhi / ncr": "delhi",
+        
+        # Gurgaon/Gurugram
+        "gurgaon": "gurugram",
+        "ggn": "gurugram",
+        
+        # Other major cities
+        "calcutta": "kolkata",
+        "madras": "chennai",
+        "trivandrum": "thiruvananthapuram",
+        "cochin": "kochi",
+        "mysuru": "mysore",
+        "hubli-dharwad": "hubli",
+        "belgaum": "belagavi",
+        
+        # State/region normalizations
+        "karnataka": "bangalore",  # Default Karnataka to Bangalore
+        "maharashtra": "mumbai",   # Default Maharashtra to Mumbai
+        "tamil nadu": "chennai",   # Default Tamil Nadu to Chennai
+        "telangana": "hyderabad",  # Default Telangana to Hyderabad
+        "andhra pradesh": "hyderabad",  # Default AP to Hyderabad
+        "west bengal": "kolkata",  # Default WB to Kolkata
+        "gujarat": "ahmedabad",    # Default Gujarat to Ahmedabad
+        "rajasthan": "jaipur",     # Default Rajasthan to Jaipur
+        
+        # Common misspellings and variations
+        "banglore": "bangalore",
+        "bangaluru": "bangalore",
+        "hydrabad": "hyderabad",
+        "chenai": "chennai",
+        "kolkatta": "kolkata",
+        "ahemdabad": "ahmedabad",
+        "ahmadabad": "ahmedabad",
+        
+        # Multiple city formats
+        "mumbai/pune/bangalore": "mumbai",
+        "delhi/gurgaon": "delhi",
+        "bangalore/hyderabad": "bangalore",
+        "pune/mumbai": "pune",
+        
+        # Remote/work from home
+        "remote": "remote",
+        "work from home": "remote", 
+        "wfh": "remote",
+        "anywhere": "remote",
+        "pan india": "remote",
+        
+        # International (should be filtered out but normalized)
+        "usa": "international",
+        "uk": "international", 
+        "singapore": "international",
+        "dubai": "international",
+        "canada": "international",
     }
+    
+    # Clean up common prefixes/suffixes
+    s = s.replace(" india", "").replace(", india", "")
+    s = s.replace(" city", "").replace("-city", "")
+    s = s.strip()
+    
     return aliases.get(s, s)
 
 
@@ -150,29 +221,96 @@ def aggregate_city_labour_market(df: pd.DataFrame) -> pd.DataFrame:
     d = postings_with_city_key(df)
     if d.empty:
         return pd.DataFrame()
+    
+    # Improved salary processing with better error handling
     smin = pd.to_numeric(d.get("salary_min_lpa"), errors="coerce")
     smax = pd.to_numeric(d.get("salary_max_lpa"), errors="coerce")
-    d = d.assign(_mid=(smin + smax) / 2.0)
+    
+    # Only calculate midpoint where both min and max are valid
+    d = d.assign(_mid=None)
+    valid_salary_mask = (~smin.isna()) & (~smax.isna()) & (smin > 0) & (smax > 0) & (smin <= smax)
+    d.loc[valid_salary_mask, "_mid"] = (smin[valid_salary_mask] + smax[valid_salary_mask]) / 2.0
+    
+    # Group and aggregate with better salary handling
     g = d.groupby("city_key", as_index=False).agg(
         postings=("job_title", "count"),
-        median_lpa=("_mid", "median"),
+        median_lpa=("_mid", lambda x: x.median() if x.notna().any() else None),
+        salary_count=("_mid", lambda x: x.notna().sum()),  # Count of jobs with salary data
         raw_location=("location", lambda s: s.mode().iloc[0] if len(s.mode()) > 0 else (s.iloc[0] if len(s) > 0 else "")),
     )
+    
+    # Merge with reference data
     ref = load_city_reference()
     if not ref.empty:
         g = g.merge(
-            ref[["city_key", "display_name", "lat", "lon", "market_tier_index"]],
+            ref[["city_key", "display_name", "lat", "lon", "market_tier_index", "state", "cost_of_living_index"]],
             on="city_key",
             how="left",
         )
         g["display_name"] = g["display_name"].fillna(g["raw_location"].astype(str))
         g["market_tier_index"] = g["market_tier_index"].fillna(1).astype(int)
+        
+        # Fill missing coordinates with approximate values for major cities
+        g = _fill_missing_coordinates(g)
     else:
         g["display_name"] = g["raw_location"].astype(str)
         g["lat"] = float("nan")
         g["lon"] = float("nan")
         g["market_tier_index"] = 1
+        g["state"] = None
+        g["cost_of_living_index"] = None
+    
+    # Add salary coverage percentage
+    g["salary_coverage_pct"] = (g["salary_count"] / g["postings"] * 100).round(1)
+    
     return g.sort_values("postings", ascending=False)
+
+
+def _fill_missing_coordinates(df: pd.DataFrame) -> pd.DataFrame:
+    """Fill missing coordinates for major Indian cities with approximate values."""
+    
+    # Approximate coordinates for major cities not in reference
+    city_coords = {
+        "indore": (22.7196, 75.8577),
+        "bhopal": (23.2599, 77.4126),
+        "vadodara": (22.3072, 73.1812),
+        "surat": (21.1702, 72.8311),
+        "rajkot": (22.3039, 70.8022),
+        "nashik": (19.9975, 73.7898),
+        "aurangabad": (19.8762, 75.3433),
+        "visakhapatnam": (17.6868, 83.2185),
+        "vijayawada": (16.5062, 80.6480),
+        "coimbatore": (11.0168, 76.9558),
+        "madurai": (9.9252, 78.1198),
+        "thiruvananthapuram": (8.5241, 76.9366),
+        "kochi": (9.9312, 76.2673),
+        "bhubaneswar": (20.2961, 85.8245),
+        "patna": (25.5941, 85.1376),
+        "ranchi": (23.3441, 85.3096),
+        "guwahati": (26.1445, 91.7362),
+        "dehradun": (30.3165, 78.0322),
+        "shimla": (31.1048, 77.1734),
+        "jammu": (32.7266, 74.8570),
+        "srinagar": (34.0837, 74.7973),
+        "agra": (27.1767, 78.0081),
+        "varanasi": (25.3176, 82.9739),
+        "allahabad": (25.4358, 81.8463),
+        "meerut": (28.9845, 77.7064),
+        "ghaziabad": (28.6692, 77.4538),
+        "faridabad": (28.4089, 77.3178),
+        "mysore": (12.2958, 76.6394),
+        "mangalore": (12.9141, 74.8560),
+        "hubli": (15.3647, 75.1240),
+        "belgaum": (15.8497, 74.4977),
+    }
+    
+    # Fill missing coordinates
+    for city_key, (lat, lon) in city_coords.items():
+        mask = (df["city_key"] == city_key) & (df["lat"].isna() | df["lon"].isna())
+        df.loc[mask, "lat"] = lat
+        df.loc[mask, "lon"] = lon
+    
+    return df
 
 
 def extract_user_skill_phrases(skills_text: str) -> List[str]:
