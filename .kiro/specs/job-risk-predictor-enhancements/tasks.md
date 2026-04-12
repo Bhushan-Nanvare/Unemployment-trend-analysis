@@ -117,7 +117,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
 ### Phase 2: Time-Based Predictions
 
 - [ ] 10. Implement Time Prediction Calculator
-  - [ ] 10.1 Create `TimePredictionCalculator` class with automation acceleration rates, industry trend rates, skill decay/learning rates
+  - [x] 10.1 Create `TimePredictionCalculator` class with automation acceleration rates, industry trend rates, skill decay/learning rates
     - Define `TimeHorizonPrediction` dataclass
     - Implement `predict_time_horizons()` method: project risk scores for 6mo, 1yr, 3yr, 5yr
     - Apply automation acceleration for automation risk
@@ -136,14 +136,14 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Validates: Requirements 4.4**
 
 - [ ] 11. Create Time Horizon Chart UI
-  - [ ] 11.1 Implement `TimeHorizonChart` class in `src/ui_components/time_horizon_chart.py`
+  - [x] 11.1 Implement `TimeHorizonChart` class in `src/ui_components/time_horizon_chart.py`
     - Create `render()` method: multi-line chart with 4 lines (Overall, Automation, Recession, Age Discrimination)
     - X-axis: time horizons (6mo, 1yr, 3yr, 5yr)
     - Y-axis: risk score (0-100)
     - Color-code by risk type with markers at each time point
     - _Requirements: 4.1_
 
-- [ ] 12. Checkpoint - Phase 2 Complete
+- [x] 12. Checkpoint - Phase 2 Complete
   - Ensure all tests pass, verify time horizon predictions display correctly
   - Ask the user if questions arise
 

@@ -22,6 +22,7 @@ from src.job_risk_model import (
 from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout
 from src.risk_calculators import UserProfile
 from src.risk_calculators.orchestrator import RiskCalculatorOrchestrator
+from src.risk_calculators.time_prediction import TimePredictionCalculator
 from src.validation import ProfileValidator
 
 st.set_page_config(page_title="Job Risk (AI) | UIP", page_icon="🎯", layout="wide")
@@ -183,11 +184,18 @@ with col_out:
         orchestrator = RiskCalculatorOrchestrator()
         risk_profile = orchestrator.calculate_all_risks(profile)
         
+        # Calculate time-based predictions
+        time_calc = TimePredictionCalculator()
+        time_predictions = time_calc.predict_time_horizons(risk_profile, profile, assumes_learning=False)
+        time_predictions_learning = time_calc.predict_time_horizons(risk_profile, profile, assumes_learning=True)
+        
         # Also get the detailed result for backward compatibility
         result = predict_job_risk(skills, education, experience, location, industry)
         
         st.session_state["last_job_risk"] = result
         st.session_state["risk_profile"] = risk_profile
+        st.session_state["time_predictions"] = time_predictions
+        st.session_state["time_predictions_learning"] = time_predictions_learning
         st.session_state["last_job_risk_inputs"] = {
             "skills": skills, "education": education,
             "experience": experience, "location": location, "industry": industry,
@@ -282,6 +290,86 @@ with col_out:
                     create_gauge("Age Discrimination Risk", risk_prof.age_discrimination_risk, "#8b5cf6"),
                     use_container_width=True
                 )
+            
+            # Time Horizon Predictions
+            time_preds = st.session_state.get("time_predictions")
+            time_preds_learning = st.session_state.get("time_predictions_learning")
+            
+            if time_preds:
+                st.markdown("---")
+                st.markdown("### 📈 Risk Projections Over Time")
+                
+                # Toggle for learning assumption
+                show_learning = st.checkbox(
+                    "Assume continuous skill development",
+                    value=False,
+                    help="Shows how risk changes if you continuously learn new skills"
+                )
+                
+                active_preds = time_preds_learning if show_learning else time_preds
+                
+                # Create line chart
+                horizons = [p.horizon for p in active_preds]
+                overall_risks = [p.overall_risk for p in active_preds]
+                auto_risks = [p.automation_risk for p in active_preds]
+                recession_risks = [p.recession_risk for p in active_preds]
+                age_risks = [p.age_discrimination_risk for p in active_preds]
+                
+                fig_time = go.Figure()
+                
+                fig_time.add_trace(go.Scatter(
+                    x=horizons, y=overall_risks,
+                    mode='lines+markers',
+                    name='Overall Risk',
+                    line=dict(color='#6366f1', width=3),
+                    marker=dict(size=8)
+                ))
+                
+                fig_time.add_trace(go.Scatter(
+                    x=horizons, y=auto_risks,
+                    mode='lines+markers',
+                    name='Automation Risk',
+                    line=dict(color='#f59e0b', width=2),
+                    marker=dict(size=6)
+                ))
+                
+                fig_time.add_trace(go.Scatter(
+                    x=horizons, y=recession_risks,
+                    mode='lines+markers',
+                    name='Recession Risk',
+                    line=dict(color='#ef4444', width=2),
+                    marker=dict(size=6)
+                ))
+                
+                fig_time.add_trace(go.Scatter(
+                    x=horizons, y=age_risks,
+                    mode='lines+markers',
+                    name='Age Discrimination',
+                    line=dict(color='#8b5cf6', width=2),
+                    marker=dict(size=6)
+                ))
+                
+                fig_time.update_layout(
+                    **plotly_dark_layout(height=350),
+                    title=dict(
+                        text="Risk Trajectory" + (" (with continuous learning)" if show_learning else " (without skill development)"),
+                        font=dict(color="#94a3b8", size=14)
+                    ),
+                    xaxis_title="Time Horizon",
+                    yaxis_title="Risk Score (%)",
+                    yaxis=dict(range=[0, 100]),
+                    hovermode='x unified'
+                )
+                
+                st.plotly_chart(fig_time, use_container_width=True)
+                
+                # Show key factors for each horizon
+                with st.expander("🔍 Key Factors Driving Changes", expanded=False):
+                    for pred in active_preds:
+                        st.markdown(f"**{pred.horizon}**")
+                        for factor in pred.key_factors:
+                            st.markdown(f"- {factor}")
+                        st.markdown("")
 
         gauge = go.Figure(go.Indicator(
             mode="gauge+number",
