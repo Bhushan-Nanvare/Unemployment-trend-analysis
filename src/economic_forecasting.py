@@ -142,12 +142,32 @@ class EconomicForecastingEngine:
         --------
         dict with scenario names and GDP growth paths
         """
-        scenarios = {
+        # Base scenarios for first 5 years
+        base_scenarios = {
             "Optimistic": [7.5, 7.8, 8.0, 7.5, 7.0],  # High growth
             "Baseline": [6.0, 6.2, 6.5, 6.3, 6.0],    # Potential growth
             "Pessimistic": [4.0, 4.5, 5.0, 5.2, 5.5], # Slow growth
             "Recession": [1.0, 2.0, 4.0, 5.0, 6.0],   # Recovery path
         }
+        
+        # Extend scenarios to match forecast_horizon
+        scenarios = {}
+        for name, base_path in base_scenarios.items():
+            if self.forecast_horizon <= len(base_path):
+                # Truncate if forecast horizon is shorter
+                scenarios[name] = base_path[:self.forecast_horizon]
+            else:
+                # Extend if forecast horizon is longer
+                extended_path = base_path.copy()
+                last_value = base_path[-1]
+                # Gradually converge to long-term potential growth (6%)
+                for i in range(len(base_path), self.forecast_horizon):
+                    convergence_factor = 0.8  # 80% weight on previous value, 20% on 6%
+                    next_value = convergence_factor * last_value + 0.2 * 6.0
+                    extended_path.append(round(next_value, 1))
+                    last_value = next_value
+                scenarios[name] = extended_path
+        
         return scenarios
     
     def forecast_multiple_scenarios(
@@ -168,10 +188,23 @@ class EconomicForecastingEngine:
         future_years = list(range(last_year + 1, last_year + 1 + self.forecast_horizon))
         
         for scenario_name, gdp_path in scenarios.items():
+            # Ensure GDP path matches forecast horizon
+            if len(gdp_path) != self.forecast_horizon:
+                # This should not happen with the fixed generate_gdp_scenarios, but safety check
+                if len(gdp_path) > self.forecast_horizon:
+                    gdp_path = gdp_path[:self.forecast_horizon]
+                else:
+                    # Extend with last value if needed
+                    while len(gdp_path) < self.forecast_horizon:
+                        gdp_path.append(gdp_path[-1])
+            
+            # Ensure arrays have same length
+            assert len(future_years) == len(gdp_path), f"Length mismatch: years={len(future_years)}, gdp={len(gdp_path)}"
+            
             # Create GDP forecast DataFrame
             gdp_df = pd.DataFrame({
                 "Year": future_years,
-                "GDP_Growth": gdp_path[:self.forecast_horizon]
+                "GDP_Growth": gdp_path
             })
             
             # Generate unemployment forecast
@@ -179,11 +212,12 @@ class EconomicForecastingEngine:
             
             # Add scenario info
             forecast["Scenario"] = scenario_name
-            forecast["GDP_Growth"] = forecast["GDP_Growth_Used"]
-            
-            all_forecasts.append(forecast[["Year", "Scenario", "Predicted_Unemployment", "GDP_Growth"]])
+            forecast["GDP_Growth"] = gdp_path
+            all_forecasts.append(forecast)
         
-        return pd.concat(all_forecasts, ignore_index=True)
+        # Combine all scenarios
+        combined_df = pd.concat(all_forecasts, ignore_index=True)
+        return combined_df[["Year", "Scenario", "Predicted_Unemployment", "GDP_Growth"]]
     
     @staticmethod
     def estimate_okun_coefficient(unemployment_df: pd.DataFrame, gdp_df: pd.DataFrame) -> float:
