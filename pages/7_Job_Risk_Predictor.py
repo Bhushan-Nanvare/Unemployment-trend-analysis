@@ -25,6 +25,7 @@ from src.risk_calculators.orchestrator import RiskCalculatorOrchestrator
 from src.risk_calculators.time_prediction import TimePredictionCalculator
 from src.analytics.salary_analyzer import SalaryAnalyzer
 from src.analytics.benchmark_engine import BenchmarkEngine
+from src.analytics.recommendation_engine import RecommendationEngine
 from src.validation import ProfileValidator
 
 st.set_page_config(page_title="Job Risk (AI) | UIP", page_icon="🎯", layout="wide")
@@ -202,6 +203,10 @@ with col_out:
             peer_risks = [p.overall_risk for p in peer_profiles]
             benchmark_result = benchmark_engine.compute_benchmark(risk_profile.overall_risk, peer_risks)
         
+        # Generate recommendations
+        rec_engine = RecommendationEngine()
+        recommendations = rec_engine.generate_recommendations(profile, risk_profile, salary_estimate.risk_adjusted)
+        
         # Also get the detailed result for backward compatibility
         result = predict_job_risk(skills, education, experience, location, industry)
         
@@ -211,6 +216,7 @@ with col_out:
         st.session_state["time_predictions_learning"] = time_predictions_learning
         st.session_state["salary_estimate"] = salary_estimate
         st.session_state["benchmark_result"] = benchmark_result
+        st.session_state["recommendations"] = recommendations
         st.session_state["last_job_risk_inputs"] = {
             "skills": skills, "education": education,
             "experience": experience, "location": location, "industry": industry,
@@ -467,6 +473,28 @@ with col_out:
                 )
                 
                 st.plotly_chart(fig_bench, use_container_width=True)
+            
+            # Recommendations
+            recs = st.session_state.get("recommendations")
+            if recs:
+                st.markdown("---")
+                st.markdown("### 💡 Actionable Recommendations")
+                
+                for i, rec in enumerate(recs, 1):
+                    priority_colors = {"High": "🔴", "Medium": "🟡", "Low": "🟢"}
+                    priority_icon = priority_colors.get(rec.priority, "⚪")
+                    
+                    with st.expander(f"{priority_icon} {rec.action}", expanded=(i == 1)):
+                        col_r1, col_r2, col_r3 = st.columns(3)
+                        with col_r1:
+                            st.metric("Risk Reduction", f"{rec.risk_reduction[0]}-{rec.risk_reduction[1]}%")
+                        with col_r2:
+                            st.metric("Salary Impact", f"${rec.salary_impact[0]:,}-${rec.salary_impact[1]:,}")
+                        with col_r3:
+                            st.metric("Time to Implement", rec.time_to_implement)
+                        
+                        st.caption(f"**Priority:** {rec.priority} | **ROI Score:** {rec.roi_score:.2f}")
+                        st.markdown(rec.explanation)
 
         gauge = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -565,55 +593,122 @@ inp = st.session_state.get("last_job_risk_inputs")
 
 if res and inp:
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="section-title">📥 EXPORT RISK REPORT</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📥 EXPORT COMPREHENSIVE RISK REPORT</div>', unsafe_allow_html=True)
 
     def _build_risk_report() -> bytes:
+        risk_prof = st.session_state.get("risk_profile")
+        salary_est = st.session_state.get("salary_estimate")
+        benchmark_res = st.session_state.get("benchmark_result")
+        recs = st.session_state.get("recommendations")
+        time_preds = st.session_state.get("time_predictions")
+        
         lines = [
-            "UNEMPLOYMENT INTELLIGENCE PLATFORM — JOB RISK ASSESSMENT",
-            "=" * 60,
+            "=" * 80,
+            "UNEMPLOYMENT INTELLIGENCE PLATFORM — COMPREHENSIVE JOB RISK ASSESSMENT",
+            "=" * 80,
             "",
-            "PROFILE",
-            "-" * 40,
+            "PROFILE SUMMARY",
+            "-" * 80,
             f"  Skills       : {inp['skills'] or '(none provided)'}",
             f"  Education    : {inp['education']}",
             f"  Experience   : {inp['experience']} years",
             f"  Industry     : {inp['industry']}",
             f"  Location     : {inp['location']}",
+            f"  Age          : {inp.get('age', 'N/A')}",
+            f"  Role Level   : {inp.get('role_level', 'N/A')}",
+            f"  Company Size : {inp.get('company_size', 'N/A')}",
+            f"  Remote Work  : {'Yes' if inp.get('remote_capability') else 'No'}",
+            f"  Performance  : {inp.get('performance_rating', 'N/A')}/5",
             "",
-            "RISK RESULT",
-            "-" * 40,
+        ]
+        
+        if risk_prof:
+            lines += [
+                "MULTI-DIMENSIONAL RISK ASSESSMENT",
+                "-" * 80,
+                f"  Overall Risk            : {risk_prof.overall_risk:.1f}% ({risk_prof.risk_level})",
+                f"  Automation Risk         : {risk_prof.automation_risk:.1f}%",
+                f"  Recession Risk          : {risk_prof.recession_risk:.1f}%",
+                f"  Age Discrimination Risk : {risk_prof.age_discrimination_risk:.1f}%",
+                "",
+            ]
+        
+        if time_preds:
+            lines += [
+                "RISK PROJECTIONS OVER TIME",
+                "-" * 80,
+            ]
+            for pred in time_preds:
+                lines.append(f"  {pred.horizon:12s}: Overall {pred.overall_risk:.1f}%, Auto {pred.automation_risk:.1f}%, Recession {pred.recession_risk:.1f}%")
+            lines.append("")
+        
+        if salary_est:
+            lines += [
+                "SALARY ANALYSIS",
+                "-" * 80,
+                f"  Base Salary          : ${salary_est.base_salary:,.0f}",
+                f"  Location Adjusted    : ${salary_est.location_adjusted:,.0f} ({salary_est.location_multiplier:.2f}x)",
+                f"  Risk Adjusted        : ${salary_est.risk_adjusted:,.0f} (-{salary_est.risk_penalty_pct:.1f}%)",
+                f"  Confidence Range     : ${salary_est.confidence_interval[0]:,.0f} - ${salary_est.confidence_interval[1]:,.0f}",
+                "",
+            ]
+        
+        if benchmark_res:
+            lines += [
+                "PEER COMPARISON",
+                "-" * 80,
+                f"  Your Risk Percentile : {benchmark_res.percentile:.1f}th",
+                f"  {benchmark_res.comparison_text}",
+                f"  25th Percentile      : {benchmark_res.percentile_markers['25th']:.1f}%",
+                f"  50th Percentile      : {benchmark_res.percentile_markers['50th']:.1f}%",
+                f"  75th Percentile      : {benchmark_res.percentile_markers['75th']:.1f}%",
+                f"  90th Percentile      : {benchmark_res.percentile_markers['90th']:.1f}%",
+                "",
+            ]
+        
+        if recs:
+            lines += [
+                "TOP RECOMMENDATIONS (RANKED BY ROI)",
+                "-" * 80,
+            ]
+            for i, rec in enumerate(recs, 1):
+                lines += [
+                    f"  {i}. {rec.action}",
+                    f"     Priority: {rec.priority} | ROI Score: {rec.roi_score:.2f}",
+                    f"     Risk Reduction: {rec.risk_reduction[0]}-{rec.risk_reduction[1]}%",
+                    f"     Salary Impact: ${rec.salary_impact[0]:,}-${rec.salary_impact[1]:,}",
+                    f"     Time: {rec.time_to_implement}",
+                    f"     {rec.explanation}",
+                    "",
+                ]
+        
+        lines += [
+            "ORIGINAL RISK ANALYSIS",
+            "-" * 80,
             f"  Risk Level        : {res.risk_level}",
             f"  High-Risk Prob.   : {res.high_risk_probability_pct}%",
             "",
             "FEATURE VALUES",
-            "-" * 40,
+            "-" * 80,
             f"  Skill Demand Score  : {res.features.get('skill_demand_score', 'N/A'):.2f}",
             f"  Industry Growth Idx : {res.features.get('industry_growth', 'N/A'):.2f}",
             f"  Experience (yrs)    : {res.features.get('experience_years', 'N/A'):.0f}",
             f"  Education (0–4)     : {res.features.get('education_level', 'N/A'):.0f}",
             f"  Location Tier       : {res.features.get('location_risk_tier', 'N/A'):.0f}",
         ]
-        lines += ["", "WHY THIS SCORE", "-" * 40]
+        lines += ["", "WHY THIS SCORE", "-" * 80]
         for r in res.reasons:
             lines.append(f"  - {r}")
-        lines += ["", "SUGGESTIONS", "-" * 40]
+        lines += ["", "SUGGESTIONS", "-" * 80]
         for s in res.suggestions:
             lines.append(f"  - {s}")
-        wf = st.session_state.get("whatif")
-        if wf:
-            base_r, new_r, delta = wf
-            lines += [
-                "", "WHAT-IF: SKILL UPGRADE", "-" * 40,
-                f"  Before : {base_r.high_risk_probability_pct}%",
-                f"  After  : {new_r.high_risk_probability_pct}%",
-                f"  Change : {delta:+.1f} pp",
-            ]
-        lines += ["", "Generated by Unemployment Intelligence Platform"]
+        
+        lines += ["", "=" * 80, "Generated by Unemployment Intelligence Platform", "=" * 80]
         return "\n".join(lines).encode("utf-8")
 
     st.download_button(
-        label="⬇️ Download Risk Assessment Report (.txt)",
+        label="⬇️ Download Comprehensive Risk Assessment Report (.txt)",
         data=_build_risk_report(),
-        file_name="uip_job_risk_report.txt",
+        file_name="uip_comprehensive_risk_report.txt",
         mime="text/plain",
     )

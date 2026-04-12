@@ -201,7 +201,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
 ### Phase 4: Recommendations and Analytics
 
 - [ ] 17. Implement Recommendation Engine
-  - [ ] 17.1 Create `RecommendationEngine` class for generating prioritized recommendations
+  - [x] 17.1 Create `RecommendationEngine` class for generating prioritized recommendations
     - Define `Recommendation` dataclass
     - Implement `generate_recommendations()` method: identify improvement opportunities, estimate risk reduction and salary impact, calculate ROI score
     - Implement `_suggest_skills()` helper: suggest high-impact skills based on gaps
@@ -269,7 +269,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Validates: Requirements 13.5**
 
 - [ ] 21. Create Analytics UI Components
-  - [ ] 21.1 Add recommendations table to UI
+  - [x] 21.1 Add recommendations table to UI
     - Display table with columns: Action, Risk_Reduction, Salary_Impact, Time_to_Implement, ROI_Score
     - _Requirements: 10.5_
   
@@ -294,7 +294,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
 ### Phase 5: Reporting and Monitoring
 
 - [ ] 23. Implement Report Generator
-  - [ ] 23.1 Create `ReportGenerator` class for creating formatted reports
+  - [x] 23.1 Create `ReportGenerator` class for creating formatted reports
     - Implement `generate_report()` method: aggregate data from all components
     - Structure report with sections: Executive_Summary, Risk_Assessment_Details, Benchmarking_Analysis, Recommendations, Career_Path_Options
     - Format with professional styling (headers, tables, charts)
@@ -325,7 +325,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Validates: Requirements 15.5**
 
 - [ ] 25. Create Reporting and Monitoring UI Components
-  - [ ] 25.1 Add report download functionality to UI
+  - [x] 25.1 Add report download functionality to UI
     - Provide download button for TXT and HTML formats
     - _Requirements: 14.5_
   
