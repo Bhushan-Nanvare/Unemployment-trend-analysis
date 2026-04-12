@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "2026-04-13T00:17:27.478800",
+    "overall_risk": 6.6,
+    "automation_risk": 40.5,
+    "recession_risk": 53.0,
+    "age_discrimination_risk": 33.7,
+    "risk_level": "Low"
+  },
+  {
+    "timestamp": "2026-04-13T00:17:27.692516",
+    "overall_risk": 7.0,
+    "automation_risk": 40.5,
+    "recession_risk": 48.0,
+    "age_discrimination_risk": 33.7,
+    "risk_level": "Low"
+  },
+  {
+    "timestamp": "2026-04-13T00:17:27.908254",
+    "overall_risk": 7.0,
+    "automation_risk": 40.5,
+    "recession_risk": 43.0,
+    "age_discrimination_risk": 33.7,
+    "risk_level": "Low"
+  },
+  {
+    "timestamp": "2026-04-13T00:17:28.125857",
+    "overall_risk": 6.5,
+    "automation_risk": 36.0,
+    "recession_risk": 27.0,
+    "age_discrimination_risk": 23.1,
+    "risk_level": "Low"
+  },
+  {
+    "timestamp": "2026-04-13T00:17:28.341366",
+    "overall_risk": 6.5,
+    "automation_risk": 36.0,
+    "recession_risk": 27.0,
+    "age_discrimination_risk": 23.1,
+    "risk_level": "Low"
+  }
+]
