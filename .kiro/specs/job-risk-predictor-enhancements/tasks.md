@@ -150,7 +150,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
 ### Phase 3: Salary and Benchmarking
 
 - [ ] 13. Implement Salary Analyzer
-  - [ ] 13.1 Create `SalaryAnalyzer` class with base salary factors, location multipliers, and risk penalty rates
+  - [x] 13.1 Create `SalaryAnalyzer` class with base salary factors, location multipliers, and risk penalty rates
     - Define `SalaryEstimate` dataclass
     - Implement `analyze()` method: compute base salary from role/industry/experience, apply location multiplier, apply risk penalty if overall_risk > 30
     - Calculate confidence interval (±15%)
@@ -164,7 +164,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Validates: Requirements 8.3**
 
 - [ ] 14. Implement Benchmark Engine
-  - [ ] 14.1 Create `BenchmarkEngine` class for peer comparison
+  - [x] 14.1 Create `BenchmarkEngine` class for peer comparison
     - Define `BenchmarkResult` dataclass
     - Implement `generate_peers()` method: create 100 synthetic profiles matching industry and role_level
     - Vary skills, experience, education with realistic distributions
@@ -184,17 +184,17 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Validates: Requirements 9.5**
 
 - [ ] 15. Create Salary and Benchmark UI Components
-  - [ ] 15.1 Add salary analysis display to UI
+  - [x] 15.1 Add salary analysis display to UI
     - Show three salary values: base_estimate, location_adjusted, risk_adjusted
     - Display explanatory text with multipliers and adjustments
     - _Requirements: 8.4, 8.5_
   
-  - [ ] 15.2 Implement `BenchmarkChart` class in `src/ui_components/benchmark_chart.py`
+  - [x] 15.2 Implement `BenchmarkChart` class in `src/ui_components/benchmark_chart.py`
     - Create distribution chart showing user's position relative to peer risk scores
     - Display percentile markers and comparison text
     - _Requirements: 9.3, 9.4_
 
-- [ ] 16. Checkpoint - Phase 3 Complete
+- [x] 16. Checkpoint - Phase 3 Complete
   - Ensure all tests pass, verify salary analysis and benchmarking display correctly
   - Ask the user if questions arise
 

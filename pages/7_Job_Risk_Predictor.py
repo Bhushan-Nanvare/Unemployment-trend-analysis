@@ -23,6 +23,8 @@ from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_
 from src.risk_calculators import UserProfile
 from src.risk_calculators.orchestrator import RiskCalculatorOrchestrator
 from src.risk_calculators.time_prediction import TimePredictionCalculator
+from src.analytics.salary_analyzer import SalaryAnalyzer
+from src.analytics.benchmark_engine import BenchmarkEngine
 from src.validation import ProfileValidator
 
 st.set_page_config(page_title="Job Risk (AI) | UIP", page_icon="🎯", layout="wide")
@@ -189,6 +191,17 @@ with col_out:
         time_predictions = time_calc.predict_time_horizons(risk_profile, profile, assumes_learning=False)
         time_predictions_learning = time_calc.predict_time_horizons(risk_profile, profile, assumes_learning=True)
         
+        # Calculate salary analysis
+        salary_analyzer = SalaryAnalyzer()
+        salary_estimate = salary_analyzer.analyze(profile, risk_profile)
+        
+        # Calculate benchmark (this may take a moment)
+        with st.spinner("Generating peer comparison..."):
+            benchmark_engine = BenchmarkEngine()
+            peer_profiles = benchmark_engine.generate_peers(profile, count=100)
+            peer_risks = [p.overall_risk for p in peer_profiles]
+            benchmark_result = benchmark_engine.compute_benchmark(risk_profile.overall_risk, peer_risks)
+        
         # Also get the detailed result for backward compatibility
         result = predict_job_risk(skills, education, experience, location, industry)
         
@@ -196,6 +209,8 @@ with col_out:
         st.session_state["risk_profile"] = risk_profile
         st.session_state["time_predictions"] = time_predictions
         st.session_state["time_predictions_learning"] = time_predictions_learning
+        st.session_state["salary_estimate"] = salary_estimate
+        st.session_state["benchmark_result"] = benchmark_result
         st.session_state["last_job_risk_inputs"] = {
             "skills": skills, "education": education,
             "experience": experience, "location": location, "industry": industry,
@@ -370,6 +385,88 @@ with col_out:
                         for factor in pred.key_factors:
                             st.markdown(f"- {factor}")
                         st.markdown("")
+            
+            # Salary Analysis
+            salary_est = st.session_state.get("salary_estimate")
+            if salary_est:
+                st.markdown("---")
+                st.markdown("### 💰 Salary Impact Analysis")
+                
+                col_sal1, col_sal2, col_sal3 = st.columns(3)
+                with col_sal1:
+                    st.metric("Base Salary", f"${salary_est.base_salary:,.0f}")
+                with col_sal2:
+                    st.metric(
+                        "Location Adjusted",
+                        f"${salary_est.location_adjusted:,.0f}",
+                        f"{(salary_est.location_multiplier - 1) * 100:+.0f}%"
+                    )
+                with col_sal3:
+                    st.metric(
+                        "Risk Adjusted",
+                        f"${salary_est.risk_adjusted:,.0f}",
+                        f"-{salary_est.risk_penalty_pct:.1f}%" if salary_est.risk_penalty_pct > 0 else "No penalty"
+                    )
+                
+                st.caption(f"**Confidence Range:** ${salary_est.confidence_interval[0]:,.0f} - ${salary_est.confidence_interval[1]:,.0f}")
+                
+                with st.expander("📊 Salary Calculation Details", expanded=False):
+                    st.markdown(salary_est.explanation)
+            
+            # Benchmark Comparison
+            benchmark_res = st.session_state.get("benchmark_result")
+            if benchmark_res:
+                st.markdown("---")
+                st.markdown("### 📊 Peer Comparison")
+                
+                st.info(benchmark_res.comparison_text)
+                
+                # Distribution chart
+                fig_bench = go.Figure()
+                
+                # Histogram of peer risks
+                fig_bench.add_trace(go.Histogram(
+                    x=benchmark_res.peer_distribution,
+                    nbinsx=20,
+                    name="Peer Distribution",
+                    marker_color="rgba(99, 102, 241, 0.6)",
+                    hovertemplate="Risk: %{x:.1f}%<br>Count: %{y}<extra></extra>"
+                ))
+                
+                # User's position
+                fig_bench.add_vline(
+                    x=benchmark_res.user_risk,
+                    line_dash="dash",
+                    line_color="#10b981",
+                    line_width=3,
+                    annotation_text="You",
+                    annotation_position="top"
+                )
+                
+                # Percentile markers
+                for label, value in benchmark_res.percentile_markers.items():
+                    fig_bench.add_vline(
+                        x=value,
+                        line_dash="dot",
+                        line_color="#64748b",
+                        line_width=1,
+                        annotation_text=label,
+                        annotation_position="bottom",
+                        annotation_font_size=10
+                    )
+                
+                fig_bench.update_layout(
+                    **plotly_dark_layout(height=300),
+                    title=dict(
+                        text=f"Risk Distribution ({benchmark_res.peer_count} peers in {inp['industry']}, {inp['role_level']} level)",
+                        font=dict(color="#94a3b8", size=13)
+                    ),
+                    xaxis_title="Overall Risk (%)",
+                    yaxis_title="Number of Peers",
+                    showlegend=False
+                )
+                
+                st.plotly_chart(fig_bench, use_container_width=True)
 
         gauge = go.Figure(go.Indicator(
             mode="gauge+number",
