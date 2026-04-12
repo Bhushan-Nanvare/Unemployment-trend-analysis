@@ -17,8 +17,12 @@ from src.job_risk_model import (
     predict_job_risk,
     what_if_improve_skills,
     get_model_info,
+    parse_skills,
 )
 from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout
+from src.risk_calculators import UserProfile
+from src.risk_calculators.orchestrator import RiskCalculatorOrchestrator
+from src.validation import ProfileValidator
 
 st.set_page_config(page_title="Job Risk (AI) | UIP", page_icon="🎯", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
@@ -80,6 +84,37 @@ with col_form:
     experience = st.slider("Years of experience", 0, 40, 3)
     industry = st.selectbox("Industry / sector", list(INDUSTRY_GROWTH.keys()))
     location = st.selectbox("Location (optional context)", LOCATION_OPTIONS)
+    
+    # Enhanced fields
+    st.markdown("#### Additional Profile Details")
+    age = st.slider("Age", 18, 80, 30, help="Your current age")
+    
+    role_level = st.selectbox(
+        "Role Level",
+        ["Entry", "Mid", "Senior", "Lead", "Executive"],
+        index=1,
+        help="Your current career level"
+    )
+    
+    company_size = st.selectbox(
+        "Company Size",
+        ["1-10", "11-50", "51-200", "201-1000", "1001-5000", "5000+"],
+        index=3,
+        help="Number of employees at your company"
+    )
+    
+    remote_capability = st.checkbox(
+        "Remote Work Capable",
+        value=True,
+        help="Can you work remotely?"
+    )
+    
+    performance_rating = st.slider(
+        "Performance Rating",
+        1, 5, 3,
+        help="1=Below Average, 3=Average, 5=Top Performer"
+    )
+    
     run = st.button("🔮 Estimate risk", type="primary", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -101,11 +136,63 @@ with col_out:
     st.markdown('<div class="section-title">Results</div>', unsafe_allow_html=True)
 
     if run:
+        # Validate inputs
+        validator = ProfileValidator()
+        
+        # Validate age
+        age_valid, age_error = validator.validate_age(age)
+        if not age_valid:
+            st.error(f"❌ {age_error}")
+            st.stop()
+        
+        # Validate experience
+        exp_valid, exp_error = validator.validate_experience(experience, age)
+        if not exp_valid:
+            st.error(f"❌ {exp_error}")
+            st.stop()
+        
+        # Validate performance rating
+        perf_valid, perf_error = validator.validate_performance_rating(performance_rating)
+        if not perf_valid:
+            st.error(f"❌ {perf_error}")
+            st.stop()
+        
+        # Validate required fields
+        skills_list = parse_skills(skills)
+        fields_valid, field_errors = validator.validate_required_fields(skills_list, industry, role_level)
+        if not fields_valid:
+            for error in field_errors:
+                st.error(f"❌ {error}")
+            st.stop()
+        
+        # Create user profile
+        profile = UserProfile(
+            skills=skills_list,
+            industry=industry,
+            role_level=role_level,
+            experience_years=experience,
+            education_level=education,
+            location=location,
+            age=age,
+            company_size=company_size,
+            remote_capability=remote_capability,
+            performance_rating=performance_rating,
+        )
+        
+        # Calculate all risks
+        orchestrator = RiskCalculatorOrchestrator()
+        risk_profile = orchestrator.calculate_all_risks(profile)
+        
+        # Also get the detailed result for backward compatibility
         result = predict_job_risk(skills, education, experience, location, industry)
+        
         st.session_state["last_job_risk"] = result
+        st.session_state["risk_profile"] = risk_profile
         st.session_state["last_job_risk_inputs"] = {
             "skills": skills, "education": education,
             "experience": experience, "location": location, "industry": industry,
+            "age": age, "role_level": role_level, "company_size": company_size,
+            "remote_capability": remote_capability, "performance_rating": performance_rating,
         }
 
     if run_whatif:
@@ -120,6 +207,8 @@ with col_out:
             st.warning("Run **Estimate risk** first, then try what-if.")
 
     res = st.session_state.get("last_job_risk")
+    risk_prof = st.session_state.get("risk_profile")
+    
     if not res:
         st.info("Fill the form and click **Estimate risk**.")
     else:
@@ -138,6 +227,61 @@ with col_out:
                 "High = modeled probability of being in a high-displacement-risk bucket</span></div>",
                 unsafe_allow_html=True,
             )
+
+        # Multi-Risk Dashboard (2x2 grid of gauges)
+        if risk_prof:
+            st.markdown("---")
+            st.markdown("### 📊 Multi-Risk Dashboard")
+            
+            def create_gauge(title, value, color_hex):
+                """Create a gauge chart"""
+                fig = go.Figure(go.Indicator(
+                    mode="gauge+number",
+                    value=min(100, max(0, value)),
+                    number={"suffix": "%", "font": {"color": "#e2e8f0", "size": 24}},
+                    gauge={
+                        "axis": {"range": [0, 100], "tickcolor": "#64748b"},
+                        "bar": {"color": color_hex},
+                        "bgcolor": "rgba(255,255,255,0.04)",
+                        "borderwidth": 0,
+                        "steps": [
+                            {"range": [0,  35], "color": "rgba(16,185,129,0.15)"},
+                            {"range": [35, 62], "color": "rgba(245,158,11,0.12)"},
+                            {"range": [62, 100],"color": "rgba(239,68,68,0.12)"},
+                        ],
+                    },
+                    title={"text": title, "font": {"color": "#94a3b8", "size": 12}},
+                ))
+                fig.update_layout(**plotly_dark_layout(height=200))
+                return fig
+            
+            # 2x2 grid
+            row1_col1, row1_col2 = st.columns(2)
+            row2_col1, row2_col2 = st.columns(2)
+            
+            with row1_col1:
+                st.plotly_chart(
+                    create_gauge("Overall Risk", risk_prof.overall_risk, "#6366f1"),
+                    use_container_width=True
+                )
+            
+            with row1_col2:
+                st.plotly_chart(
+                    create_gauge("Automation Risk", risk_prof.automation_risk, "#f59e0b"),
+                    use_container_width=True
+                )
+            
+            with row2_col1:
+                st.plotly_chart(
+                    create_gauge("Recession Risk", risk_prof.recession_risk, "#ef4444"),
+                    use_container_width=True
+                )
+            
+            with row2_col2:
+                st.plotly_chart(
+                    create_gauge("Age Discrimination Risk", risk_prof.age_discrimination_risk, "#8b5cf6"),
+                    use_container_width=True
+                )
 
         gauge = go.Figure(go.Indicator(
             mode="gauge+number",
