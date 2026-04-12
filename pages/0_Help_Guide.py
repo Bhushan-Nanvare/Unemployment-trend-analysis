@@ -25,7 +25,6 @@ with st.sidebar:
     st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
     st.page_link("pages/10_Skill_Obsolescence.py", label="📊 Skill Demand Analysis")
     st.page_link("pages/11_Phillips_Curve.py", label="📉 Phillips Curve")
-    st.page_link("pages/12_Economic_Forecasting.py", label="📈 Economic Forecasting")
 
 st.markdown("""
 <div class="page-hero">
@@ -57,7 +56,7 @@ with col2:
                 border-radius:12px; padding:1.5rem; margin-bottom:1rem;">
         <div style="font-size:1.2rem; margin-bottom:0.5rem;">🏛️ <strong>Policymakers</strong></div>
         <div style="color:#94a3b8; font-size:0.9rem; line-height:1.6;">
-            Start with <strong>Overview</strong> → <strong>Simulator</strong> → <strong>Economic Forecasting</strong>
+            Start with <strong>Overview</strong> → <strong>Simulator</strong> → <strong>Phillips Curve</strong>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -166,7 +165,7 @@ with tab2:
 with tab3:
     st.markdown("### Policy & Research Tools")
     
-    policy_pages = ["Simulator", "Economic Forecasting", "Phillips Curve"]
+    policy_pages = ["Simulator", "Phillips Curve"]
     
     for page_name in policy_pages:
         if page_name in PAGE_DESCRIPTIONS:
@@ -301,7 +300,7 @@ with st.expander("🏛️ **How can policymakers use this platform?**"):
     st.markdown("""
     **Key tools for policy analysis:**
     - **Simulator**: Test policy interventions (stimulus, training programs, benefits)
-    - **Economic Forecasting**: Understand GDP-unemployment relationships for policy timing
+    - **Phillips Curve**: Analyze inflation-unemployment relationships for monetary policy
     - **Sector Analysis**: Identify vulnerable industries for targeted support
     - **Overview Dashboard**: Monitor real-time unemployment trends and recession risk
     

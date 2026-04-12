@@ -79,13 +79,6 @@ PAGE_DESCRIPTIONS = {
         "short": "Inflation-unemployment relationship and policy analysis",
         "description": "Explore the Phillips Curve for India, analyze inflation-unemployment trade-offs, understand policy implications, and assess current economic stance for monetary policy decisions.",
         "use_case": "Economists, monetary policy analysts, academic researchers"
-    },
-    
-    "Economic Forecasting": {
-        "title": "📈 Advanced Modeling",
-        "short": "GDP-driven unemployment forecasting using Okun's Law", 
-        "description": "Use economic relationships to forecast unemployment, model multiple GDP scenarios, and compare economic vs statistical approaches.",
-        "use_case": "Economic forecasters, policy analysts, macroeconomic modelers"
     }
 }
 
@@ -152,11 +145,6 @@ def get_recommended_journey() -> list:
         },
         {
             "step": 8,
-            "page": "Economic Forecasting",
-            "reason": "Understand advanced economic modeling"
-        },
-        {
-            "step": 9,
             "page": "AI Insights",
             "reason": "Get plain-language explanations of findings"
         }

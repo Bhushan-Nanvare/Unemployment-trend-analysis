@@ -9,7 +9,6 @@ from pydantic import BaseModel
 from src.live_data import fetch_world_bank, get_data_source_label, fetch_gdp_growth
 from src.preprocessing import Preprocessor
 from src.forecasting import ForecastingEngine
-from src.economic_forecasting import EconomicForecastingEngine
 from src.shock_scenario import ShockScenario
 from src.scenario_metrics import ScenarioMetrics
 from src.policy_playbook import PolicyPlaybook
@@ -95,43 +94,11 @@ def _create_confidence_from_scenarios(scenario_forecasts, baseline):
 def simulate_scenario(request: ScenarioRequest):
     df = _load_prepared_series()
 
-    # Enhanced forecasting with economic relationships
-    use_economic_model = True  # Flag to enable/disable economic modeling
-    
-    if use_economic_model:
-        # Try to use economic forecasting with GDP relationships
-        try:
-            gdp_df = fetch_gdp_growth("India")
-            if not gdp_df.empty and len(gdp_df) >= 10:
-                # Use economic forecasting engine
-                econ_engine = EconomicForecastingEngine(forecast_horizon=request.forecast_horizon)
-                
-                # Estimate India-specific Okun coefficient from historical data
-                okun_coef = econ_engine.estimate_okun_coefficient(df, gdp_df)
-                econ_engine.okun_coefficient = okun_coef
-                
-                # Generate baseline forecast using economic relationships
-                baseline = econ_engine.forecast_with_gdp(df)
-                
-                # Generate confidence bands using economic model
-                scenario_forecasts = econ_engine.forecast_multiple_scenarios(df)
-                baseline_conf = _create_confidence_from_scenarios(scenario_forecasts, baseline)
-                
-                forecasting_method = f"Economic Model (Okun: {okun_coef:.3f})"
-            else:
-                raise ValueError("Insufficient GDP data for economic modeling")
-        except Exception as e:
-            # Fallback to time-series model
-            engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
-            baseline = engine.forecast(df)
-            baseline_conf = engine.forecast_with_confidence(df)
-            forecasting_method = "Time Series (GDP data unavailable)"
-    else:
-        # Original time-series approach
-        engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
-        baseline = engine.forecast(df)
-        baseline_conf = engine.forecast_with_confidence(df)
-        forecasting_method = "Time Series"
+    # Always use time-series forecasting
+    engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
+    baseline = engine.forecast(df)
+    baseline_conf = engine.forecast_with_confidence(df)
+    forecasting_method = "Time Series"
 
     # Scenario simulation (shock now hits immediately — fixed logic)
     scenario = ShockScenario(
@@ -460,54 +427,6 @@ def sensitivity_analysis(request: SensitivityRequest):
 
 
 # -------- GDP Scenario Analysis Endpoint --------
-@app.post("/gdp_scenarios")
-def gdp_scenario_analysis(request: ScenarioRequest):
-    """
-    Analyze unemployment under different GDP growth scenarios using Okun's Law.
-    """
-    df = _load_prepared_series()
-    gdp_df = fetch_gdp_growth("India")
-    
-    if gdp_df.empty or len(gdp_df) < 10:
-        return {"error": "Insufficient GDP data for economic modeling"}
-    
-    try:
-        econ_engine = EconomicForecastingEngine(forecast_horizon=request.forecast_horizon)
-        
-        # Estimate Okun coefficient
-        okun_coef = econ_engine.estimate_okun_coefficient(df, gdp_df)
-        econ_engine.okun_coefficient = okun_coef
-        
-        # Generate multiple GDP scenarios
-        scenario_forecasts = econ_engine.forecast_multiple_scenarios(df)
-        
-        # Calculate summary statistics
-        summary_stats = []
-        for scenario in scenario_forecasts["Scenario"].unique():
-            subset = scenario_forecasts[scenario_forecasts["Scenario"] == scenario]
-            peak_ue = subset["Predicted_Unemployment"].max()
-            final_ue = subset["Predicted_Unemployment"].iloc[-1]
-            avg_gdp = subset["GDP_Growth"].mean()
-            
-            summary_stats.append({
-                "scenario": scenario,
-                "avg_gdp_growth": round(avg_gdp, 1),
-                "peak_unemployment": round(peak_ue, 2),
-                "final_unemployment": round(final_ue, 2),
-                "unemployment_change": round(final_ue - df["Unemployment_Rate"].iloc[-1], 2),
-            })
-        
-        return {
-            "okun_coefficient": round(okun_coef, 3),
-            "scenario_forecasts": scenario_forecasts.to_dict(orient="records"),
-            "summary_stats": summary_stats,
-            "interpretation": f"Okun coefficient of {okun_coef:.3f} means 1% higher GDP growth reduces unemployment by {abs(okun_coef):.1f} percentage points",
-        }
-        
-    except Exception as e:
-        return {"error": f"Economic modeling failed: {str(e)}"}
-
-
 # -------- Data Source Status --------
 @app.get("/data-status")
 def data_status():

@@ -25,7 +25,7 @@
 
 **What it does**:
 - **Live KPI Monitoring**: Displays current unemployment rate, forecast peak, outlook, risk status, and GDP growth
-- **Economic Forecasting**: Uses advanced economic modeling (Okun's Law) to predict unemployment trends based on GDP growth
+- **Advanced Forecasting**: Uses economic modeling when GDP data is available, falls back to time-series analysis
 - **Historical Analysis**: Shows GDP growth vs unemployment relationship with proper COVID impact visualization
 - **Confidence Intervals**: Provides uncertainty bands around forecasts using Monte Carlo simulation
 - **Recession Risk Assessment**: Composite risk indicator based on GDP trends, unemployment patterns, and economic fundamentals
@@ -230,27 +230,6 @@
 
 ---
 
-## 📈 **11. Economic Forecasting** (`pages/12_Economic_Forecasting.py`)
-**Purpose**: Advanced GDP-driven unemployment forecasting using economic relationships
-
-**What it does**:
-- **Okun's Law Implementation**: Uses GDP growth to predict unemployment changes
-- **Multiple GDP Scenarios**: Models unemployment under different economic growth scenarios (Optimistic, Baseline, Pessimistic, Recession)
-- **Economic Model vs Time-Series Comparison**: Shows difference between economic modeling and statistical extrapolation
-- **Interactive GDP Impact Calculator**: Lets users see unemployment impact of different GDP growth rates
-- **Historical Relationship Analysis**: Analyzes how GDP and unemployment have interacted over time
-
-**Key Features**:
-- India-specific Okun coefficient estimation (-0.100)
-- Four distinct GDP growth scenarios with unemployment projections
-- Interactive calculator for custom GDP growth rates
-- Model comparison charts (Economic vs Time-Series forecasting)
-- Historical scatter plots showing GDP-unemployment relationships
-
-**Who should use it**: Economic forecasters, policy analysts, central bank researchers, macroeconomic modelers
-
----
-
 ## 🎯 **Platform Integration Features**
 
 ### **Cross-Page Consistency**:
@@ -280,7 +259,7 @@
 3. **Personal Analysis** - Use Job Risk Predictor and Career Lab for individual guidance
 4. **Market Research** - Check Job Market Pulse and Skill Demand Analysis
 5. **Location Planning** - Use Geo Career Advisor for relocation decisions
-6. **Deep Analysis** - Explore Economic Forecasting and Phillips Curve for advanced insights
+6. **Deep Analysis** - Explore Phillips Curve for advanced economic insights
 7. **AI Interpretation** - Use AI Insights for plain-language explanations
 
 Each page is designed to work independently while contributing to a comprehensive understanding of unemployment dynamics in India.
