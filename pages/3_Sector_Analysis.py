@@ -38,14 +38,14 @@ st.markdown("""
     <div class="hero-subtitle">Scenario stress analysis alongside real World Bank sector indicators</div>
 </div>""", unsafe_allow_html=True)
 
+from src.api import simulate_scenario, ScenarioRequest
+
 tab_sim, tab_live = st.tabs(["🧪 Scenario Simulation", "🌐 Live World Bank Data"])
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1 — SCENARIO SIMULATION (original content unchanged)
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_sim:
-
-from src.api import simulate_scenario, ScenarioRequest
 
     @st.cache_data(ttl=60)
     def get_sector_data(si, rr):
