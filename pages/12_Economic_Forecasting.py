@@ -93,7 +93,7 @@ st.markdown(f"""
     📐 <strong style="color:#818cf8;">Okun's Law for India:</strong>
     A <strong style="color:#e2e8f0;">{abs(okun_coef):.1f} percentage point</strong> decrease in unemployment
     for every <strong style="color:#e2e8f0;">1% increase</strong> in GDP growth above potential (6%).
-    {'This is weaker than developed economies (~0.5) due to India\'s large informal sector.' if abs(okun_coef) < 0.4 else 'This is similar to developed economy relationships.'}
+    {('This is weaker than developed economies (~0.5) due to India' + chr(39) + 's large informal sector.' if abs(okun_coef) < 0.4 else 'This is similar to developed economy relationships.')}
 </div>
 """, unsafe_allow_html=True)
 
