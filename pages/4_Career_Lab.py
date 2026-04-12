@@ -19,6 +19,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("**🌐 Navigation**")
     st.page_link("app.py", label="🏠 Home")
+    st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
     st.page_link("pages/1_Overview.py", label="📊 Overview")
     st.page_link("pages/2_Simulator.py", label="🧪 Simulator")
     st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")

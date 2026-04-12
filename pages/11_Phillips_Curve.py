@@ -1,6 +1,6 @@
 """
-Page 11 — Phillips Curve Analysis
-Inflation vs Unemployment trade-off — the foundational macroeconomic relationship.
+Page 11 - Phillips Curve Analysis
+Inflation vs Unemployment trade-off - the foundational macroeconomic relationship.
 """
 import streamlit as st
 import pandas as pd
@@ -18,15 +18,16 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("**🌐 Navigation**")
     st.page_link("app.py", label="🏠 Home")
+    st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
     st.page_link("pages/1_Overview.py", label="📊 Overview")
     st.page_link("pages/2_Simulator.py", label="🧪 Simulator")
     st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")
 
 st.markdown("""
 <div class="page-hero">
-    <div class="hero-title">📉 Phillips Curve — India</div>
+    <div class="hero-title">📉 Phillips Curve - India</div>
     <div class="hero-subtitle">
-        The trade-off between inflation and unemployment — a foundational macroeconomic relationship
+        The trade-off between inflation and unemployment - a foundational macroeconomic relationship
     </div>
 </div>""", unsafe_allow_html=True)
 
@@ -35,7 +36,7 @@ def load_phillips_data():
     import time as _time
     ue_df = fetch_world_bank("India")
 
-    # CPI inflation can be slow — retry once
+    # CPI inflation can be slow - retry once
     cpi_df = _fetch_indicator_series("FP.CPI.TOTL.ZG", iso="IN", per_page=40)
     if cpi_df.empty:
         _time.sleep(1)
@@ -76,7 +77,7 @@ if df.empty:
     """)
     st.stop()
 
-# ── KPIs ───────────────────────────────────────────────────────────────────────
+# KPIs
 latest = df.iloc[-1]
 prev = df.iloc[-2] if len(df) >= 2 else None
 
@@ -105,9 +106,8 @@ with col4:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ── Phillips Curve Scatter ─────────────────────────────────────────────────────
-
-st.markdown('<div class="section-title">📉 Phillips Curve — Inflation vs Unemployment</div>', unsafe_allow_html=True)
+# Phillips Curve Scatter
+st.markdown('<div class="section-title">📉 Phillips Curve - Inflation vs Unemployment</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="font-size:0.85rem; color:#64748b; margin-bottom:1rem; line-height:1.6;">
     The <strong style="color:#e2e8f0;">Phillips Curve</strong> posits an inverse relationship:
@@ -152,7 +152,7 @@ st.markdown(f"""
     Correlation = <strong style="color:#e2e8f0;">{corr:.3f}</strong> ·
     R² = <strong style="color:#e2e8f0;">{r_value**2:.3f}</strong> ·
     Slope = <strong style="color:#e2e8f0;">{slope:.3f}</strong>
-    {'(inverse relationship — classic Phillips Curve)' if slope < 0 else '(positive relationship — supply shocks dominate)'}
+    {'(inverse relationship - classic Phillips Curve)' if slope < 0 else '(positive relationship - supply shocks dominate)'}
 </div>
 """, unsafe_allow_html=True)
 
@@ -160,8 +160,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ── Time Series Dual Axis ──────────────────────────────────────────────────────
-
+# Time Series Dual Axis
 st.markdown('<div class="section-title">📈 Unemployment & Inflation Over Time</div>', unsafe_allow_html=True)
 
 fig_ts = go.Figure()
@@ -209,52 +208,73 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ── Decade Comparison ──────────────────────────────────────────────────────────
+# Policy Analysis
+st.markdown('<div class="section-title">🏛️ Policy Implications</div>', unsafe_allow_html=True)
 
-st.markdown('<div class="section-title">📊 Phillips Curve by Decade</div>', unsafe_allow_html=True)
+# Calculate key metrics for policy analysis
+recent_years = df.tail(5)  # Last 5 years
+avg_ue_recent = recent_years["UE"].mean()
+avg_inf_recent = recent_years["Inflation"].mean()
+volatility_ue = recent_years["UE"].std()
+volatility_inf = recent_years["Inflation"].std()
 
-df["Decade"] = (df["Year"] // 10 * 10).astype(str) + "s"
-decades = df["Decade"].unique()
+col_pol1, col_pol2 = st.columns(2)
 
-fig_decades = go.Figure()
-colors = {"1990s": "#10b981", "2000s": "#6366f1", "2010s": "#f59e0b", "2020s": "#f43f5e"}
+with col_pol1:
+    st.markdown("### 📊 Recent Trends (Last 5 Years)")
+    st.markdown(f"""
+    <div style="background:rgba(99,102,241,0.05); border:1px solid rgba(99,102,241,0.2);
+                border-radius:10px; padding:1rem; margin-bottom:1rem;">
+        <div style="font-size:0.9rem; color:#cbd5e1; line-height:1.8;">
+            <strong style="color:#e2e8f0;">Average Unemployment:</strong> {avg_ue_recent:.1f}%<br>
+            <strong style="color:#e2e8f0;">Average Inflation:</strong> {avg_inf_recent:.1f}%<br>
+            <strong style="color:#e2e8f0;">UE Volatility:</strong> {volatility_ue:.1f}pp<br>
+            <strong style="color:#e2e8f0;">Inflation Volatility:</strong> {volatility_inf:.1f}pp
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-for decade in sorted(decades):
-    subset = df[df["Decade"] == decade]
-    fig_decades.add_trace(go.Scatter(
-        x=subset["UE"], y=subset["Inflation"],
-        mode="markers",
-        name=decade,
-        marker=dict(size=10, color=colors.get(decade, "#94a3b8")),
-        hovertemplate="<b>%{text}</b><br>UE: %{x:.2f}%<br>Inflation: %{y:.2f}%<extra></extra>",
-        text=subset["Year"],
-    ))
-
-fig_decades.update_layout(**plotly_dark_layout(height=420))
-fig_decades.update_layout(
-    xaxis_title="Unemployment Rate (%)",
-    yaxis_title="Inflation (CPI, %)",
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
-                bgcolor="rgba(0,0,0,0.3)", font=dict(color="#cbd5e1")),
-)
-st.plotly_chart(fig_decades, use_container_width=True)
-
-st.markdown("""
-<div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-    <strong style="color:#e2e8f0;">Interpretation:</strong>
-    The Phillips Curve has <strong style="color:#e2e8f0;">shifted over time</strong>.
-    In the 1990s-2000s, India experienced high inflation with moderate unemployment.
-    Post-2010, inflation moderated (RBI inflation targeting since 2016) while unemployment remained structurally elevated.
-    The 2020s show COVID disruption — unemployment spiked while inflation remained volatile due to supply chain shocks.
-</div>
-""", unsafe_allow_html=True)
+with col_pol2:
+    st.markdown("### 🎯 Policy Trade-offs")
+    
+    # Determine policy stance based on current levels
+    current_ue = latest["UE"]
+    current_inf = latest["Inflation"]
+    
+    if current_ue > 6 and current_inf < 4:
+        policy_rec = "🟢 Expansionary Policy"
+        policy_desc = "Low inflation allows for stimulus to reduce unemployment"
+        policy_color = "#10b981"
+    elif current_ue < 4 and current_inf > 6:
+        policy_rec = "🔴 Contractionary Policy"
+        policy_desc = "High inflation requires tightening despite low unemployment"
+        policy_color = "#ef4444"
+    elif current_ue > 6 and current_inf > 6:
+        policy_rec = "🟡 Stagflation Risk"
+        policy_desc = "Both high unemployment and inflation - difficult policy choice"
+        policy_color = "#f59e0b"
+    else:
+        policy_rec = "🟢 Balanced Approach"
+        policy_desc = "Moderate levels allow for flexible policy response"
+        policy_color = "#10b981"
+    
+    st.markdown(f"""
+    <div style="background:rgba(99,102,241,0.05); border:1px solid rgba(99,102,241,0.2);
+                border-radius:10px; padding:1rem;">
+        <div style="font-size:1rem; font-weight:700; color:{policy_color}; margin-bottom:0.5rem;">
+            {policy_rec}
+        </div>
+        <div style="font-size:0.9rem; color:#cbd5e1; line-height:1.6;">
+            {policy_desc}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ── Export ─────────────────────────────────────────────────────────────────────
-
+# Export
 st.markdown('<div class="section-title">📥 Export Data</div>', unsafe_allow_html=True)
 
 csv_bytes = df[["Year", "UE", "Inflation", "GDP_Growth"]].rename(columns={
