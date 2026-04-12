@@ -324,18 +324,18 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Property 40: Rate of Change Calculation**
     - **Validates: Requirements 15.5**
 
-- [ ] 25. Create Reporting and Monitoring UI Components
-  - [ ] 25.1 Add report download functionality to UI
+- [x] 25. Create Reporting and Monitoring UI Components
+  - [x] 25.1 Add report download functionality to UI
     - Provide download button for TXT and HTML formats
     - _Requirements: 14.5_
   
-  - [ ] 25.2 Add risk monitoring dashboard to UI
+  - [x] 25.2 Add risk monitoring dashboard to UI
     - Display line chart showing risk score trends over time for each risk_type
     - Highlight significant changes
     - Display rate_of_change metrics
     - _Requirements: 15.3, 15.4, 15.5_
 
-- [ ] 26. Checkpoint - Phase 5 Complete
+- [x] 26. Checkpoint - Phase 5 Complete
   - Ensure all tests pass, verify report generation and risk monitoring work correctly
   - Ask the user if questions arise
 

@@ -35,7 +35,7 @@
 - Priority levels (High/Medium/Low)
 - ROI-based ranking
 
-### Phase 5: Professional Reporting ✅
+### Phase 5: Professional Reporting & Risk Monitoring ✅
 - Comprehensive report generator
 - Multi-section report format:
   - Profile Summary
@@ -47,18 +47,26 @@
   - Original Risk Analysis
 - TXT export format
 - Professional formatting
+- **Risk Monitor** with historical tracking:
+  - Stores last 12 risk assessments with timestamps
+  - Calculates rate of change using linear regression
+  - Identifies significant changes (>10 percentage points)
+  - Interactive trend chart with all 4 risk types
+  - Rate of change metrics display
+  - Significant changes highlighting
 
 ---
 
 ## 📊 Final Implementation Metrics
 
-- **Total Lines of Code**: ~6,500+
-- **New Files Created**: 20+
+- **Total Lines of Code**: ~7,500+
+- **New Files Created**: 23+
 - **Risk Calculators**: 4 (Overall, Automation, Recession, Age)
 - **Analytics Components**: 3 (Salary, Benchmark, Recommendations)
-- **UI Enhancements**: Complete multi-risk dashboard
+- **Reporting Components**: 2 (Report Generator, Risk Monitor)
+- **UI Enhancements**: Complete multi-risk dashboard with monitoring
 - **Test Coverage**: Comprehensive tests passing
-- **GitHub Commits**: 4 major feature commits
+- **GitHub Commits**: 5 major feature commits
 
 ---
 
@@ -102,6 +110,10 @@
 ✅ Multi-section formatting
 ✅ Export functionality
 ✅ Professional presentation
+✅ Historical risk tracking
+✅ Trend analysis with linear regression
+✅ Significant change detection
+✅ Interactive monitoring dashboard
 
 ---
 
@@ -116,6 +128,7 @@
 2. ✅ Phase 2: Time-based risk predictions with learning scenarios
 3. ✅ Phase 3: Salary analysis and peer benchmarking
 4. ✅ Phase 4 & 5: Recommendations and comprehensive reporting
+5. ✅ Phase 5: Risk Monitor with historical tracking and trend analysis
 
 ---
 
@@ -129,5 +142,6 @@ All critical features from Phases 1-5 have been successfully implemented, tested
 - **Peer benchmarking** for context
 - **Actionable recommendations** with ROI
 - **Professional reporting** for export
+- **Historical tracking** with trend analysis and monitoring
 
-The system is fully functional with proper values, realistic calculations, and a polished user interface.
+The system is fully functional with proper values, realistic calculations, a polished user interface, and comprehensive risk monitoring capabilities.
