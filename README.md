@@ -25,7 +25,7 @@ UIP is a full-stack analytics platform that combines real World Bank data, machi
 | 💼 Career Lab | Career path recommendations based on sector stress |
 | 🤖 AI Insights | Groq LLaMA 3.1 economic narrative generation |
 | 🔬 Model Validation | Adaptive backtesting, R², MAE, MAPE metrics |
-| 🎯 Job Risk Predictor | Logistic regression job displacement risk scorer |
+| 🎯 Job Risk Predictor | **Enhanced Multi-Risk Assessment** - 4 risk types (Overall, Automation, Recession, Age), time-based predictions (6mo-5yr), salary analysis, peer benchmarking, ROI-ranked recommendations |
 | 📡 Job Market Pulse | 29,425 real Naukri.com job postings analysis |
 | 🗺️ Geo Career Advisor | 55-city map with cost of living, industry hubs, state unemployment |
 | ⚡ Skill Obsolescence | Skill demand trends + 6-month forecast |

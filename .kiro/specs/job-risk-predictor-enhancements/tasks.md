@@ -325,7 +325,7 @@ This implementation plan breaks down the Job Risk Predictor enhancements into di
     - **Validates: Requirements 15.5**
 
 - [ ] 25. Create Reporting and Monitoring UI Components
-  - [x] 25.1 Add report download functionality to UI
+  - [ ] 25.1 Add report download functionality to UI
     - Provide download button for TXT and HTML formats
     - _Requirements: 14.5_
   

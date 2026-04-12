@@ -1,49 +1,95 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
+.mypy_cache/
+.pytest_cache/
+
+# Virtual Environment
 .env
 .venv
 env/
 venv/
+ENV/
+
+# IDE
 .DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build
 *.egg-info/
 dist/
 build/
-.mypy_cache/
-.pytest_cache/
-.local/
+
+# Logs
 *.log
+
+# Database
 *.sqlite
+*.db
 
-# Large raw Kaggle file (not needed — converted version is in data/market_pulse/)
+# Large Data Files
 marketing_sample_for_naukri_com-jobs__20190701_20190830__30k_data.csv
-
-# World Bank zip archive (not needed at runtime)
 data/API_SL.TLF.ACTI.1524.ZS_DS2_en_csv_v2_5033.zip
 data/API_SL.TLF.ACTI.1524.ZS_DS2_en_csv_v2_5033/
 
-# Dev/planning docs (not needed for deployment)
-fetureFetures
+# Temporary Files
+scratch/
+attached_assets/
+*.tmp
+*.bak
+
+# IDE-Specific (Kiro/Replit)
+.local/
+.agents/
+.replit
+replit.nix
+replit.md
+render.yaml
+
+# Documentation (Keep only main docs)
+BEFORE_AFTER_COMPARISON.md
+BROWSER_VERIFICATION_GUIDE.md
+DEPLOYMENT_GUIDE.txt
+DEPLOYMENT_VERIFICATION_GUIDE.md
+FINAL_TESTING_REPORT.md
+GEO_CAREER_ADVISOR_FIXES.md
 GEO_ENHANCEMENTS_SUMMARY.md
+GEO_FIXES_SUMMARY.md
 IMPLEMENTATION_COMPLETE.md
+JOB_RISK_PREDICTOR_FIX.md
+PAGE_EXPLANATIONS.md
+PROJECT_DOCUMENTATION.txt
+QUICK_FIX_SUMMARY.md
+SENSITIVITY_ANALYSIS_COMPLETE.md
 SIMULATOR_IMPROVEMENTS_PLAN.md
 SIMULATOR_MOCKUPS.md
 SIMULATOR_RECOMMENDATIONS.md
-SENSITIVITY_ANALYSIS_COMPLETE.md
+SKILL_ANALYSIS_SUMMARY.md
+SKILL_OBSOLESCENCE_FIXES.md
+SKILL_SCORING_FIX_COMPLETE.md
 VERIFICATION_CHECKLIST.md
 VERIFY_SENSITIVITY.md
 VISUAL_GUIDE.md
 
-# Test scripts
+# Test Files (Keep only essential)
+test_all_features.py
+test_final_skill_fix.py
+test_frontend_pages.py
+test_geo_advisor_issues.py
+test_geo_improvements.py
 test_geo_tabs.py
+test_high_risk_scenarios.py
+test_improved_skills.py
+test_model_version.py
 test_sensitivity_api.py
 test_sensitivity_complete.py
-
-# Attached assets
-attached_assets/
-
-# Replit-specific
-.replit
-replit.nix
-replit.md
+test_skill_analysis_fixed.py
+test_skill_issues.py
+troubleshoot_deployment.py
