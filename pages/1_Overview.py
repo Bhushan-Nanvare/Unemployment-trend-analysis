@@ -10,7 +10,7 @@ import numpy as np
 import plotly.graph_objects as go
 from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, render_data_source, plotly_dark_layout, API_BASE_URL
 from src.historical_events import get_events_in_range
-from src.live_data import fetch_world_bank, fetch_gdp_growth
+from src.live_data import fetch_world_bank, fetch_gdp_growth, get_data_source_label
 from src.forecasting import ForecastingEngine
 from src.live_insights import generate_forecast_insights
 
