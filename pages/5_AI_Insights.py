@@ -148,6 +148,152 @@ with c1:
     st.markdown(render_kpi_card("🧠", "AI Risk Signal", ew.split(" ", 1)[-1] if " " in str(ew) else str(ew), delta_type="neutral"), unsafe_allow_html=True)
 with c2:
     st.markdown(render_kpi_card("📊", "Stress Index", str(usi), delta_type="neutral"), unsafe_allow_html=True)
+
+# ─── AI-Generated Insights ────────────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown('<div class="section-title">🧠 AI-Generated Market Insights</div>', unsafe_allow_html=True)
+st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-bottom:1.2rem;">Data-driven insights with evidence-based interpretation</p>', unsafe_allow_html=True)
+
+from src.ai_insights_engine import generate_ai_insights
+
+# Prepare data for insights engine
+career = data.get("career_advice", {})
+sector_raw = data.get("sector_impact", [])
+sector_df = pd.DataFrame(sector_raw) if sector_raw else pd.DataFrame()
+skill_demand_data = career.get("skill_demand_data", {})
+growth_sectors = career.get("growth_sectors", [])
+risk_sectors = career.get("risk_sectors", [])
+
+# Generate insights
+with st.spinner("🔍 Analyzing market data and generating insights..."):
+    ai_insights = generate_ai_insights(
+        skill_demand_data=skill_demand_data,
+        sector_data=sector_df,
+        growth_sectors=growth_sectors,
+        risk_sectors=risk_sectors
+    )
+
+# Display insights by category
+insight_categories = ai_insights["insights"]
+
+# Skill Trends Insights
+if insight_categories.get("skill_trends"):
+    st.markdown("#### 📈 Skill Market Trends")
+    for insight in insight_categories["skill_trends"]:
+        confidence_color = {"high": "#10b981", "medium": "#f59e0b", "low": "#64748b"}[insight["confidence"]]
+        
+        with st.expander(f"💡 {insight['title']} · Confidence: {insight['confidence'].upper()}", expanded=False):
+            st.markdown(f"""
+            <div style="background:rgba(255,255,255,0.02); border-left:3px solid {confidence_color}; 
+                        padding:1rem; border-radius:8px; margin-bottom:1rem;">
+                <div style="margin-bottom:0.8rem;">
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">📊 DATA OBSERVATION</div>
+                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['data']}</div>
+                </div>
+                
+                <div style="margin-bottom:0.8rem;">
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">🔍 PATTERN IDENTIFIED</div>
+                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['pattern']}</div>
+                </div>
+                
+                <div>
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">💭 INTERPRETATION</div>
+                    <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;">
+                        {insight['interpretation']}
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+# Sector Analysis Insights
+if insight_categories.get("sector_analysis"):
+    st.markdown("#### 🏭 Sector Performance Patterns")
+    for insight in insight_categories["sector_analysis"]:
+        confidence_color = {"high": "#10b981", "medium": "#f59e0b", "low": "#64748b"}[insight["confidence"]]
+        
+        with st.expander(f"💡 {insight['title']} · Confidence: {insight['confidence'].upper()}", expanded=False):
+            st.markdown(f"""
+            <div style="background:rgba(255,255,255,0.02); border-left:3px solid {confidence_color}; 
+                        padding:1rem; border-radius:8px; margin-bottom:1rem;">
+                <div style="margin-bottom:0.8rem;">
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">📊 DATA OBSERVATION</div>
+                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['data']}</div>
+                </div>
+                
+                <div style="margin-bottom:0.8rem;">
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">🔍 PATTERN IDENTIFIED</div>
+                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['pattern']}</div>
+                </div>
+                
+                <div>
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">💭 INTERPRETATION</div>
+                    <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;">
+                        {insight['interpretation']}
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+# Market Dynamics Insights
+if insight_categories.get("market_dynamics"):
+    st.markdown("#### 🌐 Market Dynamics")
+    for insight in insight_categories["market_dynamics"]:
+        confidence_color = {"high": "#10b981", "medium": "#f59e0b", "low": "#64748b"}[insight["confidence"]]
+        
+        with st.expander(f"💡 {insight['title']} · Confidence: {insight['confidence'].upper()}", expanded=False):
+            st.markdown(f"""
+            <div style="background:rgba(255,255,255,0.02); border-left:3px solid {confidence_color}; 
+                        padding:1rem; border-radius:8px; margin-bottom:1rem;">
+                <div style="margin-bottom:0.8rem;">
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">📊 DATA OBSERVATION</div>
+                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['data']}</div>
+                </div>
+                
+                <div style="margin-bottom:0.8rem;">
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">🔍 PATTERN IDENTIFIED</div>
+                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['pattern']}</div>
+                </div>
+                
+                <div>
+                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
+                                letter-spacing:0.05em; margin-bottom:0.4rem;">💭 INTERPRETATION</div>
+                    <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;">
+                        {insight['interpretation']}
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+# Insights Summary
+if ai_insights["total_insights"] > 0:
+    st.markdown(f"""
+    <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2); 
+                border-radius:10px; padding:1rem; margin-top:1rem;">
+        <div style="color:#a5b4fc; font-size:0.85rem;">
+            <strong>📊 Analysis Summary:</strong> Generated {ai_insights["total_insights"]} insights from 
+            {len(insight_categories["skill_trends"])} skill trends, 
+            {len(insight_categories["sector_analysis"])} sector patterns, and 
+            {len(insight_categories["market_dynamics"])} market dynamics observations.
+        </div>
+        <div style="color:#94a3b8; font-size:0.8rem; margin-top:0.5rem;">
+            <strong>Data Sources:</strong> {ai_insights["data_sources"]["skills"]}, 
+            {ai_insights["data_sources"]["sectors"]}, {ai_insights["data_sources"]["market"]}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.info("💡 Insufficient data to generate insights. Adjust simulation parameters or ensure API connectivity.")
+
+st.markdown("<br>", unsafe_allow_html=True)
+
 with c3:
     st.markdown(render_kpi_card("🔄", "Recovery Quality", str(rqi), delta_type="neutral"), unsafe_allow_html=True)
 with c4:
