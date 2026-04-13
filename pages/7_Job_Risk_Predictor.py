@@ -482,16 +482,17 @@ with col_out:
                         annotation_font_size=10
                     )
                 
-                fig_bench.update_layout(
-                    **plotly_dark_layout(height=300),
-                    title=dict(
+                layout_config = plotly_dark_layout(height=300, showlegend=False)
+                layout_config.update({
+                    'title': dict(
                         text=f"Risk Distribution ({benchmark_res.peer_count} peers in {industry_label}, {role_label} level)",
                         font=dict(color="#94a3b8", size=13)
                     ),
-                    xaxis_title="Overall Risk (%)",
-                    yaxis_title="Number of Peers",
-                    showlegend=False
-                )
+                    'xaxis_title': "Overall Risk (%)",
+                    'yaxis_title': "Number of Peers"
+                })
+                
+                fig_bench.update_layout(**layout_config)
                 
                 st.plotly_chart(fig_bench, use_container_width=True)
             
