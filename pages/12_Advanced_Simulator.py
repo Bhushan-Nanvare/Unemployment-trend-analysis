@@ -9,6 +9,50 @@ import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
 from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout, API_BASE_URL
+from src.advanced_simulation import (
+    AdvancedSimulationEngine,
+    MonteCarloConfig,
+    ShockEvent,
+    ShockType,
+    EconomicCycle,
+    get_predefined_stress_scenarios
+)
+
+
+@st.cache_data(ttl=3600)
+def get_baseline_forecast():
+    """
+    Load baseline unemployment forecast for simulations.
+    Tries API first, falls back to generating from current data.
+    """
+    try:
+        # Try to get from API
+        response = requests.get(f"{API_BASE_URL}/forecast", timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            baseline_df = pd.DataFrame(data.get("forecast", []))
+            if not baseline_df.empty and "Predicted_Unemployment" in baseline_df.columns:
+                return baseline_df
+    except Exception as e:
+        st.warning(f"Could not fetch from API: {e}")
+    
+    # Fallback: Generate baseline forecast
+    try:
+        current_year = 2026
+        years = list(range(current_year, current_year + 10))
+        
+        # Simple baseline: slight improvement trend
+        baseline_ue = [6.5 - (i * 0.05) for i in range(10)]
+        
+        baseline_df = pd.DataFrame({
+            "Year": years,
+            "Predicted_Unemployment": baseline_ue
+        })
+        
+        return baseline_df
+    except Exception as e:
+        st.error(f"Failed to generate baseline: {e}")
+        return pd.DataFrame()
 
 st.set_page_config(page_title="Advanced Simulator | UIP", page_icon="🧬", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
@@ -144,46 +188,43 @@ if current_mode == "Monte Carlo":
     if st.button("🎲 Run Monte Carlo Simulation", use_container_width=True, key="run_mc"):
         with st.spinner("⚡ Running Monte Carlo simulation..."):
             try:
-                # Prepare request
-                mc_request = {
-                    "base_shock_intensity": base_intensity,
-                    "base_shock_duration": base_duration,
-                    "base_recovery_rate": base_recovery,
-                    "forecast_horizon": forecast_horizon,
-                    "num_simulations": num_simulations,
-                    "shock_intensity_std": intensity_std,
-                    "recovery_rate_std": recovery_std,
-                    "duration_variance": duration_var
-                }
+                # Get baseline forecast
+                baseline_df = get_baseline_forecast()
                 
-                # Make API call (would need actual API endpoint)
-                # For now, simulate results
-                st.session_state.mc_results = {
-                    "summary": {
-                        "total_simulations": num_simulations,
-                        "mean_peak_ue": round(6.5 + base_intensity * 5, 2),
-                        "ue_95_confidence": [
-                            round(6.0 + base_intensity * 4, 2),
-                            round(7.0 + base_intensity * 6, 2)
-                        ],
-                        "mean_recovery_time": round(3 + base_duration * 1.5, 1)
-                    },
-                    "peak_unemployment_stats": {
-                        "mean": 6.5 + base_intensity * 5,
-                        "std": intensity_std * 10,
-                        "percentiles": {
-                            "p5": 6.0 + base_intensity * 4,
-                            "p25": 6.2 + base_intensity * 4.5,
-                            "p75": 6.8 + base_intensity * 5.5,
-                            "p95": 7.0 + base_intensity * 6
-                        }
-                    }
-                }
+                if baseline_df.empty:
+                    st.error("❌ Could not load baseline forecast data")
+                    st.stop()
+                
+                # Initialize simulation engine
+                engine = AdvancedSimulationEngine()
+                
+                # Configure Monte Carlo simulation
+                config = MonteCarloConfig(
+                    num_simulations=num_simulations,
+                    shock_intensity_std=intensity_std,
+                    recovery_rate_std=recovery_std,
+                    duration_variance=duration_var,
+                    confidence_levels=[0.05, 0.25, 0.75, 0.95]
+                )
+                
+                # Run REAL Monte Carlo simulation
+                results = engine.monte_carlo_simulation(
+                    baseline_df=baseline_df,
+                    base_shock_intensity=base_intensity,
+                    base_shock_duration=base_duration,
+                    base_recovery_rate=base_recovery,
+                    config=config
+                )
+                
+                # Store real results
+                st.session_state.mc_results = results
                 
                 st.success(f"✅ Monte Carlo simulation completed ({num_simulations} runs)")
                 
             except Exception as e:
                 st.error(f"❌ Simulation failed: {e}")
+                import traceback
+                st.code(traceback.format_exc())
 
 elif current_mode == "Multi-Shock":
     st.markdown('<div class="section-title">💥 Multi-Shock Configuration</div>', unsafe_allow_html=True)
@@ -239,24 +280,37 @@ elif current_mode == "Multi-Shock":
     if st.button("💥 Run Multi-Shock Simulation", use_container_width=True, key="run_ms"):
         with st.spinner("⚡ Running multi-shock simulation..."):
             try:
-                # Simulate results
-                total_impact = sum(event["intensity"] for event in shock_events) * 2.5
+                # Get baseline forecast
+                baseline_df = get_baseline_forecast()
                 
-                st.session_state.ms_results = {
-                    "summary": {
-                        "total_shocks": len(shock_events),
-                        "compound_peak_ue": round(6.5 + total_impact, 2),
-                        "total_impact": round(total_impact, 2),
-                        "most_severe_shock": max(shock_events, key=lambda x: x["intensity"])["shock_type"]
-                    },
-                    "shock_contributions": {
-                        f"{event['shock_type']}_{i}": {
-                            "type": event["shock_type"],
-                            "intensity": event["intensity"],
-                            "peak_impact": event["intensity"] * 2.5
-                        } for i, event in enumerate(shock_events)
-                    }
-                }
+                if baseline_df.empty:
+                    st.error("❌ Could not load baseline forecast data")
+                    st.stop()
+                
+                # Convert UI shock events to ShockEvent objects
+                shock_event_objects = []
+                for event in shock_events:
+                    shock_event_objects.append(ShockEvent(
+                        shock_type=ShockType[event["shock_type"].upper()],
+                        intensity=event["intensity"],
+                        duration=event["duration"],
+                        start_year=event["start_year"],
+                        sector_impacts={},  # Could be enhanced with sector selection
+                        description=event["description"]
+                    ))
+                
+                # Initialize simulation engine
+                engine = AdvancedSimulationEngine()
+                
+                # Run REAL multi-shock simulation
+                results = engine.multi_shock_scenario(
+                    baseline_df=baseline_df,
+                    shock_events=shock_event_objects,
+                    policy_responses=policy_responses if enable_policies else None
+                )
+                
+                # Store real results
+                st.session_state.ms_results = results
                 
                 st.success(f"✅ Multi-shock simulation completed ({len(shock_events)} shocks)")
                 
@@ -306,27 +360,63 @@ elif current_mode == "Stress Testing":
     if st.button("🔬 Run Stress Testing", use_container_width=True, key="run_st"):
         with st.spinner("⚡ Running stress testing framework..."):
             try:
-                # Simulate results
-                total_scenarios = 5 if use_predefined else 3
-                passed_scenarios = np.random.randint(2, total_scenarios + 1)
-                pass_rate = (passed_scenarios / total_scenarios) * 100
+                # Get baseline forecast
+                baseline_df = get_baseline_forecast()
                 
-                resilience = "HIGH" if pass_rate >= 80 else "MEDIUM" if pass_rate >= 60 else "LOW"
+                if baseline_df.empty:
+                    st.error("❌ Could not load baseline forecast data")
+                    st.stop()
                 
-                st.session_state.st_results = {
-                    "summary": {
-                        "total_scenarios": total_scenarios,
-                        "passed_scenarios": passed_scenarios,
-                        "failed_scenarios": total_scenarios - passed_scenarios,
-                        "pass_rate": round(pass_rate, 1),
-                        "system_resilience": resilience
-                    }
-                }
+                # Initialize simulation engine
+                engine = AdvancedSimulationEngine()
                 
-                st.success(f"✅ Stress testing completed ({total_scenarios} scenarios)")
+                # Get stress scenarios
+                if use_predefined:
+                    stress_scenarios = get_predefined_stress_scenarios()
+                else:
+                    # Create custom scenarios
+                    stress_scenarios = [
+                        {
+                            "name": "Custom Severe Shock",
+                            "type": "single_shock",
+                            "shock_intensity": custom_intensity,
+                            "shock_duration": custom_duration,
+                            "recovery_rate": 0.2,
+                            "description": "Custom stress test scenario"
+                        },
+                        {
+                            "name": "Custom Moderate Shock",
+                            "type": "single_shock",
+                            "shock_intensity": custom_intensity * 0.7,
+                            "shock_duration": custom_duration - 1,
+                            "recovery_rate": 0.3,
+                            "description": "Custom moderate scenario"
+                        },
+                        {
+                            "name": "Custom Mild Shock",
+                            "type": "single_shock",
+                            "shock_intensity": custom_intensity * 0.5,
+                            "shock_duration": custom_duration - 2,
+                            "recovery_rate": 0.4,
+                            "description": "Custom mild scenario"
+                        }
+                    ]
+                
+                # Run REAL stress testing
+                results = engine.stress_test_framework(
+                    baseline_df=baseline_df,
+                    stress_scenarios=stress_scenarios
+                )
+                
+                # Store real results
+                st.session_state.st_results = results
+                
+                st.success(f"✅ Stress testing completed ({results['summary']['total_scenarios']} scenarios)")
                 
             except Exception as e:
                 st.error(f"❌ Stress testing failed: {e}")
+                import traceback
+                st.code(traceback.format_exc())
 
 elif current_mode == "Economic Cycles":
     st.markdown('<div class="section-title">🔄 Economic Cycle Configuration</div>', unsafe_allow_html=True)
@@ -370,29 +460,33 @@ elif current_mode == "Economic Cycles":
     if st.button("🔄 Run Economic Cycle Simulation", use_container_width=True, key="run_ec"):
         with st.spinner("⚡ Running economic cycle simulation..."):
             try:
-                # Simulate results
-                baseline_ue = 6.5
-                peak_ue = baseline_ue + amplitude * baseline_ue
-                trough_ue = baseline_ue - amplitude * baseline_ue
+                # Get baseline forecast
+                baseline_df = get_baseline_forecast()
                 
-                st.session_state.ec_results = {
-                    "summary": {
-                        "peak_ue": round(peak_ue, 2),
-                        "trough_ue": round(trough_ue, 2),
-                        "cycle_range": round(peak_ue - trough_ue, 2),
-                        "volatility": round(amplitude * baseline_ue * 0.3, 2)
-                    },
-                    "cycle_metrics": {
-                        "cycle_length": cycle_length,
-                        "amplitude": amplitude,
-                        "phases_covered": ["expansion", "peak", "contraction", "trough"]
-                    }
-                }
+                if baseline_df.empty:
+                    st.error("❌ Could not load baseline forecast data")
+                    st.stop()
+                
+                # Initialize simulation engine
+                engine = AdvancedSimulationEngine()
+                
+                # Run REAL economic cycle simulation
+                results = engine.economic_cycle_simulation(
+                    baseline_df=baseline_df,
+                    cycle_length=cycle_length,
+                    amplitude=amplitude,
+                    current_phase=EconomicCycle[current_phase.upper()]
+                )
+                
+                # Store real results
+                st.session_state.ec_results = results
                 
                 st.success(f"✅ Economic cycle simulation completed")
                 
             except Exception as e:
                 st.error(f"❌ Simulation failed: {e}")
+                import traceback
+                st.code(traceback.format_exc())
 
 # ─── Results Display ──────────────────────────────────────────────────────────
 st.markdown("<br><br>", unsafe_allow_html=True)
