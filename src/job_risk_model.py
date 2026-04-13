@@ -1,9 +1,22 @@
 """
 Job unemployment risk predictor (Feature 1).
 
-Trains a logistic regression on synthetic-but-structured data so the model
-learns sensible relationships: stronger skills, education, experience,
-industry growth, and better locations → lower estimated risk.
+⚠️  EXPERIMENTAL MODEL - NOT VALIDATED WITH REAL DATA ⚠️
+
+This model is trained on SYNTHETIC DATA derived from job postings.
+The training data is NOT based on actual unemployment outcomes.
+
+Data Quality Status:
+- Training Data: SYNTHETIC (silver-labeled from job postings)
+- Validation: NOT PERFORMED
+- Confidence Level: EXPERIMENTAL
+- Recommended Use: Educational/exploratory purposes only
+
+The model learns relationships from job market signals (salary, role, sector)
+but has NOT been validated against real unemployment outcomes.
+
+Stronger skills, education, experience, industry growth, and better locations
+→ lower estimated risk (based on market signals, not actual outcomes).
 
 The UI calls this module directly; it does not depend on the FastAPI stack.
 """
@@ -321,6 +334,10 @@ class JobRiskResult:
     suggestions: List[str]
     # Optional — callers must None-check before calling .items().
     contributions: Optional[Dict[str, float]] = None
+    # Data quality metadata
+    data_quality_warning: str = "⚠️  EXPERIMENTAL: Model trained on synthetic data, not validated"
+    confidence_level: str = "LOW"
+    model_version: str = MODEL_VERSION
 
 
 def _risk_level_from_prob(p: float) -> str:

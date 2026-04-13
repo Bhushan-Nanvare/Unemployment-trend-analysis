@@ -1,4 +1,22 @@
-"""Benchmark engine for peer comparison using synthetic data."""
+"""
+Benchmark engine for peer comparison using synthetic data.
+
+⚠️  DATA QUALITY WARNING ⚠️
+
+This module generates SYNTHETIC peer profiles for benchmarking.
+The peer data is NOT based on real salary surveys or actual market data.
+
+Data Quality Status:
+- Peer Data: SYNTHETIC (algorithmically generated)
+- Validation: NOT PERFORMED
+- Confidence Level: SIMULATED
+- Recommended Use: Relative comparison only, not absolute benchmarks
+
+The synthetic peers are generated with realistic distributions but should
+be treated as SIMULATED data for educational/exploratory purposes.
+
+For production use, replace with real salary survey data or market benchmarks.
+"""
 
 import numpy as np
 from typing import List
@@ -22,11 +40,15 @@ class BenchmarkEngine:
         """
         Generate synthetic peer profiles matching industry and role level
         
+        ⚠️  WARNING: This generates SYNTHETIC data, not real market data
+        
         Algorithm:
         1. Create base profile matching user's industry and role_level
         2. Vary skills, experience, education with realistic distributions
         3. Calculate risk for each synthetic profile
         4. Ensure realistic variation (std dev ~15-20 points)
+        
+        For production use, replace with real salary survey or market data.
         """
         rng = np.random.default_rng(42)  # Fixed seed for reproducibility
         orchestrator = RiskCalculatorOrchestrator()
