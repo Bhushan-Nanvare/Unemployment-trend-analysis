@@ -1,0 +1,1465 @@
+{
+  "cached_at": "2026-04-13T14:56:52.067218",
+  "data": {
+    "total_jobs": 2591,
+    "avg_salary": 2144480.2,
+    "jobs": [
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYxNjcxOTIxMCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.gSX-0x8HqHmuAtOqbCGoYnC2tUZCgxv7nLS8UOR50RU",
+        "title": "Staff Engineer",
+        "longitude": 78.50806,
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "What youll do: As a Staff Engineer specializing in Microsoft Configuration Manager (MECM / SCCM) , you will contribute to the design, deployment, and support of enterprise endpoint management solutions. Youll work on complex projects, proactively support platform improvements, and collaborate across teams to ensure reliable and secure operations. Youll also help mentor junior engineers and contribute to platform strategy through hands-on technical work. Were looking for a skilled engineer who e\u2026",
+        "redirect_url": "https://www.adzuna.in/land/ad/5616719210?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=1F2C0C12D5B1062BC8F0272054F8DCA447149519",
+        "id": "5616719210",
+        "created": "2026-02-06T08:21:58Z",
+        "latitude": 17.40275,
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "created": "2026-02-17T09:39:09Z",
+        "latitude": 17.40275,
+        "description": "What you will do: As a Staff Engineer, you will serve as the technical lead for store deployments across 4000 stores globally. You will be responsible for driving deployment strategy, improving processes, mentoring engineers, and ensuring the reliability and scalability of store software rollouts. This is a senior-level role that combines deep technical expertise with leadership and innovation. Key Responsibilities: Serve as the technical authority for deployments that span across POS & Payment\u2026",
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "id": "5632723144",
+        "redirect_url": "https://www.adzuna.in/land/ad/5632723144?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=A3B2C49D0431B984E94CE0469119DC2B0C0C565A",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYzMjcyMzE0NCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.6RbP3T3SrbHAHgzclgBzaQ1rkPhjbuSy8M4mWujwjX4",
+        "longitude": 78.50806,
+        "title": "Staff Engineer"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "ACL Digital",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "created": "2025-05-20T18:29:09Z",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Technical Lead - Design Verification Experience: 8 Years Location: Bengaluru We are seeking a highly skilled and experienced Senior Design Verification Engineer to join our SoC/ASIC verification team in Bangalore. The ideal candidate will have a deep understanding of the verification lifecycle, from test planning to coverage closure, and be able to independently drive complex verification tasks for IP, subsystem, or full-chip level designs. Key Responsibilities: Develop and execute test plans f\u2026",
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5207489632?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=A1582E3D527D296C727975D78FFED0D36454F4E0",
+        "id": "5207489632",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTIwNzQ4OTYzMiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.063eUlfwnEw4r6hkosJu0Kdxa7co9KaRzOxZlEG4U_Y",
+        "title": "Staff Engineer"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Outcomes\u00ae"
+        },
+        "created": "2026-04-01T16:15:21Z",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "The Software Engineer IV is a full-stack developer and technical leader proficient at designing and developing all layers of complex software applications. This engineer works on an agile product development team as a hands-on contributor, collaborator, and leader. The Software Engineer IV plays an important role on their team by leading significant initiatives, establishing team best practices, helping teammates grow as engineers, and who proposes new technology solutions which transform healt\u2026",
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5685320107?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=E5E3482A4A3804E9BF30617AF72489FBD67C3671",
+        "id": "5685320107",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4NTMyMDEwNyIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.wyr-yfmNy5j3Q80r0UAMp5RdcMxRGjPAmnbS_1Hp2K4",
+        "title": "Staff Engineer"
+      },
+      {
+        "longitude": 78.50806,
+        "title": "Staff Engineer",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYxNjcxOTQwMyIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.er7wrfGqynLKZOVLqV7NF60Ho-f0wq3W4nbFXtpfvGo",
+        "id": "5616719403",
+        "redirect_url": "https://www.adzuna.in/land/ad/5616719403?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=48B9E8FB6DF6971D0AE482531F0C24983DEE1398",
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "description": "About TJX: TJX is a Fortune 100 company that operates off-price retailers of apparel and home fashions. TJX Global IT India - Hyderabad is the IT home office in the global technology organization of off-price apparel and home fashion retailer TJX, established to deliver innovative solutions that help transform operations globally. At TJX, we strive to build a workplace where our Associates' contributions are welcomed and are embedded in our purpose to provide excellent value to our customers ev\u2026",
+        "latitude": 17.40275,
+        "created": "2026-02-06T08:22:04Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjM5NDQzNzA3In0.iuh7pkiQN3EAT3nhNOZPOsJ3Du_bHPjkywq0nswwHCA",
+        "title": "Staff Engineer Software",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "description": "Job Description We are excited to announce an opening for Staff Engineer Software at ACI. Please find below the details of the role and its responsibilities. Position Title: Staff Software Engineer Job Description: Roles & responsibilities: Hands on code writing skills, conducts code reviews and works continuously on code quality improvements Performs advanced development, support and implementation of complex systems using specialized domain knowledge and highly developed business expertise Pa\u2026",
+        "id": "5639443707",
+        "redirect_url": "https://www.adzuna.in/land/ad/5639443707?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=1DC79C144CD9214F6B47C7EAFD28C688750E0170",
+        "created": "2026-02-21T13:09:27Z",
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1MzI4OTM4OCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.Luj5b9YVmOYEcFfeeIRjlsgeEAA56jNMGcWvsNDIYXw",
+        "id": "5653289388",
+        "redirect_url": "https://www.adzuna.in/land/ad/5653289388?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=6C566B8EFA9DAB9847F8BF1C6DF363D034DD4B47",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "description": "Position Title: Staff Engineer Data The Data Engineering team at Albertsons Companies is looking for experienced Data Engineers to work for the most transformational food and drug retailers in the United States. Albertsons operates over 2,300 stores under 19 well-known banners including Albertsons, Safeway, Vons, Jewel-Osco, Shaw's, Acme, Tom Thumb, Randalls, United Supermarkets, Pavilions, Star Market, Haggen and Carrs. The company reported revenue of over $60billion from over 34 million weekl\u2026",
+        "created": "2026-03-04T11:03:52Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "salary_is_predicted": "0"
+      },
+      {
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "description": "What you will do: A s a Senior Staff Engineer speci alizing in Microsoft Configuration Manager (MECM / SCCM), you will lead the design, deployment, and evolution of enterprise endpoint management solutions. Youll own large-scale, complex initiatives that span multiple teams and technologies, guiding engineering efforts and setting technical direction. Youll be responsible for mentoring engineers, driving platform strategy, and ensuring operational excellence across Configuration Manager and rel\u2026",
+        "id": "5634049923",
+        "redirect_url": "https://www.adzuna.in/land/ad/5634049923?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=40942B18886A06CD58E0B7736CAE515C0424D758",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjM0MDQ5OTIzIn0.bL8nxguN94Sri4Gcl1CDf1WQA-dp1WULc44wwisJuEY",
+        "title": "Senior Staff Engineer",
+        "longitude": 78.50806,
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "created": "2026-02-18T09:39:22Z",
+        "latitude": 17.40275
+      },
+      {
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "created": "2026-02-06T08:21:55Z",
+        "latitude": 17.40275,
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "description": "What youll do: As a Senior Staff Engineer in Wintel Engineering, you will lead the design, implementation, and evolution of server and endpoint platforms across the enterprise. Youll own large-scale initiatives involving firmware, operating systems, and remote management technologies, guiding other engineers and setting technical direction. Youll be responsible for deep troubleshooting, platform architecture, and driving innovation in compute infrastructure. We seek a hands-on technical leader \u2026",
+        "id": "5616719110",
+        "redirect_url": "https://www.adzuna.in/land/ad/5616719110?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=62A17C1A5CFF3587CA74DC5963AED152723C9DE1",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjE2NzE5MTEwIn0.0VALj6sCFMkpKToYagHdExI12Zf5K2Il7QS02v6Ch3s",
+        "title": "Senior Staff Engineer",
+        "longitude": 78.50806
+      },
+      {
+        "latitude": 17.40275,
+        "created": "2026-02-17T09:38:52Z",
+        "salary_is_predicted": "0",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYzMjcyMjg3NiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.8MfVjK8xb1B05rzL2613pp5ZzofRtp3Yo6df4BOQfzs",
+        "title": "Senior Staff Engineer",
+        "longitude": 78.50806,
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana"
+        },
+        "description": "What you will do: The Distribution Engineering Mobile Device Management team at TJX plays a critical role in supporting our global operations by ensuring seamless deployment, configuration, and management of mobile computer solutions. As a Senior Staff Engineer, you will be instrumental in implementing and supporting SOTI MobiControl for various Honeywell Android hardware and HP thin clients across multiple environments and use cases. You will collaborate with cross-functional teams and vendors\u2026",
+        "id": "5632722876",
+        "redirect_url": "https://www.adzuna.in/land/ad/5632722876?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=11DFEE497B7CC2822739BA786E6D21D046A9D239"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "created": "2026-03-06T05:40:46Z",
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "Position Title: Staff Engineer Infrastructure Job Description: Key Responsibilities include: Design, develop, document, test, and enhance ITOM / CMDB capabilities, including discovery patterns, sensors, and integrations. Champion ITOM best practices, standards, and governance across the organization. Partner daily with the Configuration Management and Asset Management Process Owners to align technical solutions with CMDB and AMDB requirements. Ensure Discovery tools maintain proper access and p\u2026",
+        "redirect_url": "https://www.adzuna.in/land/ad/5655714861?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=CC0880309D0770AD8663712D599CDCDA5C704230",
+        "id": "5655714861",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjU1NzE0ODYxIn0.a1xdoI8Y9jgQey2u1Ub0DSKL-Aw1ujqbjfeH2BZvO2o",
+        "title": "Staff Engineer Infrastructure"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3OTk2NTcxMSIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.Fvfd12PPQnPI-EyQUvkJpak5845_c7DfuOGzFN9pHgU",
+        "title": "Staff Engineer-Wintel",
+        "longitude": 78.50806,
+        "description": "Job Description: Discovery is at the heart of everything we do. Wherever you find us around the world, if you can think of a product, you can probably find it in our stores, which include TJ Maxx, Marshalls, HomeGoods, Sierra, Winners, Home sense, and TK Maxx. With variety comes plenty of happy surprisesour environment is ever-changing, and thats just how we like it. Every day is an opportunity to discover something new about our business, our partnerships and even something exciting about your\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "id": "5679965711",
+        "redirect_url": "https://www.adzuna.in/land/ad/5679965711?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=261F37C89985ABB4FE4DC8DB005BBEB53777297E",
+        "created": "2026-03-27T09:34:33Z",
+        "latitude": 17.40275,
+        "salary_is_predicted": "0",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "longitude": 78.50806,
+        "title": "Senior Staff Engineer",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYxNjcxOTA4MCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.ixyucnqR8sdjUsC89r9glIkaHiDNyt9_1GsKsQFsfEY",
+        "redirect_url": "https://www.adzuna.in/land/ad/5616719080?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=29FC9A4440B3139457399B9D02A04D9376E43EB3",
+        "id": "5616719080",
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "description": "What youll do: As a Senior Staff Engineer , you will lead the design, architecture, and evolution of enterprise-scale video infrastructure and network platforms. Youll own large, complex initiatives involving IP-based camera systems, NVRs, and secure network configurations. Youll guide other engineers, set technical direction, and drive innovation in video streaming, storage, and analytics. Youll be responsible for engineering resilient, secure systems and solving escalated technical challenges\u2026",
+        "latitude": 17.40275,
+        "created": "2026-02-06T08:21:51Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0"
+      },
+      {
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "description": "About the Role: We are looking for a Staff Engineer with deep expertise in Manhattan Warehouse Management System (WMS) or other leading WMS platforms, combined with strong capabilities in custom application development and enterprise integration patterns and technologies. This role requires the ability to quickly understand existing system integrations, business transaction flows, and operational dependencies, and to lead the existing system as well as the evolution of integrations into our mod\u2026",
+        "redirect_url": "https://www.adzuna.in/land/ad/5621100725?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=54C1C87D0A578DA7CB1643C5D05C166754B94033",
+        "id": "5621100725",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjIxMTAwNzI1In0.QvitsQe6MUnKZVrZjtmR2SvRHaov_jSTTY6jzjXLhTw",
+        "longitude": 78.50806,
+        "title": "Staff Engineer-Integration",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "latitude": 17.40275,
+        "created": "2026-02-09T08:23:36Z"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "created": "2025-12-18T08:55:13Z",
+        "description": "Position Title: Staff Engineer Cloud Job Description: Roles & responsibilities: Provide technical consulting to peer groups and management on infrastructure, OS, and subsystems Evaluate vendor software and contribute to RFP, POT, and POC efforts Define and implement efficient, cost-effective solutions for complex infrastructure needs Collaborate across teams to understand IT requirements and business challenges Consult on and lead implementation of innovative cloud technologies aligned to strat\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5546645355?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=BFA201F997BB00DF6E01247D97170E8AC4B08657",
+        "id": "5546645355",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTU0NjY0NTM1NSIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.WUYjURc_xKXYhXFRS7Ax1oxJMYnHIfXynaJ_G701aD0",
+        "title": "Staff Engineer Cloud"
+      },
+      {
+        "created": "2026-03-19T06:03:54Z",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjcxNDE1OTIwIn0.tuY-oluOqOP8mg96VahRMtRSiDIVISi_fpF2opmnXR4",
+        "title": "Staff Engineer DevOps",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Position Title: Staff Engineer DevOps Job Description : Roles & responsibilities: Design and implement GitHub Actions CI (Continuous Integration) pipelines which are crucial for compiling the source code and creating the artifact using tools like maven and Gradle Design and implement GitHub Actions CD (Continuous Deployment) pipelines to deploy the artifacts from the CI process to the different environments like QA, Staging, UAT, Production using tools like GitHub Actions Design and implement t\u2026",
+        "id": "5671415920",
+        "redirect_url": "https://www.adzuna.in/land/ad/5671415920?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=F563219D1E630C14AC598CC7C93902D59CAC6520"
+      },
+      {
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "PositionTitle:Staff Engineer Software Android Weareexcited toannounceanopeningforStaff EngineerSoftware (Android)atACI. Please find below the details of the role and its responsibilities. Skills Required: Selenium,Appium,Cucumber, TestAutomation,Junit,JUnit,Mockito,Java,SpringBoot, Core Java, Android Jetpack, Compose, Compose Multiplatform, Kotlin, MongoDB, NoSQL, Cassandra, Mobile Development, RoomDB, RestAPI, 6 months to 1 year experience on AI, copilot, codex, GeminiAI, LLM, OpenAI, Agentic \u2026",
+        "redirect_url": "https://www.adzuna.in/land/ad/5651906532?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=EE16285E207E33DE78DEEF5C77B045FC33B643A7",
+        "id": "5651906532",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjUxOTA2NTMyIn0.9LoOTtoRDliVhZTE-z362o_ymscmkLeIrvnnV7g4zOk",
+        "title": "Staff Engineer Software",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "created": "2026-03-03T08:21:51Z"
+      },
+      {
+        "id": "5692783205",
+        "redirect_url": "https://www.adzuna.in/land/ad/5692783205?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=28B3AA49C61DDAA839DB8A1B4604F10C8AF29A70",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Store Mobility Pulse: We are building next geneCommerce operations tool that provides real-time data, metrics, alerts , and the inherent capability for business to manage day to day operations. As a Staff/Senior Engineer/advanced engineer, you will design, build, and operate resilient microservices on Microsoft Azure using Java (Spring Boot, Spring WebFlux/Reactive), integrating rich data and streaming pipelines across SQL Server, Apache Kafka, and Azure Databricks. You will act as a lead/archi\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5Mjc4MzIwNSIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.tE5ogmyaKXyVvSRZpCZS7bu95keD3PCzTLXJVkZu8M0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0",
+        "created": "2026-04-08T09:38:07Z"
+      },
+      {
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0",
+        "created": "2026-03-13T07:46:56Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5663139944?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=A392F9C8109B90205944258A91FBF48B45D15C11",
+        "id": "5663139944",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Job Description: Position Title: Staff Engineer Architect Data Roles & responsibilities: Lead the discovery phase of large projects to come up with a high-level architecture and design. Lead the cross functional architecture teams to identify the impact and work with them to deliver the architecture and design. Work with a team of Architects and Tech Leads to define, own and implement the architecture. Run the architecture and design review meetings. Develop, own and manage functional architect\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "title": "Staff Engineer Architect",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY2MzEzOTk0NCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.-Nor7auLlj4_FfY4cm-uLBymFoar5ud6QjVo4feJlmw"
+      },
+      {
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "Position Title: Staff Engineer Architect Function: Job Description: Roles & responsibilities: Lead the discovery phase of large projects to come up with a high-level architecture and design. Lead the cross functional architecture teams to identify the impact and work with them to deliver the architecture and design. Work with a team of Architects and Tech Leads to define, own and implement the architecture. Run the architecture and design review meetings. Develop, own and manage functional arch\u2026",
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "id": "5656948502",
+        "redirect_url": "https://www.adzuna.in/land/ad/5656948502?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=59E6DA02ADEEAD17E165E1DF130C95E0F497E039",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1Njk0ODUwMiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.qifIBa8ZYc2AShYJOJkicuxAojWUiBBHlZo0xZWJTis",
+        "title": "Staff Engineer Architect",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "created": "2026-03-07T05:24:36Z"
+      },
+      {
+        "created": "2026-03-21T09:30:14Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0",
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3MzgzMjY2MyIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.mr_q-fSchblkdN0ebsKhtBSYsINyqjtlu0-EkgZsLo0",
+        "id": "5673832663",
+        "redirect_url": "https://www.adzuna.in/land/ad/5673832663?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=42505312528424A10961EC3BA03DA95E59B3126A",
+        "description": "Position Title: Staff Software Engineer Job Description: Roles & responsibilities: Hands on code writing skills, conducts code reviews and works continuously on code quality improvements Performs advanced development, support and implementation of complex systems using specialized domain knowledge and highly developed business expertise Partners with Architects to work on low level designs Leads large projects and programs with limited or no oversight Evaluates business and software industry tr\u2026",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        }
+      },
+      {
+        "id": "5653289438",
+        "redirect_url": "https://www.adzuna.in/land/ad/5653289438?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=21DEC8792B0353CC787C147A9780331AA32C25A2",
+        "description": "Position Title: Staff Software Engineer Job Description: Roles & responsibilities: Hands on code writing skills, conducts code reviews and works continuously on code quality improvements Performs advanced development, support and implementation of complex systems using specialized domain knowledge and highly developed business expertise Partners with Architects to work on low level designs Leads large projects and programs with limited or no oversight Evaluates business and software industry tr\u2026",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1MzI4OTQzOCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.UeHee9FR4j-veYkVLscWllUem9Wuz5Z5MEKwyLQQRhs",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "created": "2026-03-04T11:04:01Z"
+      },
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5644503539?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=9DF71EBD3455A5807192CF505961F281254C5C32",
+        "id": "5644503539",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Position Title: Staff Software Engineer Job Description: Roles & responsibilities: Hands on code writing skills, conducts code reviews and works continuously on code quality improvements Performs advanced development, support and implementation of complex systems using specialized domain knowledge and highly developed business expertise Partners with Architects to work on low level designs Leads large projects and programs with limited or no oversight Evaluates business and software industry tr\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjQ0NTAzNTM5In0.ZnyTvkNy5yf4kUDIqO5-DKH-7zAUa0zLi9E6qKoZMww",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "created": "2026-02-25T10:36:16Z"
+      },
+      {
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "description": "Job Description: Success is always in style at TJX! Continue to explore career opportunities at TJX, a Fortune 100 company and the leading off-price retailer of clothing and home fashions in the U.S. and worldwide. At TJX, we are proud that, for 40 years, we have provided amazing value to our customers; but the merchandise we sell is just part of our story. We believe that our Associates bring our business to life, and we aim to support you by making TJX a terrific place to work. We are committ\u2026",
+        "id": "5659926192",
+        "redirect_url": "https://www.adzuna.in/land/ad/5659926192?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=67CD118A8475614AAD966FD443F0AEBF67724927",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1OTkyNjE5MiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.BpyBXENdcJ397sRs1n9h0oFErs0g1omgkaaG3HQ9wTA",
+        "title": "Staff Engineer-AI",
+        "longitude": 78.50806,
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "created": "2026-03-10T09:36:28Z",
+        "latitude": 17.40275
+      },
+      {
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "created": "2026-03-03T08:21:53Z",
+        "id": "5651906547",
+        "redirect_url": "https://www.adzuna.in/land/ad/5651906547?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=9CE842576FDA7444B4CC4A8F34019B913D3491D2",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "PositionTitle:StaffEngineerSoftware- Full Stack Weareexcited toannounceanopeningforStaffEngineer SoftwareatACI. Please find below the details of the role and its responsibilities. Skills Required: Java, JavaScript, MySQL, PostgreSQL, HTML, CSS, React/Angular, Spring Boot, MongoDB, IntelliJ, GitHub, GitHub Copilot, JUnit, Mockito, Webflux. 6 months to 1 year experience on AI, copilot, codex, GeminiAI, LLM, OpenAI, Agentic AI. Experience Range: 9-12 years Job Description: Roles &responsibilities:\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjUxOTA2NTQ3In0.95Y12DUl9XPYV4JLrIGmCgeSTGJtIjzsBzQ1sOzRH8U"
+      },
+      {
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0",
+        "created": "2026-02-28T08:19:27Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5648148582?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=847048261F5293CBCE7742A329B379E74808F08F",
+        "id": "5648148582",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "description": "PositionTitle:Staff SoftwareEngineer Java Full Stack JobDescription: WeareexcitedtoannounceanopeningforStaffEngineer SoftwareatACI. Please find below the details of the role and its responsibilities. Skills Required: Java,SpringBoot,ApacheSpark,Spark,ApacheKafka,Kafka,React, React.js, NoSQL, Reactive Programming, MongoDB. 6 months to 1 year experience on AI, copilot, codex, Gemini AI, LLM, OpenAI, Agentic AI. Experience Range: 9-12 years. Roles &responsibilities: Improvescodestructureandarchite\u2026",
+        "title": "Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjQ4MTQ4NTgyIn0.DEqoUTQ-sE_mXT2he1k4dg3DlG_TE-8U4k1QvWPX-hI"
+      },
+      {
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "created": "2026-04-08T09:38:06Z",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Data  BI Engineer: Role Summary: We are seeking a talented and versatile Power BI & Data Engineer to join our dynamic team. This is a role designed for a data professional who is passionate about both front-end visualization and back-end data architecture. You will be responsible for translating complex retail data into actionable insights through sophisticated Power BI reports/dashboards while also designing, building, and maintaining the scalable data pipelines that make this reporting possib\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "id": "5692783199",
+        "redirect_url": "https://www.adzuna.in/land/ad/5692783199?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=C3BC441057583EF738F3AEC9AFA2E4E80A2346C3",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5Mjc4MzE5OSIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.tIWPsGr5MLEXnFMQSckAKFzC6gE7WhnKNuoK3AkJIZ0",
+        "title": "Staff Engineer Data"
+      },
+      {
+        "created": "2026-02-05T08:21:12Z",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0",
+        "longitude": 78.50806,
+        "title": "Senior Staff Engineering",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYxNTA4ODExNiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.p3TJ4-jTSDviHklYKtEPenO7RBNg9XHJ8fLpymnq8rQ",
+        "id": "5615088116",
+        "redirect_url": "https://www.adzuna.in/land/ad/5615088116?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=BD3E410201AB93CD7890DA81C8F01419DFA08945",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana"
+        },
+        "description": "What youll discover: Inclusive culture and career growth opportunities A truly Global IT Organization that collaborates across North America, Europe, Asia and Australia, click here to learn more Challenging, collaborative, and team-based environment Our organization : The Global Stores and Supply Chain Solution Delivery organization is responsible for delivering technology solutions to drive growth, enable efficiency, and improve customer experience at the front-line in our stores and managing \u2026"
+      },
+      {
+        "created": "2026-03-24T09:31:28Z",
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3NjUzNTY4MSIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.cvR2GXL88g0ygbZq6BHP9WjAkWOQ-9vtXsdNv9lU-Y0",
+        "title": "Staff Engineer DevOps (Database)",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Position Title: Staff Engineer DevOps (DBA) Job Description: Responsibilities: Database Management: Configure, manage, and monitor MongoDB and Cassandra database clusters to ensure high availability and performance. Performance Optimization: Tune databases for optimal performance, including indexing and query optimization. Backup and Recovery: Develop and implement backup and recovery strategies to ensure data integrity and availability. Security Management: Implement and maintain access contro\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5676535681?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=3761A06DC060A55CE32B4816CFD23E995814A247",
+        "id": "5676535681"
+      },
+      {
+        "title": "Staff Engineer Software (Java)",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY0NDUwMzU3NiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.n-XQ0t0UbFOUJkULvkqFq3rAeULmp3Jd-lUagVlJMdw",
+        "redirect_url": "https://www.adzuna.in/land/ad/5644503576?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=54EDA3CF009EABE5C715CA8BFC77FB6BE2763617",
+        "id": "5644503576",
+        "description": "Position Title: Staff Engineer Software - Java Job Description: Roles & responsibilities: Design & Develop APIs using Java, Spring Boot, Rest (WebFlux forreactive services), adhering to clean architecture, modular design, and testable code. BuildReactive Microservices with ProjectReactor/Spring WebFlux, ensuring backpressure, resilience, and high throughput for event-driven or streaming use cases. Collaborate closely with product, design, and backend teams to translate business requirements int\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "created": "2026-02-25T10:36:20Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "salary_is_predicted": "0"
+      },
+      {
+        "created": "2026-03-21T09:30:08Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0",
+        "title": "Senior Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjczODMyNjQyIn0.-7lGsTSqQzpSO2dm6VpEkQJ6-d50j2WwrxMZ8wW0qQw",
+        "redirect_url": "https://www.adzuna.in/land/ad/5673832642?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=EE59BB4C9461E8E9390E2EC64180289AA841CA03",
+        "id": "5673832642",
+        "description": "Position Title: Senior Staff Software Engineer Job Description: We are excited to announce an opening for Senior Staff Engineer Software at ACI. Please find below the details of the role and its responsibilities. Skills Required: Kafka, Apache Kafka, WebSphere MQ, RabbitMQ, Selenium, Playwright, Cucumber, Spark, Databricks, Distributed Computing, Azure, Azure DevOps Services, Java Reactive, RxJava, Reactor, Project Reactor, Reactive Programming, Spring Web flux, NoSQL, MongoDB, Cassandra, React\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        }
+      },
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5654937372?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=8D36E6E78EC63A2EAE240124691377F57C1B69A3",
+        "id": "5654937372",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "About the team Money generates incredibly rich behavioural data. At slice, we\u2019re building the intelligence layer that transforms raw financial signals into context-aware, personalised user experiences. This team sits at the intersection of backend engineering, distributed systems, and applied AI. We are building an AI-first banking experience. Not AI features sprinkled on top, but core intelligence that understands patterns, correlations, and intent across user behaviour. This is where backend \u2026",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "title": "Staff Engineer - Machine Learning",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjU0OTM3MzcyIn0.KmjlU_kpzj0wIvOHixr01L3cjDIOF4GQ5gdVT-Wu0hA",
+        "company": {
+          "display_name": "slice",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "created": "2026-03-05T17:45:01Z"
+      },
+      {
+        "title": "Senior Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1MTkwNjUzMCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.c4kJbfu7HIP2ypD1Wm0YJKnkdIEzSqFZSPg9tbVaPNU",
+        "id": "5651906530",
+        "redirect_url": "https://www.adzuna.in/land/ad/5651906530?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=04B8A8DEDBB183D104F19BCBD885EECCB4F8B344",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "description": "PositionTitle:Senior Staff Engineer Software Android Weareexcited toannounceanopeningforSeniorStaff EngineerSoftware (Android)atACI. Please find below the details of the role and its responsibilities. Skills Required: Selenium,Appium,Cucumber, TestAutomation,Junit,JUnit,Mockito,Java,SpringBoot, Core Java, Android Jetpack, Compose, Compose Multiplatform, Kotlin, MongoDB, NoSQL, Cassandra, Mobile Development, RoomDB, RestAPI, 6 months to 1 year experience on AI, copilot, codex, GeminiAI, LLM, Ope\u2026",
+        "created": "2026-03-03T08:21:50Z",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0"
+      },
+      {
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "salary_is_predicted": "0",
+        "created": "2026-03-04T11:03:43Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5653289298?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=3DF19D82ADCF0E2141E0AE3880C8C45026D35023",
+        "id": "5653289298",
+        "description": "Position Title: Senior Staff Software Engineer Job Description: Roles & responsibilities: Hands on code writing skills, conducts code reviews and works continuously on code quality improvements Performs advanced development, support and implementation of complex systems using specialized domain knowledge and highly developed business expertise Partners with Architects to work on low level designs Leads large projects and programs with limited or no oversight Evaluates business and software indu\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "title": "Senior Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1MzI4OTI5OCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.8WjqoS-BpMKsnk5ssROZX_Lkc2FrHRazPiNv6FQbgtA"
+      },
+      {
+        "title": "Senior Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjQ1NzEwMjI3In0.1hrrtlE41Fr6yHv8C1l3eFVq98UyPIyWXCy_8VgKMO8",
+        "redirect_url": "https://www.adzuna.in/land/ad/5645710227?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=05B978C6BE541824880A4ED3CEE411D60D7A9531",
+        "id": "5645710227",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "description": "Position Title: Senior Staff Software Engineer Job Description: Roles & responsibilities: Improves code structure and architecture in service of testability and maintainability. Creates reusable code snippets as applicable. Writes, co-writes, and reviews design documentation. Tech explorations/POCs and owning and managing Tech roadmap for their respective areas Is highly proficient in one or more technical areas. Interprets business requirements/strategies for assigned groups; articulates capab\u2026",
+        "created": "2026-02-26T08:15:29Z",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "created": "2026-02-03T08:20:20Z",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "Position Title: Senior Staff Software Engineer Roles & responsibilities: Develop and execute the roadmap for integrating agentic AI systems (autonomous and semi-autonomous agents) into commerce workflows. Identify high-impact use cases such as AI-driven personalization, dynamic pricing, automated merchandising, and conversational shopping. Collaborate with data scientists, engineers, and business teams to design, deploy, and iterate on AI agent solutions. Improves code structure and architectur\u2026",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "id": "5611213092",
+        "redirect_url": "https://www.adzuna.in/land/ad/5611213092?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=86396B770B920D632099D22104191B84EAB059A5",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYxMTIxMzA5MiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.I56mVj-Wym55gct5e1Yv9ut9XWBeWz4wJQLTkykuYx4",
+        "title": "Senior Staff Engineer Software"
+      },
+      {
+        "title": "Staff Engineer- Java Backend",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1Njc2NTI2MDg4In0.58BsFWGboRMDD6PPfMmHlfHdB5TXcDSIIv3VUF1Sgvg",
+        "redirect_url": "https://www.adzuna.in/land/ad/5676526088?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=D9333FBCC8F04AAAB94FA07FF22674D81B2FB9E0",
+        "id": "5676526088",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "About the Company Meet Landmark Digital \u2013 we\u2019re part of the Landmark Group, one of the largest retail and hospitality organisations in the Middle East, North Africa and India. We\u2019re guardians of the group\u2019s digital arm which encompasses Enterprise and E-commerce Tech, Product Management, User Design, Omni Operations, Customer Experience, Loyalty, Content Production, Studio, Growth and MarTech, Finance and HR functions. With a futuristic outlook we strive to make the digital experience of our cu\u2026",
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "created": "2026-03-24T09:07:38Z",
+        "company": {
+          "display_name": "Landmark Group",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0"
+      },
+      {
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "About TJX: TJX is a Fortune 100 company that operates off-price retailers of apparel and home fashions. TJX Global IT India - Hyderabad is the IT home office in the global technology organization of off-price apparel and home fashion retailer TJX, established to deliver innovative solutions that help transform operations globally. At TJX, we strive to build a workplace where our Associates' contributions are welcomed and are embedded in our purpose to provide excellent value to our customers ev\u2026",
+        "redirect_url": "https://www.adzuna.in/land/ad/5615088262?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=5AA591A5E1191A81B61C196579043ECB2DFB0D01",
+        "id": "5615088262",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjE1MDg4MjYyIn0.APJNcQDjZTYBFzxyNmIB8RJw9OoGYTBTIEg7xemylik",
+        "title": "Staff Engineer-Data Engineering",
+        "longitude": 78.50806,
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "created": "2026-02-05T08:21:16Z",
+        "latitude": 17.40275
+      },
+      {
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "latitude": 17.40275,
+        "created": "2026-04-08T09:38:14Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5692783254?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=9BD124881302F93AF1C68BF0F32CE292745C5F36",
+        "id": "5692783254",
+        "description": "TJXCompanies: AtTJXCompanies,everydaybringsnewopportunitiesforgrowth,exploration,andachievement.Youll be part of our vibrant team that embraces diversity, fosters collaboration, and prioritizes your development. Whether youre working in our four global Home Offices, Distribution Centers or Retail StoresTJ Maxx, Marshalls, Homegoods, Homesense, Sierra, Winners, and TK Maxx, youll find abundant opportunities to learn, thrive, and make an impact. Come join our TJX familya Fortune 100 company and t\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs"
+        },
+        "title": "Staff Engineer-Automation Testing",
+        "longitude": 78.50806,
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5Mjc4MzI1NCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.qFFOxuttE8B8XWjDPvum4I3l5Msx_cCeYFnw5B3xGOk"
+      },
+      {
+        "created": "2026-03-03T08:21:52Z",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "title": "Senior Staff Engineer Software",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjUxOTA2NTQzIn0.xh24kgmjuGD2pVfE4GbRP-11MsWe9ytc0J3cLfJruFA",
+        "redirect_url": "https://www.adzuna.in/land/ad/5651906543?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=A1D87EF32162AA02BA0AFB9F687D0C21BAAF6E51",
+        "id": "5651906543",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "description": "PositionTitle:SeniorEngineerSoftware- Full Stack Weareexcited toannounceanopeningforSeniorStaff EngineerSoftwareatACI. Please find below the details of the role and its responsibilities. Skills Required: Java, JavaScript, MySQL, PostgreSQL, HTML, CSS, React/Angular, Spring Boot, MongoDB, IntelliJ, GitHub, GitHub Copilot, JUnit, Mockito, Webflux 6 months to 1 year experience on AI, copilot, codex, GeminiAI, LLM, OpenAI, Agentic AI Experience Range: 12 - 16 years Job Description: Roles & responsi\u2026"
+      },
+      {
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "description": "Position Title: SeniorStaff EngineerSoftware iOS Weareexcited toannounceanopeningfor Senior StaffEngineerSoftware(iOS)atACI. Please find below the details of the role and its responsibilities. Skills Required: Swift,iOSDevelopment,iOS,MobileApplicationDevelopment,UnitTesting, Automation Testing, XCTest, XCUITest, SwiftUI Preview Tests, Snapshot Testing, Appium, Accessibility Testing, Objective-C, iOS SDK, UI Kit, SwiftUI, WebView, JavaScript, Typescript, React Native Experience Range: 15 - 20 y\u2026",
+        "redirect_url": "https://www.adzuna.in/land/ad/5653289290?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=5A389C85313F11DD2848DC12E29C81B0437C7E70",
+        "id": "5653289290",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjUzMjg5MjkwIn0.NJ7qBO0K3-fT9tLxbx7fu0rS4JtqkCMIHzqcHl5hUFY",
+        "title": "Senior Staff Engineer Software",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "created": "2026-03-04T11:03:40Z"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "created": "2026-03-07T05:24:29Z",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "PositionTitle:Staff SoftwareEngineer - Java Full Stack JobDescription: WeareexcitedtoannounceanopeningforStaffEngineer SoftwareatACI. Please find below the details of the role and its responsibilities. Skills Required: Java,ApacheSpark,ApacheKafka, Angular orReact, React.js, Cassandra, Redis. 6 months to 1 year experience on AI, copilot, codex, Gemini AI, LLM, OpenAI, Agentic AI Experience Range: 12-15 years Roles & responsibilities: Improvescodestructureandarchitectureinserviceoftestabilityand\u2026",
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5656948452?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=9DEF9E98AB3CB1FD3B511C7BD4953C3D874366CA",
+        "id": "5656948452",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjU2OTQ4NDUyIn0.WJi4cclMbEGXFOI982zcZ10T0wGt6UEKiuFa8kglIks",
+        "title": "Senior Staff Engineer Software"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY0ODE0ODczOCIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.5x6BnOE_xpPBDOMh9gHXOHYD_-Kf7AfpDNa_3oLQGzA",
+        "title": "Staff Engineer Software - iOS",
+        "description": "Position Title: Staff Software EngineeriOS. JobDescription: WeareexcitedtoannounceanopeningforStaffEngineer Software - iOSatACI. Please find below the details of the role and its responsibilities. Skills Required: Swift,iOSDevelopment,iOS,MobileApplicationDevelopment,UnitTesting, Automation Testing, XCTest, XCUITest, SwiftUI Preview Tests, Snapshot Testing, Appium, Accessibility Testing, Objective-C, iOS SDK, UIKit, SwiftUI, WKWebView, Javascript, Typescript, React Native. 6 months to 1 year ex\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "id": "5648148738",
+        "redirect_url": "https://www.adzuna.in/land/ad/5648148738?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=54E5F9C06DDACC79E96F633514D8AEB931A627DD",
+        "created": "2026-02-28T08:19:30Z",
+        "salary_is_predicted": "0",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "created": "2026-02-28T08:19:25Z",
+        "description": "PositionTitle:Senior StaffSoftwareEngineer Java Full Stack JobDescription: WeareexcitedtoannounceanopeningforSeniorStaff EngineerSoftwareatACI. Please find below the details of the role and its responsibilities. Skills Required: Java,SpringBoot,ApacheSpark,Spark,ApacheKafka,Kafka,React, React.js, NoSQL, Reactive Programming, MongoDB. 6 months to 1 year experience on AI, copilot, codex, GeminiAI, LLM, OpenAI, Agentic AI Experience Range: 12 - 16 years. Roles & responsibilities: Improvescodestruc\u2026",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5648148559?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=6F66C9F9B79BE3EFB698A70666063FEE1A620172",
+        "id": "5648148559",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY0ODE0ODU1OSIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.D6MAMWD5VfwBVrfrkSCK3bYr_PB015tFlIR2ao2nnEs",
+        "title": "Senior Staff Engineer Software"
+      },
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5673832631?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=AFF77BF65048BB96A52ED64D6191EDA3EC3293E0",
+        "id": "5673832631",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Position Title: Senior Staff Architect Function: Job Description: Roles & responsibilities: Lead the discovery phase of large projects to come up with a high-level architecture and design. Lead the cross functional architecture teams to identify the impact and work with them to deliver the architecture and design. Work with a team of Architects and Tech Leads to define, own and implement the architecture. Run the architecture and design review meetings. Develop, own and manage functional archit\u2026",
+        "title": "Senior Staff Engineer Architect",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjczODMyNjMxIn0.9yYM-hMzCGcyM8eRNe-8IlYz3VPAkTS3Du_YQTP-i_E",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "created": "2026-03-21T09:30:07Z"
+      },
+      {
+        "created": "2026-03-27T09:34:35Z",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "TJX India"
+        },
+        "salary_is_predicted": "0",
+        "longitude": 78.50806,
+        "title": "Staff Engineer-DWH testing",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3OTk2NTcyNyIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.-DIubnJgATUjXhDiCCGb9TSpB0U4FVayW1-NZLbSimE",
+        "redirect_url": "https://www.adzuna.in/land/ad/5679965727?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=00C55C3029973C3454CEBC2ED648354B0A0C671F",
+        "id": "5679965727",
+        "description": "You'll be a right fit if you're coming with an extensive experience in Datawarehouse testing along with Cloud & Automation experience. Lead and mentor a team of test engineers, assisting them with technical challenges and guiding them on best testing practices. Act as a Testing SME and assist cross-functional teams in the implementation of data testing frameworks. Oversee test strategy, roadmaps, and execution plans to ensure successful project deliveries. Drive continuous improvements in test \u2026",
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        }
+      },
+      {
+        "title": "Senior Staff Engineer Software - Ai",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjcxNDE1OTUwIn0.J_2bXfwGL0SJWxDxNTnveswtzqDRJGjwMf30bgjPUsk",
+        "redirect_url": "https://www.adzuna.in/land/ad/5671415950?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=4BEF9AFAF9299DEBA1489F19D78E0803C3544BB9",
+        "id": "5671415950",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Position Title: Senior Staff Engineer Software - AI Job Description: Must have: Full-Stack AI Product Development From EDA and modelling to frontend (React) and backend (Fast API/Flask). Prompt engineering libraries, reusable tools, templates, and evaluation harnesses. Agent-Based System Architecture Using LangX, AutoGPT, or custom frameworks. LLM Integration & Fine-Tuning Including RAG, prompt engineering, and reinforcement learning. Description: Minimum Qualifications: 9-12 years of experienc\u2026",
+        "created": "2026-03-19T06:03:58Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "salary_is_predicted": "0"
+      },
+      {
+        "title": "Staff Engineer Software (React Native)",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiMHRoMDVobzM4UkdHNklBdmV0aW5BdyIsImkiOiI1NjQ0NTAzNTgxIn0.QusKJhJCKtSxlZcMvq_oWsJzsERMh1G3lYYTN3Nmcwk",
+        "redirect_url": "https://www.adzuna.in/land/ad/5644503581?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=175A8532E1640C9010ED7AA9DFF24AE1950D3505",
+        "id": "5644503581",
+        "description": "Position Title: Staff Engineer Software-ReactNativeMobile Developer Job Description: Roles & responsibilities: Architect and build mobile UI infrastructure usingReactNative Create reusable UI components from wireframes or prototypes Integrate third-party services and APIs (REST, GraphQL, WebSockets) Work withnativemodules when required Optimize app performance across iOS and Android Write and maintain unit and integration tests Collaborate with UI/UX designers, backend, and QA teams Participate\u2026",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "created": "2026-02-25T10:36:21Z",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "salary_is_predicted": "0"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY0ODE0ODYxMiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.eKQ-nGh60iXTLNFx1Asvgfu9GSj1UDScZen8UA03roU",
+        "title": "Senior Staff Engineer Software - Android",
+        "description": "Position Title: Senior Staff Engineer Software Android JobDescription WeareexcitedtoannounceanopeningforSeniorStaff EngineerSoftware(Android)atACI. Please find below the details of the role and its responsibilities. Skills Required: Selenium,Appium,Cucumber,TestAutomation,Junit,JUnit,Mockito,Java,SpringBoot, Core Java, Android Jetpack, Compose, Compose Multiplatform, Kotlin, MongoDB, NoSQL, Cassandra, Mobile Development, RoomDB, RestAPI. 6 months to 1 year experience on AI, copilot, codex, Gemn\u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "id": "5648148612",
+        "redirect_url": "https://www.adzuna.in/land/ad/5648148612?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=2F024F5143FA495088618F6E7407AB449CDA8466",
+        "created": "2026-02-28T08:19:28Z",
+        "salary_is_predicted": "0",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Albertsons Companies India"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY1OTEyMDQ1NiIsInMiOiIwdGgwNWhvMzhSR0c2SUF2ZXRpbkF3In0.2iATnFrb1dBy3OIC84j9iSuxBjNRgHJ2VxpXyJ7Q1p8",
+        "title": "Staff Engineer Architect [T500-24102]",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "category": {
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs"
+        },
+        "description": "About Albertsons Companies Inc. (ACI): As a leading food and drug retailer in the United States, Albertsons Companies, Inc. operates over 2,200 stores across 35 states and the District of Columbia. Our well-known banners across the United States, including Albertsons, Safeway, Vons, Jewel-Osco and others, serve more than 36 million U.S customers each week. We build and shape technology solutions that solve customers\u2019 problems every day, making things easier for them when they shop with us onlin\u2026",
+        "id": "5659120456",
+        "redirect_url": "https://www.adzuna.in/land/ad/5659120456?se=0th05ho38RGG6IAvetinAw&utm_medium=api&utm_source=4a3a122e&v=7F65093A67CF9D18FB22092E61CD256B7F8F02E6",
+        "created": "2026-03-09T07:44:33Z",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Albertsons Companies India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        }
+      }
+    ],
+    "top_skills": [
+      "r",
+      "java",
+      "go",
+      "react",
+      "spring",
+      "sql",
+      "mongodb",
+      "cassandra",
+      "api",
+      "rest"
+    ],
+    "top_companies": [
+      "Albertsons Companies India",
+      "TJX India",
+      "ACL Digital",
+      "Outcomes\u00ae",
+      "slice",
+      "Landmark Group"
+    ],
+    "remote_percentage": 6.0,
+    "source": "adzuna",
+    "success": true,
+    "market_health": "excellent",
+    "demand_level": "very_high",
+    "salary_trend": "increasing",
+    "data_freshness": "2026-04-13T14:56:52.067218",
+    "confidence_score": 0.9
+  }
+}

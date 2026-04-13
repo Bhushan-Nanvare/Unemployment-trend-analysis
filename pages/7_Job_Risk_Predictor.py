@@ -27,8 +27,10 @@ from src.risk_calculators.time_prediction import TimePredictionCalculator
 from src.analytics.salary_analyzer import SalaryAnalyzer
 from src.analytics.benchmark_engine import BenchmarkEngine
 from src.analytics.recommendation_engine import RecommendationEngine
+from src.analytics.career_path_modeler import CareerPathModeler
 from src.validation import ProfileValidator
 from src.reporting import RiskMonitor
+from src.ui_components.career_path_visualizer import CareerPathVisualizer
 
 st.set_page_config(page_title="Job Risk (AI) | UIP", page_icon="🎯", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
@@ -209,6 +211,11 @@ with col_out:
         rec_engine = RecommendationEngine()
         recommendations = rec_engine.generate_recommendations(profile, risk_profile, salary_estimate.risk_adjusted)
         
+        # Generate career paths
+        with st.spinner("Analyzing career paths..."):
+            career_modeler = CareerPathModeler()
+            career_paths = career_modeler.generate_paths(profile)
+        
         # Also get the detailed result for backward compatibility
         result = predict_job_risk(skills, education, experience, location, industry)
         
@@ -223,6 +230,7 @@ with col_out:
         st.session_state["salary_estimate"] = salary_estimate
         st.session_state["benchmark_result"] = benchmark_result
         st.session_state["recommendations"] = recommendations
+        st.session_state["career_paths"] = career_paths
         st.session_state["last_job_risk_inputs"] = {
             "skills": skills, "education": education,
             "experience": experience, "location": location, "industry": industry,
@@ -501,6 +509,50 @@ with col_out:
                         
                         st.caption(f"**Priority:** {rec.priority} | **ROI Score:** {rec.roi_score:.2f}")
                         st.markdown(rec.explanation)
+            
+            # AI-Powered Career Path Modeler
+            career_paths = st.session_state.get("career_paths")
+            if career_paths:
+                st.markdown("---")
+                st.markdown("### 🚀 AI-Powered Career Path Recommendations")
+                st.caption("Based on live job market data and your profile")
+                
+                # Test API connection indicator
+                from src.data_providers.career_data_manager import CareerDataManager
+                data_manager = CareerDataManager()
+                api_working = data_manager.test_api_connection()
+                
+                if api_working:
+                    st.success("✅ Live market data connected")
+                else:
+                    st.info("ℹ️ Using historical data (API unavailable)")
+                
+                # Career path visualizer
+                visualizer = CareerPathVisualizer()
+                
+                # Path overview
+                visualizer.render_path_overview(career_paths)
+                
+                # Path selector
+                if career_paths:
+                    selected_path_idx = visualizer.render_path_selector(career_paths)
+                    selected_path = career_paths[selected_path_idx]
+                    
+                    # Detailed path view
+                    col_path1, col_path2 = st.columns([2, 1])
+                    
+                    with col_path1:
+                        visualizer.render_detailed_path(selected_path)
+                    
+                    with col_path2:
+                        visualizer.render_action_plan(selected_path)
+                        visualizer.render_salary_projection(selected_path)
+                    
+                    # Market comparison (if multiple paths)
+                    if len(career_paths) > 1:
+                        visualizer.render_market_comparison(career_paths)
+                else:
+                    st.info("No career paths available. Try adjusting your profile.")
             
             # Risk Monitoring Dashboard
             st.markdown("---")

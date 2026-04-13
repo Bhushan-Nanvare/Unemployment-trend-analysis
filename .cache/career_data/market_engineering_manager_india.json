@@ -1,0 +1,1458 @@
+{
+  "cached_at": "2026-04-13T14:56:50.086221",
+  "data": {
+    "total_jobs": 16728,
+    "avg_salary": 1622455.92,
+    "jobs": [
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5671631284?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=01A154046B2154A7E78497110FC2BFCB4631ACE1",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3MTYzMTI4NCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.zQkqBnT79pC-XzaRWhRFd3efUlredcZmlk-_YWd653M",
+        "title": "Engineering Manager",
+        "created": "2026-03-19T10:20:39Z",
+        "salary_is_predicted": "0",
+        "description": "Greetings from ValueLabs! ValueLabs is hiring for Engineering Manager for .Net with Cloud Platforms. Please find the below JD. Exp: 10  Yrs Location: Hyderabad WFO: Hybrid mode Notice Period: Early Joiners Preferrable Primary Skills: .NET, Azure, team management, Stake Holder Management. Role - Engineering Manager (.NET & Cloud Platforms) We are seeking a seasoned Engineering Manager with a strong technical foundation in the .NET ecosystem and Azure to lead our high-performing development teams\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 17.40275,
+        "id": "5671631284",
+        "company": {
+          "display_name": "ValueLabs",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "longitude": 78.50806,
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana"
+        }
+      },
+      {
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5687247987?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=3D13AAB79CA799BA367D4079AEC285A364685754",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njg3MjQ3OTg3In0.Puj2t5cbbG5wA-yBNeXEtYD1ILn3zcGxiUEshYCDwbc",
+        "title": "Engineering Manager",
+        "created": "2026-04-02T16:21:47Z",
+        "description": "About the role We are looking for a seasoned Engineering Manager having 15 years of building scalable software with at least 5 years of engineering management experience. The ideal candidate should have strong expertise across cloud infrastructure, preferably in the ecommerce domain. The role requires a strong balance of managing high-performing engineering teams while also being deeply hands-on in technology strategy, architecture, solution design, and delivery. Engineering leadership & team m\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 19.00821,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "JSW One Platforms Ltd."
+        },
+        "longitude": 72.84415,
+        "id": "5687247987",
+        "location": {
+          "display_name": "Mumbai, Maharashtra",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Maharashtra",
+            "Mumbai"
+          ]
+        }
+      },
+      {
+        "title": "Engineering Manager",
+        "created": "2026-04-05T08:51:39Z",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5690364732?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=3D0840FE3306362BDDF881FBBF2BA3CC1EDD79DE",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjkwMzY0NzMyIn0.LTl7AepezksUAq5EzCOQ6nowXgTsFpKf480LefF8ATc",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Uptime Crew"
+        },
+        "id": "5690364732",
+        "location": {
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India"
+          ]
+        },
+        "description": "Uptime Crew multiplies technology talent potential to power today's top businesses. We accomplish this by removing barriers to hire diverse talent and upskilling them through elite, immersive, outcome-based training. We\u2019re seeking a trainer, mentor and coach for the role of Engineering Manager to educate and support our recruits as they gain the skills to join top-tier enterprises for long and rewarding careers. Do you love being a powerful positive force in the success of others? Are you a Tea\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njk3MjA4NDM1In0.GKnuoagK2Hr9Af9j2bCt7AmGpSDk6qHyAY65qzv_GtQ",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5697208435?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=A27D2006F218C7C840B9F67B4CE1485BFEA1CEAB",
+        "created": "2026-04-12T08:33:48Z",
+        "title": "Engineering Manager",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "About the Role The Engineering Manager \u2013 .NET role involves leading MCO global product development teams across the full software development life cycle using the Microsoft .NET technology stack. This position is accountable for ensuring high-quality engineering outcomes, optimizing customer experience, enforcing engineering standards, and driving automation. The role includes mentoring and developing engineers, proactively identifying and mitigating technical risks, and acting as a bridge betw\u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "longitude": 78.50806,
+        "company": {
+          "display_name": "MCO ",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5697208435"
+      },
+      {
+        "contract_type": "contract",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1MjExODU4NjAzIn0.t2k8XTByQkpfLGw6Q8329ZsHczhEJxoVcGt9aYB_qR0",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5211858603?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=9E88E8D7665BC2F9450264617825CED762DB57EB",
+        "created": "2025-05-23T08:50:07Z",
+        "title": "Engineering Manager",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Branch Overview Branch delivers world-class financial services to the mobile generation. With offices in the United States, Nigeria, Kenya, and India, Branch is a for-profit socially conscious company that uses the power of data science to reduce the cost of delivering financial services in emerging markets. We believe that everyone, everywhere deserves fair financial access. The rapid spread of smartphones presents an opportunity for the world\u2019s emerging middle class to access banking options \u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "area": [
+            "India"
+          ],
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Branch International"
+        },
+        "id": "5211858603"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njg4MDc5ODE1In0.ARCCq1lKpfWlywpQ-3v913BKS8j5qKbLN1rroBVKApA",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5688079815?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=0EC896EA2E755C9F045E964448B305015BCE35E6",
+        "created": "2026-04-03T06:28:25Z",
+        "title": "Engineering Manager",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Role Overview We are seeking a highly skilled Engineering Manager with strong hands-on experience in PHP (Yii2 framework) and Node.js as primary technologies, along with working knowledge of Angular or React as secondary frontend skills. The ideal candidate should have proven experience leading engineering teams, driving technical architecture, managing project delivery, and designing scalable database solutions\u2014preferably on PostgreSQL . Key Responsibilities Technical Leadership Lead and mento\u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "BigCity Promotions"
+        },
+        "id": "5688079815"
+      },
+      {
+        "created": "2026-01-16T09:48:48Z",
+        "title": "Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NTg3MzQ2MjUwIn0.GAXPCqSJ7wA5rbxvF4GaKVTaUrN_utmVfX-jfxkfKnU",
+        "redirect_url": "https://www.adzuna.in/land/ad/5587346250?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=A515B31085D3DA69025A72F41C40797860B3218B",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "area": [
+            "India"
+          ],
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "id": "5587346250",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "HiLabs"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "description": "HiLabs Inc. is on a mission to eliminate the $3.1 trillion cost of bad data in the US healthcare system. We combine explainable AI, healthcare-specific business ontologies, and big data to dramatically improve data quality for our customers. Our core platform, MCheck\u2122 , has analyzed 15 billion healthcare records , covering over one-third of the US insured population . Headquartered in the Washington DC area, HiLabs has a rapidly growing R&D center in India and a team of world-class technologist\u2026"
+      },
+      {
+        "longitude": 72.84415,
+        "company": {
+          "display_name": "Servify",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5687248111",
+        "location": {
+          "area": [
+            "India",
+            "Maharashtra",
+            "Mumbai"
+          ],
+          "display_name": "Mumbai, Maharashtra",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "We are looking for a seasoned Engineering Manager to lead and scale engineering teams at Servify. This is a high-impact, org-level leadership role responsible for driving execution excellence, technical direction, and team development across platform and internal engineering systems. This role blends leadership and technical ownership, where you will guide engineering leads, drive architectural decisions, and ensure systems are built for scale, reliability, and performance. You will work closel\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 19.00821,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Engineering Manager",
+        "created": "2026-04-02T16:22:12Z",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5687248111?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=E3440921CDB8AC85D120F207DA3182686B4EAD13",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4NzI0ODExMSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.xLhcTRp_w8BHRQFuMpVIgKC0XW27-p33_W9BXKdxkdc"
+      },
+      {
+        "location": {
+          "area": [
+            "India"
+          ],
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Tekion Corp"
+        },
+        "id": "5689759403",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Role Engineering Manager Location Bengaluru About Tekion At Tekion, we are building the only cloud-native platform that is transforming the automotive retail industry, leapfrogging it into the future, and providing unparalleled customer experience. We create seamlessly integrated, elegant, and intuitive solutions built with innovative technology and powered by Big Data, Machine Learning (ML)/ AI, and Internet of Things (Connected vehicle to connected devices). We harness our passion, entreprene\u2026",
+        "salary_is_predicted": "0",
+        "created": "2026-04-04T16:44:03Z",
+        "title": "Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4OTc1OTQwMyIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.Fg2QjTzqRpIGIWvGdvJGMYzt4Bjud1aPK0CRSeJ-nu8",
+        "category": {
+          "label": "Engineering Jobs",
+          "tag": "engineering-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5689759403?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=1B025A336EA9FFDED873D57B35F8D90021965790"
+      },
+      {
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Styli"
+        },
+        "id": "5680960382",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Job Title: Engineering Manager \u2013 CustomerExperience (Mobile-First eCommerce) Location: Bengaluru About Styli Styli is a fast-growing fashion eCommerce platform, built for the mobile-first customer. We\u2019re transforming how young, trend-savvy customers shop online\u2014through fast delivery, value-driven pricing, and seamless digital experiences. As we scale across markets, our Customer Experience engineering team plays a vital role in shapinghigh-impact, user-first journeys across discovery, purchase,\u2026",
+        "salary_is_predicted": "0",
+        "created": "2026-03-28T09:44:18Z",
+        "title": "Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjgwOTYwMzgyIn0.cQEihHN78O1p_Bb3IAgDTWv7T5lM0P1HMireLYmM5MA",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5680960382?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=AEA5DF317033488AF38891E191B147D41A80838B"
+      },
+      {
+        "salary_is_predicted": "0",
+        "description": "Role: Engineering Manager Experience : 12-17 years Location : Chennai (Candidates willing to relocate to Chennai can apply) Primary Skill: Angular, Node JS, TypeScript and People Management We are looking for an Engineering Manager who can provide strategic and tactical leadership to the teams that is involved in development/enhancements of the 400 matchmaking platforms at Matrimony.com. In this role, you will collaborate with cross-functional teams and also need to be hands-on. Responsibilitie\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 13.06041,
+        "id": "5683837178",
+        "company": {
+          "display_name": "Matrimony.com Limited",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "longitude": 80.24963,
+        "location": {
+          "area": [
+            "India",
+            "Tamil Nadu",
+            "Chennai"
+          ],
+          "display_name": "Chennai, Tamil Nadu",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5683837178?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=A68FCDE8CE597C50834944FE2A99EB9F05EDB8EA",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjgzODM3MTc4In0.aw-0ETPQAXwokqWxbWzuWPWk3pkNofpUnuL4GRNZ4Wg",
+        "title": "Engineering Manager",
+        "created": "2026-03-31T10:31:50Z"
+      },
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5672737990?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=C94E4FEB746840D4C0AD218CFC86FA8AC29EA524",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3MjczNzk5MCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.9l5r7DRhXz2IqY8bM27qSnHiIv9n88QiGjzqPpp08PQ",
+        "title": "Engineering Manager",
+        "created": "2026-03-20T09:39:24Z",
+        "salary_is_predicted": "0",
+        "description": "About the role: We are looking for a Engineering Manager responsible for ThoughtSpot\u2019s data platform team, our flagship interactive analytics experience. The Data Platform team owns how ThoughtSpot connects to, manages, and queries data across Snowflake, BigQuery, Redshift, Databricks, and other external systems. In this role, you will define the technical roadmap, guide architecture, mentor engineers, and ensure delivery of a scalable, reliable, and high-performance platform used by thousands \u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 17.40275,
+        "id": "5672737990",
+        "longitude": 78.50806,
+        "company": {
+          "display_name": "ThoughtSpot",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        }
+      },
+      {
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5689759219?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=5CD97FC0D7275D96A5E3BC38BA120A9D233A2B7F",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njg5NzU5MjE5In0.frr1w8g_xE8wrMj36pN7rybgws8UUgluPIKdpHGdL0A",
+        "title": "Engineering Manager",
+        "created": "2026-04-04T16:43:20Z",
+        "description": "About the Role: We are looking for an experienced Engineering Manager (Full Stack) with 10 years of experience in building and scaling high-performance web applications. This role requires strong technical expertise in Node.js, React.js, and Golang , along with proven experience in leading engineering teams, driving architecture decisions, and ensuring delivery excellence. The ideal candidate will balance hands-on technical contributions with people leadership, owning system architecture, scala\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "BigStep Technologies",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5689759219",
+        "location": {
+          "area": [
+            "India"
+          ],
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        }
+      },
+      {
+        "id": "5697518540",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Rakuten India"
+        },
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "salary_is_predicted": "0",
+        "description": "Engineering Manager \u2013 Grow & Corp Tools: As a Manager, you will lead a high-impact engineering team in developing and scaling Rakuten Grow and Corp Tools products. This role requires a strong technical background working high-scale systems and full-stack cloud engineering, DevOps. Key Responsibilities: \u2022 Lead and mentor a team of 10-15 engineers, driving innovation in . \u2022 Define and execute the technical vision for full-stack product development and delivery, ensuring high quality products. \u2022 A\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Engineering Manager",
+        "created": "2026-04-13T00:42:45Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5697518540?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=073D0BB61E933C03ED94B7E20DB484251FFAE6A7",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5NzUxODU0MCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.Z_lbpZ_axrUk_z5gBawRzRfIfFL3_5kLTDOXzxlAcvM"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4ODA4MDY4MiIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.qsprd4CP9qNpC0puBToUotSgi_AK_XCxDS2nreEYszQ",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5688080682?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=52D0AAF31FAFBD657A93E4B54304EBB14C2CA2AF",
+        "created": "2026-04-03T06:29:25Z",
+        "title": "Engineering Manager",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "The Role: An Engineering Manager at Razorpay is well-grounded - innovative, quality focussed, product thinker, and business conscious - not mere coders, of course, with deeper technical context and experience to build quality software. You should be able to see nuances and elements that others might not. Engineering creates a significant impact across different areas, considering the scale of our software product outreach. You\u2019re also expected to influence the culture of the company and help sh\u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Razorpay"
+        },
+        "id": "5688080682"
+      },
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5643596360?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=AA97A2D5B4C470D98C900161B958BFDC23D1B23A",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjQzNTk2MzYwIn0.3FN9f_is4wVyHXsNtZQe2TzIRfHFr1bgIoDDQ-DiFRE",
+        "title": "Engineering Manager",
+        "created": "2026-02-24T17:08:19Z",
+        "salary_is_predicted": "0",
+        "description": "About the Company We are building an AI-first enterprise platform where engineers work alongside intelligent systems as digital colleagues. Our teams are intentionally small, highly capable, and multi-disciplinary \u2014 designed to deliver the impact of much larger organizations. About the Role We\u2019re looking for an Engineering Manager with strong technical depth and real AI experience to lead a team delivering enterprise-grade software across AI, middleware, UI, and cloud infrastructure. This is a \u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "id": "5643596360",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Tuebora Inc"
+        },
+        "location": {
+          "area": [
+            "India"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "India"
+        }
+      },
+      {
+        "company": {
+          "display_name": "Stratacent",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5682621139",
+        "location": {
+          "area": [
+            "India"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "India"
+        },
+        "description": "Position: Engineering Manager Experience: 8years Location: Pune, Hybrid Job Type: Full-Time Availability: Immediate Joiners Only Key Responsibilities Design, develop, and optimize core components of a financial technology platform. Build and maintain scalable backend services, APIs, and microservices. Own technical architecture, system design, and high\u2011level engineering decisions. Ensure best\u2011in\u2011class security, performance, reliability, and code quality. Collaborate cross\u2011functionally with prod\u2026",
+        "contract_time": "full_time",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Engineering Manager",
+        "created": "2026-03-30T09:54:14Z",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5682621139?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=B58803C89EF61F901814A83C21CF9BA67470D138",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4MjYyMTEzOSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.eaCMb4pkVj5B10pwkGKykdf2yeqySU9GDfOBe6SgC7Q"
+      },
+      {
+        "id": "5588757132",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Ferguson"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka"
+        },
+        "salary_is_predicted": "0",
+        "description": "Duties and Responsibilities: Lead the implementation and enhancement of software development lifecycle (SDLC) processes, ensuring alignment with industry best practices. Drive moderate to significant improvements in processes, systems, policies, and products to enhance overall performance. Oversee the development, testing, and delivery of high-quality software solutions, ensuring consistency with established SLAs and standards. Act as a key point of contact for system-related issues, collaborat\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Engineering Manager",
+        "created": "2026-01-17T07:16:29Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5588757132?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=EFFFBDA13783A420B8ED0A6368CC92706BEE35E3",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NTg4NzU3MTMyIn0.fQrIpPXVFZeulUv3JweLdjP2DAMnWh9FD0n3E_4oeBI"
+      },
+      {
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 13.06041,
+        "salary_is_predicted": "0",
+        "description": "Lead - Data Engineering- Databricks We are looking for a high-impact Data Delivery Lead to drive large-scale data engineering, migration, and platform modernization programs with a strong focus on Databricks. This role requires a hands-on delivery leader who can own execution end-to-end while working closely with client stakeholders. What You\u2019ll Do Lead end-to-end delivery of data programs (engineering, migration, BI) Drive Databricks-based data platform implementations Manage cross-functional \u2026",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Chennai, Tamil Nadu",
+          "area": [
+            "India",
+            "Tamil Nadu",
+            "Chennai"
+          ]
+        },
+        "id": "5694090981",
+        "longitude": 80.24963,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Visara Partners"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5NDA5MDk4MSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.1Do99cHduE31ZkgaXin-1LCZNxAiZrm1mHCVPNpx3YY",
+        "redirect_url": "https://www.adzuna.in/land/ad/5694090981?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=52C6E16193AAD2A9857746D239F2ABC80623AB03",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "created": "2026-04-09T08:12:02Z",
+        "title": "Engineering Manager"
+      },
+      {
+        "salary_is_predicted": "0",
+        "description": "Mandatory Skills & Experience 12\u201315 years of overall software engineering experience , including leading engineering teams Strong hands-on expertise in Python and PostgreSQL Excellent SQL skills, including query optimization and handling large datasets Proven experience managing and delivering Python-based products or platforms Hands-on experience with cloud platforms (experience on GCP is a strong plus ) Deep knowledge of Observability and Application Performance Management, including: Metrics\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "id": "5690363306",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Impact Analytics"
+        },
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "India",
+          "area": [
+            "India"
+          ]
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5690363306?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=812EF7295B7F7AD479123741DE0F9F0B9DF635AA",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5MDM2MzMwNiIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.qkWmM35Lru-IT-qPQsnhKeoAXDCNH_FcLtW0o2XLGEA",
+        "title": "Engineering Manager",
+        "created": "2026-04-05T08:39:19Z"
+      },
+      {
+        "redirect_url": "https://www.adzuna.in/land/ad/5670551329?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=4CE35C21C15102BA1ACD7544FCF2233755C068FB",
+        "category": {
+          "tag": "engineering-jobs",
+          "label": "Engineering Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3MDU1MTMyOSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.3jvUh2VAvBPV6gCuguF3IXKWSeSOwaDba_WufPihy-U",
+        "title": "Engineering Manager",
+        "created": "2026-03-18T16:14:15Z",
+        "salary_is_predicted": "0",
+        "description": "Job description Equipment NPD to spearhead the design and development of our next-generation Industrial Rotating Equipment, such as Compressors and The Opportunity Are you a visionary engineering leader with a passion for modular design and lean methodology? We are looking for a Technical Manager -NPD to spearhead the design and development of our next-generation Industrial Rotating Equipments like Compressors, Pumps. In this role, you will transition beyond simple management to become the arch\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "id": "5670551329",
+        "company": {
+          "display_name": "Head Hunter India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "location": {
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India"
+          ]
+        }
+      },
+      {
+        "title": "Engineering Manager",
+        "created": "2026-03-18T16:12:40Z",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5670550219?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=3CAD126A3DC2433207ADB92B9A233CFDB1BC26FD",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3MDU1MDIxOSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0._mYhHJHXyzksrmHsazj12hw1xlBUlEznHRfHIoQfMNU",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Recro"
+        },
+        "id": "5670550219",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka"
+        },
+        "description": "What You\u2019ll Do Lead & Grow \uf0b7 Lead, mentor, and grow a team of strong software engineers. \uf0b7 Foster a collaborative, inclusive, and high-performing engineering culture. \uf0b7 Align team goals with organizational and product priorities. Technical Leadership \uf0b7 Define and drive architecture for modern React-based applications at scale. \uf0b7 Ensure high standards of operational excellence across performance, scalability, accessibility, and reliability. \uf0b7 Promote best practices in code quality, testing, CI/C\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "title": "Senior Engineering Manager/Principal Engineering Manager",
+        "created": "2026-04-01T16:10:12Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5685304174?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=63DD233EAB36103DA34383C8A36357194B614C36",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4NTMwNDE3NCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.wf89FtExGTNLBGov2rdvnVCl_ORC_apM5RyGBI7XmyE",
+        "id": "5685304174",
+        "longitude": 77.3225,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Pine Labs"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Uttar Pradesh",
+            "Ghaziabad",
+            "Noida"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Noida, Ghaziabad"
+        },
+        "salary_is_predicted": "0",
+        "description": "Role Purpose: We are looking for proactive engineering managers with 12 years of engineering experience and proven leadership skills. Engineering managers are expected to work on many projects at the same time, build and manage diverse teams of engineers from different disciplines, formulate and execute strategies, and coordinate with other managers. The responsibilities we entrust you Designs, implements, and refines product development, testing, and manufacturing processes. Manages staff and \u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 28.56579
+      },
+      {
+        "location": {
+          "area": [
+            "India",
+            "Tamil Nadu",
+            "Chennai"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Chennai, Tamil Nadu"
+        },
+        "longitude": 80.24963,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Prodapt"
+        },
+        "id": "5680320502",
+        "latitude": 13.06041,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Role Overview We are building a 0 -> 1 B2B product which is a foundational intelligence layer that enables real-time, context-aware decisioning across enterprise systems. As a Group Engineering Manager, you will lead multiple high-caliber engineering teams to build and scale this platform from early stage to production-grade adoption. You will operate at the intersection of platform engineering, distributed systems, and AI-driven products, with end-to-end ownership of execution and outcomes. Th\u2026",
+        "salary_is_predicted": "0",
+        "created": "2026-03-27T17:47:48Z",
+        "title": "Group Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4MDMyMDUwMiIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.6TC-H3E1Ub46N7B7kiPnBOCsOnVjsXj75XRGLKTd9gI",
+        "category": {
+          "tag": "engineering-jobs",
+          "label": "Engineering Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5680320502?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=0B272A9A5E624FD4E447EAE5D2B8BB3078B31DE8"
+      },
+      {
+        "longitude": 73.02,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "PMech Consultant Pvt. Ltd"
+        },
+        "id": "5687248318",
+        "location": {
+          "area": [
+            "India",
+            "Maharashtra",
+            "Navi Mumbai"
+          ],
+          "display_name": "Navi Mumbai, Maharashtra",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "Position - Design Engineering Manager Experience - 12 Years of relevant experience in execution of Design engineering projects FEED , Detail Design, Oil and Gas consultants Qualifications : - Bachelor\u2019s degree in Engineering, Project Management, Engineering Management or related field Location - Navi Mumbai Immediate Joinee Preferred Responsibilities:- Operational Oversight: Lead day-to-day operations across multiple Design and Engineering projects, ensuring alignment with scope, timelines, bud\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 19.02,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Design Engineering Manager",
+        "created": "2026-04-02T16:22:35Z",
+        "category": {
+          "label": "Energy, Oil & Gas Jobs",
+          "tag": "energy-oil-gas-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5687248318?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=94D54948AEDEB6F20AFA57A7FEE638049C01B99A",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4NzI0ODMxOCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.t_VFHDQft-YdPdZSLq74wKIVt-vDivs790AZ5MZqi4U"
+      },
+      {
+        "description": "About the Team Navi\u2019s Engineering team builds the backbone of our financial products\u2014spanning lending, payments, insurance, investments, and debt management. We operate as cross-functional teams that work closely with Product, Data, and Business functions to deliver reliable, high-performance systems at scale. Our engineers focus on solving real-world challenges through scalable architecture, automation, and long-term thinking\u2014ensuring every Navi product is built to serve millions efficiently a\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "display_name": "Navi",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5685304707",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "category": {
+          "tag": "engineering-jobs",
+          "label": "Engineering Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5685304707?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=A776F33A71C513B4DE1BB47F13C899C1749C1B07",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njg1MzA0NzA3In0.Jkp7YgCovOImPmy-TWb-_ojruQ9hlM8mE-mT4V-Oph4",
+        "title": "Engineering Manager (Backend)",
+        "created": "2026-04-01T16:10:19Z"
+      },
+      {
+        "description": "Job Description IT Engineering Manager QA Point of Sales & Payment Solutions Practice (India) About TJX: TJX is a Fortune 100 company that operates off-price retailers of apparel and home fashions. TJX India - Hyderabad is the IT home office in the global technology organization of off-price apparel and home fashion retailer TJX, established to deliver innovative solutions that help transform operations globally. At TJX, we strive to build a workplace where our Associates contributions are welc\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "longitude": 78.50806,
+        "company": {
+          "display_name": "TJX India",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5632723176",
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5632723176?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=DBBDDE9822979A4F7ADB167B1B4A1738F96CFB8D",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjMyNzIzMTc2In0.u-SpOSsxdJbm13x0ypsEKIOgU5tt78OSdCC6whG-A_8",
+        "title": "IT Engineering Manager",
+        "created": "2026-02-17T09:39:11Z"
+      },
+      {
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5670550263?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=322ACB20F61481370CD491F65E107A1B64AFBFE6",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjcwNTUwMjYzIn0.3KKqV3xR-_Jj7IyDjCp_wm8mZXRYXb-0DBSMbxeehkU",
+        "title": "Data Engineering Manager",
+        "created": "2026-03-18T16:12:41Z",
+        "description": "Data Engineering Manager We are seeking an experienced Data Engineering Manager in our Hyderabad office to lead a team responsible for designing, building, and operating the scalable data infrastructure and pipelines that power the Care Solutions platform, and for partnering with customers, Engineering, Analytics, Product, and BI teams to ensure reliable, insight-ready data across our business and clients. Areas of Responsibility Data Engineering Leadership Lead the design, development, and ope\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "HealthEdge"
+        },
+        "longitude": 78.50806,
+        "id": "5670550263",
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        }
+      },
+      {
+        "created": "2026-04-12T08:35:19Z",
+        "title": "Electrical Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njk3MjA5NTgyIn0.COypaKdqIvTduKCaXWc1-q563chigv0c2D2wBqi5DFw",
+        "category": {
+          "label": "Engineering Jobs",
+          "tag": "engineering-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5697209582?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=241392EF142D28D4D8516274B21C9584AD668E1D",
+        "location": {
+          "area": [
+            "India"
+          ],
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "company": {
+          "display_name": "TechKareer",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5697209582",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Company: San Francisco startup Location: Remote (India) About the Role We are looking for an Electrical Engineering Manager with a strong background in electrical engineering and hands-on experience shaping how engineering talent is evaluated and hired. This role is ideal for someone who began their career as an electrical engineer and is now working in talent acquisition, technical recruiting, or a related hiring-focused function, with direct involvement in building or improving evaluation pro\u2026",
+        "salary_is_predicted": "0"
+      },
+      {
+        "salary_is_predicted": "0",
+        "description": "About the Role We are looking for an Engineering Manager to lead high\u2011performing engineering teams responsible for building, scaling, and maintaining mission\u2011critical financial systems. This role combines strong technical leadership, people management, and the ability to drive strategic initiatives in a fast\u2011paced, data\u2011driven environment. You will partner closely with product, architecture, security, compliance, and cross\u2011functional engineering leaders to deliver highly reliable services used \u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "id": "5688079472",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "VMware"
+        },
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "India",
+          "area": [
+            "India"
+          ]
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5688079472?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=536494E0815CA6BB485887FB59BD71CCA2402A7E",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4ODA3OTQ3MiIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.uc4NUiSCNDN4v2x57em771DnpfWh-4qA133hqZympX4",
+        "title": "Senior Engineering Manager",
+        "created": "2026-04-03T06:26:56Z"
+      },
+      {
+        "title": "Senior Engineering Manager",
+        "created": "2026-04-09T09:38:33Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5694150574?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=2488503B61DEC0FA33D94600D36AD6D8258BEE3B",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "Engineering Jobs",
+          "tag": "engineering-jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njk0MTUwNTc0In0.o6Fpi2Fgp168F1ai1Y16DkKMl25X_LlTzzrRzetK09U",
+        "id": "5694150574",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Under Armour India"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka"
+        },
+        "salary_is_predicted": "0",
+        "description": "PURPOSE OF ROLE: The Senior Engineering Manager - Decision Products Engineering, is a technical leader within EDMA responsible for Build and lead the Decision Products capability in India (analytics engineering, BI engineering, product analytics) by setting technical standards, developing talent, and allocating skilled practitioners to squads. The role is solid-line reporting local UAI Site Leader for day-to-day operations & dotted-line with USHQ Decision Products COE to deliver enterprise stra\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "title": "Senior Engineering Manager",
+        "created": "2026-03-18T16:14:20Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5670551412?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=50CFD4E9917ECBF8A212DBE226B5C980808631BB",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjcwNTUxNDEyIn0.1eLgqOGn36DcxoXW7Igg2z0kNy6vIeT1jVra52zTWrU",
+        "id": "5670551412",
+        "company": {
+          "display_name": "Straive",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "longitude": 80.24963,
+        "location": {
+          "area": [
+            "India",
+            "Tamil Nadu",
+            "Chennai"
+          ],
+          "display_name": "Chennai, Tamil Nadu",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "salary_is_predicted": "0",
+        "description": "Role Overview We are seeking an accomplished Engineering Manager to operate at the intersection of solution architecture, disciplined project delivery, and people leadership. This role is responsible for leading a team of software engineers in the design, development, and maintenance of enterprise-grade internal applications built on the .NET ecosystem and relational database platforms (SQL Server, PostgreSQL). The successful candidate will combine deep technical credibility with strong program\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 13.06041
+      },
+      {
+        "description": "We are looking for an Engineering Manager to take end-to-end ownership of Product features technical delivery which comprises of taking UX/Features requirement as input to produce technical design, development, system tested quality delivery for our multi-customer SaaS product . This role requires a strong technical background, clear process thinking, and proven people leadership to drive execution and build reliable systems. Key Responsibilities: \u2022 Ability to lead, review & produce technical d\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "ZestIoT"
+        },
+        "longitude": 78.50806,
+        "id": "5670551270",
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5670551270?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=BA3AF877D0EB794657F3B77B2AAAC6F4153930FC",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY3MDU1MTI3MCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.fPeS3S3D-bR-IvC2i6QQlZxAVF1suVYutOq9QCpRolY",
+        "title": "Engineering Manager/Leader",
+        "created": "2026-03-18T16:14:14Z"
+      },
+      {
+        "salary_is_predicted": "0",
+        "description": "About Us: Mobileum is a leading provider of Telecom analytics solutions for roaming, core network, security, risk management, domestic and international connectivity testing, and customer intelligence. More than 1,000 customers rely on its Active Intelligence platform, which provides advanced analytics solutions, allowing customers to connect deep network and operational intelligence with real-time actions that increase revenue, improve customer experience, and reduce costs. Know our story: htt\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "id": "5694089966",
+        "company": {
+          "display_name": "Mobileum",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5694089966?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=D0533F74F33B87DC978EF969AE8AF9E92BB0C411",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njk0MDg5OTY2In0.RGBzQI-ThwiL8W3Zyrxi4ZlZLHGwVV1hMDeQgXEZwKQ",
+        "title": "Quality Engineering Manager",
+        "created": "2026-04-09T08:10:47Z"
+      },
+      {
+        "company": {
+          "display_name": "Blueleaf Energy",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "id": "5680963901",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "As the BESS Engineering Manager specializing in BESS design and engineering, you\u2019ll play a crucial role within the Engineering Services team based in India. Your main duty will involve prepare design, review engineering layouts, diagram and quantity estimations throughout the developmental and construction phases of our renewable energy projects across the portfolio. Job Responsibilities Prepare design and review engineering drawings, calculations and documents to suit to project schedule relat\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Engineering Manager - BESS",
+        "created": "2026-03-28T09:50:03Z",
+        "category": {
+          "tag": "engineering-jobs",
+          "label": "Engineering Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5680963901?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=F4A43C0458BF1426E4D5740050D3B04842069780",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4MDk2MzkwMSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.8fDscH_g9mP6ij4UzttHZFalrQYxaYYOv_Hgu_DiuMU"
+      },
+      {
+        "description": "PURPOSE OF ROLE: The Senior Engineering Manager, Data Governance, is an AI first technical leader within EDMA responsible to build the MDM Data Governance capability in India (governance engineering  stewardship operations) by setting enterprise-aligned standards, developing talent, and allocating governance practitioners to squads. The role is solid-line reporting local Sr. Director for day-to-day operations & dotted-line with USHQ Governance COE to implement policies, controls, and consistent\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Under Armour India"
+        },
+        "id": "5695268191",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5695268191?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=305F11C20B5D6CD03F14EC7D654CA50CF7DEFDD6",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5NTI2ODE5MSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.dkRsShhDqdDRybhjDjjVbLZsEz3G379P2wy3qRoaaR4",
+        "title": "Senior Engineering Manager",
+        "created": "2026-04-10T09:38:51Z"
+      },
+      {
+        "created": "2026-04-09T09:38:33Z",
+        "title": "Senior Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY5NDE1MDU2NiIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.PVWhR6mrPdur1X_haIAO9RmworXykkAkT1STDaCZdiA",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5694150566?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=CF246D0B2FD5D2CCA885ADB1D985B15313B3EB24",
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Under Armour India"
+        },
+        "id": "5694150566",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "PURPOSE OF ROLE: The Senior Engineering Manager - Data Platforms, is an AI first technical leader within EDMA responsible to build and sustain the Data Platform engineering capability in India by defining platform standards, developing engineers, and allocating capacity to squads. The role is solid-line reporting local UAI Site Leader for day-to-day operations & dotted-line with USHQ Data Platform COE to execute enterprise platform strategy, guardrails, and reliability expectations. YOUR IMPACT\u2026",
+        "salary_is_predicted": "0"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYyODc5OTI2NyIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.qr-dMEpwNRlbnm4T0CPJgMDmjotl9p5vTGA34j4zeQA",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5628799267?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=3E23AB4C8DAFEC57FA93EC1D923B8C6BE68634E3",
+        "created": "2026-02-14T06:37:12Z",
+        "title": "Quality Engineering Manager",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "What Youll Be Doing (Position Summary): The Quality Engineering Manager is responsible for leading the testing activities within CIBCs Core Banking and Payments Technology Quality Engineering team. This role ensures that client needs are met with the highest quality standards by overseeing all aspects of the testing process, including the design, development, and maintenance of automated test scripts. The incumbent coordinates end-to-end testing, drives continuous improvement, and ensures testi\u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "CIBC India"
+        },
+        "longitude": 78.50806,
+        "id": "5628799267"
+      },
+      {
+        "created": "2026-02-17T07:36:07Z",
+        "title": "Engineering Manager - AI",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYzMjYxNjg5MCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.Ryb24n_rLhiCktZlh-d6wFXd_lVdol060ejmw1dVYzw",
+        "category": {
+          "tag": "engineering-jobs",
+          "label": "Engineering Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5632616890?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=CFCC5C9F2004F36E5895C20D1E2B02B1FE8AF8A4",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Tally Solutions Pvt Ltd"
+        },
+        "id": "5632616890",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "About Us At Tally, we\u2019re driven by one core mission - making business simpler for everyone. As a pioneer in business management software, we\u2019ve been the trusted partner of choice for over 2.5 million businesses across 100 countries - many of them Micro, Small, and Medium Enterprises (MSMEs) that form the backbone of global economies. Our journey is rooted in innovation, guided by deep empathy for customers, and driven by a commitment to excellence. With a legacy of trust and a future fueled by \u2026",
+        "salary_is_predicted": "0"
+      },
+      {
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "CIBC India"
+        },
+        "longitude": 78.50806,
+        "id": "5676535697",
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "What Youll Be Doing (position summary): The Quality Engineering Manager is responsible for leading the testing activities within CIBCs Core Banking and Payments Technology Quality Engineering team This role ensures that client needs are met with the highest quality standards by overseeing all aspects of the testing process, including the design, development, and maintenance of automated test scripts The incumbent coordinates end-to-end testing, drives continuous improvement, and ensures testing\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Quality Engineering Manager",
+        "created": "2026-03-24T09:31:32Z",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5676535697?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=2F92D9829C5557882374F478DB2A1B1FB1381895",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njc2NTM1Njk3In0.xDZ8X1ikZgV67aptqcASfU9PbI77LtrWlyg4HKnSb0I"
+      },
+      {
+        "description": "Role Title: Engineering Manager Position Id: IHC482 Position Summary: The Sr. Systems Engineer FinOps will be a technical expert responsible for driving measurable savings and financial accountability across public cloud platforms by engineering automation for tagging compliance, budget & anomaly guardrails, and workload optimization. The role will partner with Cloud Platform, Application, DevOPs , Security, and Finance teams to deliver cost transparency (chargeback/show back), enforce governan\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Marriott Tech Accelerator"
+        },
+        "longitude": 78.50806,
+        "id": "5670145660",
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana"
+        },
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "tag": "it-jobs",
+          "label": "IT Jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5670145660?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=B7CFBDA2C2C594C5A17F979BB83525F34DC45773",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjcwMTQ1NjYwIn0.eUfFp-lebYErhIZgZS6Y3RUvtMQQRiPqWsLN6EGqJGQ",
+        "title": "Engineering Manager - IHC482",
+        "created": "2026-03-18T06:03:27Z"
+      },
+      {
+        "created": "2026-03-17T06:03:20Z",
+        "title": "Quality Engineering Manager",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY2OTAxMTcyNyIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.imB83YqSjMmeeNhJ-bte5jRvN7-fEjHpYwMJ4Vi-me0",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5669011727?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=9F00716302880ACE1B44FE972B21FAFFE3B0C8F7",
+        "location": {
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "longitude": 78.50806,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "CIBC India"
+        },
+        "id": "5669011727",
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "What Youll Be Doing (position summary): The Quality Engineering Manager is responsible for leading the testing activities within CIBCs Core Banking and Payments Technology Quality Engineering team This role ensures that client needs are met with the highest quality standards by overseeing all aspects of the testing process, including the design, development, and maintenance of automated test scripts The incumbent coordinates end-to-end testing, drives continuous improvement, and ensures testing\u2026",
+        "salary_is_predicted": "0"
+      },
+      {
+        "title": "Test Engineering Manager",
+        "created": "2026-03-24T09:04:38Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5676525250?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=7AF09F5D60CA58F811D0EC3154238E7AF0E82342",
+        "category": {
+          "label": "Engineering Jobs",
+          "tag": "engineering-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njc2NTI1MjUwIn0.8FEdfmgzX33Y50JbCndlMJ_mFbjoOVpvcKt2Lb10V3U",
+        "id": "5676525250",
+        "company": {
+          "display_name": "Jabil",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "location": {
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India"
+          ]
+        },
+        "salary_is_predicted": "0",
+        "description": "The Test Manager is responsible for planning, implementing, and overseeing all testing activities to ensure product quality and compliance with industry standards. This role involves managing a team of test engineers, developing test strategies, and collaborating with design, production, and quality teams to deliver reliable electronic products What you\u2019ll own (mission) Lead and scale the Test Engineering function for board & system-level production to ensure first-pass yield, reliability, and \u2026",
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "title": "Quality Engineering Manager",
+        "created": "2026-03-14T07:48:38Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5664646466?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=CE1706E3AE6081FE3EA81DC4B39AC3DD59E6DF2D",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY2NDY0NjQ2NiIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.8eHAtR8G_B5D3OvJt-DWz2smvdduRoH6Yy9KYP8jcNI",
+        "id": "5664646466",
+        "longitude": 78.50806,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "CIBC India"
+        },
+        "location": {
+          "display_name": "Hyderabad, Telangana",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ]
+        },
+        "salary_is_predicted": "0",
+        "description": "What Youll Be Doing (position summary): The QE Manager is accountable for leading and managing quality engineering and software testing activities across multiple projects, programs, or workstreams This role ensures the delivery of high-quality solutions by developing and executing comprehensive test strategies, plans, and automation scripts, while driving continuous improvement in QA/QE processes and standards The incumbent plays a key role in technical evaluation, solution design feedback, an\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "latitude": 17.40275
+      },
+      {
+        "latitude": 17.40275,
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "What Youll Be Doing (position summary): The QE Manager is accountable for leading and managing quality engineering and software testing activities across multiple projects, programs, or workstreams This role ensures the delivery of high-quality solutions by developing and executing comprehensive test strategies, plans, and automation scripts, while driving continuous improvement in QA/QE processes and standards The incumbent plays a key role in technical evaluation, solution design feedback, an\u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "area": [
+            "India",
+            "Telangana",
+            "Hyderabad"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Hyderabad, Telangana"
+        },
+        "longitude": 78.50806,
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "CIBC India"
+        },
+        "id": "5664646481",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjY0NjQ2NDgxIn0.IceCuQbrzZvGRcEyaokOAn2BbfM9v0lqlCDJ2YoNOmM",
+        "category": {
+          "__CLASS__": "Adzuna::API::Response::Category",
+          "label": "IT Jobs",
+          "tag": "it-jobs"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5664646481?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=64C9E0D4C4D80CC24B4D54C1F874400429824631",
+        "created": "2026-03-14T07:48:39Z",
+        "title": "Quality Engineering Manager"
+      },
+      {
+        "title": "Data Engineering Manager",
+        "created": "2026-02-13T06:37:25Z",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5626958872?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=523B4916519C5A929857E134AC8B4C324BAB9F5B",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1NjI2OTU4ODcyIn0.pH25RkNJh8KL7m1UW-9A_cEU5crQO-zWb8_l0oVwxp4",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Zimmerbiomet"
+        },
+        "longitude": 77.59837,
+        "id": "5626958872",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "description": "At Zimmer Biomet, we believe in pushing the boundaries of innovation and driving our mission forward. As a global medical technology leader for nearly 100 years, a patients mobility is enhanced by a Zimmer Biomet product or technology every 8 seconds. As a Zimmer Biomet team member, you will share in our commitment to providing mobility and renewed life to people around the world. To support our talent team, we focus on development opportunities, robust employee resource groups (ERGs), a flexib\u2026",
+        "salary_is_predicted": "0",
+        "latitude": 12.95703,
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY0NDQyMjMyNSIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.l2e60XPKxs7diJ3jPo7Z-SN62Zfsk7bMoxKEycs5WUg",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5644422325?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=D4B782392B44351F59B06589F889EF3775144EB7",
+        "created": "2026-02-25T08:29:09Z",
+        "title": "Senior Engineering Manager",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "description": "Who We Are : Our Mission is to accelerate Supplier success by creating the world\u2019s best experiences and technology platform for suppliers to complete their jobs and for those who serve suppliers. What You\u2019ll Do : Play a key role in developing and driving a multi-year technology strategy for a complexn platform Lead multiple software development teams - architecting solutions at scale to empower the business and owning all aspects of the SDLC: design, build, deliver, and maintain Directly and in\u2026",
+        "salary_is_predicted": "0",
+        "location": {
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ],
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "display_name": "Bangalore, Karnataka"
+        },
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Wayfair"
+        },
+        "id": "5644422325"
+      },
+      {
+        "title": "Data Engineering Manager",
+        "created": "2026-04-09T08:13:12Z",
+        "category": {
+          "label": "IT Jobs",
+          "tag": "it-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "redirect_url": "https://www.adzuna.in/land/ad/5694091690?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=7077C51DC436834B00CA98900AB14F3E1E10729F",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njk0MDkxNjkwIn0.newqBj62QkpIpVbRDz_QaUsVxp37XEDVdODiw55KVNU",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "Mastercard"
+        },
+        "id": "5694091690",
+        "location": {
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India"
+          ]
+        },
+        "description": "Overview This is an exciting opportunity for you to join Mastercard on the DAAI team. Come join us! We are seeking a Technical Manager with a strong development background to lead multiple Scrum teams in designing, building, and delivering high-quality software solutions. This role combines leadership with hands-on technical expertise to drive innovation and ensure timely delivery of scalable products. Key Responsibilities Development Leadership Lead and mentor engineering teams to design, deve\u2026",
+        "salary_is_predicted": "0",
+        "__CLASS__": "Adzuna::API::Response::Job"
+      },
+      {
+        "created": "2026-04-09T08:10:34Z",
+        "title": "Engineering Manager- Flutter",
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicGs0SjVSbzM4UkczdXJmckJnZjlmZyIsImkiOiI1Njk0MDg5NTgzIn0.HZWUlkveou5o5i9FhYrQlRBIeArM3gxk8AMFThf5mCo",
+        "redirect_url": "https://www.adzuna.in/land/ad/5694089583?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=66A8CB95B16D3EE59AC5AD3DB2092C984374F1F1",
+        "category": {
+          "tag": "it-jobs",
+          "label": "IT Jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "location": {
+          "display_name": "Bangalore, Karnataka",
+          "__CLASS__": "Adzuna::API::Response::Location",
+          "area": [
+            "India",
+            "Karnataka",
+            "Bangalore"
+          ]
+        },
+        "id": "5694089583",
+        "company": {
+          "__CLASS__": "Adzuna::API::Response::Company",
+          "display_name": "HDFC Bank"
+        },
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "salary_is_predicted": "0",
+        "description": "Job Purpose \u00b7 Do engineering work on Mobile app development. To start with this role will work on Mobile banking app development. Create best-in-class experience for Customer Responsible for delivery of work from a squad. Should have played Lead or Principal Engineer role. \u00b7 Understand requirements and put together solution to meet requirements \u00b7 Develop mobile banking app in Flutter, Native technologies(Android/iOS) meeting quality and timeliness goals. \u00b7 Review team code \u00b7 Ensure adequate doc\u2026"
+      },
+      {
+        "id": "5687247490",
+        "company": {
+          "display_name": "Southco, Inc.",
+          "__CLASS__": "Adzuna::API::Response::Company"
+        },
+        "location": {
+          "area": [
+            "India"
+          ],
+          "display_name": "India",
+          "__CLASS__": "Adzuna::API::Response::Location"
+        },
+        "salary_is_predicted": "0",
+        "description": "About the Role The Manager Design position is a key role responsible for overseeing the design and development of plastic and metal products, ensuring alignment with customer requirements and project specifications. Responsibilities Concept development, 3D & 2D maturation as per project requirement Customer interaction to understand the requirements Packaging studies of standard Southco products in customer application Close co-ordination with NPD team / Prototype analysis / root cause analysis\u2026",
+        "__CLASS__": "Adzuna::API::Response::Job",
+        "title": "Design Engineering Manager",
+        "created": "2026-04-02T16:19:59Z",
+        "redirect_url": "https://www.adzuna.in/land/ad/5687247490?se=pk4J5Ro38RG3urfrBgf9fg&utm_medium=api&utm_source=4a3a122e&v=D7DE36CF154974C2D5C0D4EEC8C0DD7C48CC1649",
+        "category": {
+          "label": "Engineering Jobs",
+          "tag": "engineering-jobs",
+          "__CLASS__": "Adzuna::API::Response::Category"
+        },
+        "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTY4NzI0NzQ5MCIsInMiOiJwazRKNVJvMzhSRzN1cmZyQmdmOWZnIn0.txVD8SIIk0Hc5VzFEmI5FEmOtIG3mTJhuc9npf567uk"
+      }
+    ],
+    "top_skills": [
+      "r",
+      "leadership",
+      "testing",
+      "scala",
+      "api",
+      "excel",
+      "go",
+      "sql",
+      "react",
+      "postgresql"
+    ],
+    "top_companies": [
+      "CIBC India",
+      "Under Armour India",
+      "ValueLabs",
+      "JSW One Platforms Ltd.",
+      "Uptime Crew",
+      "MCO ",
+      "Branch International",
+      "BigCity Promotions",
+      "HiLabs",
+      "Servify"
+    ],
+    "remote_percentage": 4.0,
+    "source": "adzuna",
+    "success": true,
+    "market_health": "excellent",
+    "demand_level": "very_high",
+    "salary_trend": "increasing",
+    "data_freshness": "2026-04-13T14:56:50.086221",
+    "confidence_score": 0.9
+  }
+}
