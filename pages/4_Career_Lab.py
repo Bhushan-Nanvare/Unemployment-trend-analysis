@@ -328,3 +328,261 @@ with col_nar:
     </div>
     """, unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
+
+
+# ─── Personalized Career Roadmap ──────────────────────────────────────────────
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown('<div class="section-title">🗺️ Personalized Career Roadmap Generator</div>', unsafe_allow_html=True)
+st.markdown('<p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1.5rem;">Generate a step-by-step learning path based on your profile and real-time job market trends</p>', unsafe_allow_html=True)
+
+from src.career_roadmap_generator import generate_career_roadmap, get_available_roles
+
+# Roadmap input form
+with st.form("roadmap_form"):
+    col_form1, col_form2, col_form3 = st.columns(3)
+    
+    with col_form1:
+        user_level = st.selectbox(
+            "Your Experience Level",
+            ["Beginner", "Intermediate", "Advanced"],
+            index=1
+        )
+    
+    with col_form2:
+        target_role = st.selectbox(
+            "Target Role",
+            get_available_roles(),
+            index=0
+        )
+    
+    with col_form3:
+        st.markdown('<p style="color:#94a3b8; font-size:0.85rem; margin-bottom:0.3rem;">Known Skills (comma-separated)</p>', unsafe_allow_html=True)
+        known_skills_input = st.text_input(
+            "Known Skills",
+            value="Python, SQL",
+            label_visibility="collapsed"
+        )
+    
+    submit_button = st.form_submit_button("🚀 Generate My Roadmap", use_container_width=True)
+
+if submit_button:
+    # Parse known skills
+    known_skills = [s.strip() for s in known_skills_input.split(",") if s.strip()]
+    
+    # Generate roadmap
+    with st.spinner("🔍 Analyzing job market trends and generating your personalized roadmap..."):
+        roadmap_data = generate_career_roadmap(
+            user_level=user_level,
+            known_skills=known_skills,
+            target_role=target_role
+        )
+    
+    # Display roadmap
+    if roadmap_data["roadmap_steps"]:
+        st.success(f"✅ Personalized roadmap generated for **{target_role}** ({user_level} level)")
+        
+        # Summary metrics
+        col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+        with col_m1:
+            st.metric("Missing Skills", len(roadmap_data["missing_skills"]))
+        with col_m2:
+            st.metric("Learning Steps", len([s for s in roadmap_data["roadmap_steps"] if s["category"] != "project"]))
+        with col_m3:
+            st.metric("Projects", len([s for s in roadmap_data["roadmap_steps"] if s["category"] == "project"]))
+        with col_m4:
+            st.metric("Est. Duration", f"{roadmap_data['total_duration_months']} months")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Priority Skills (Trending)
+        if roadmap_data["priority_skills"]:
+            st.markdown("### 🔥 Priority Skills (Trending in Job Market)")
+            priority_chips = "".join([
+                f'<span style="display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); '
+                f'color:#fca5a5; padding:0.4rem 0.8rem; border-radius:8px; margin:0.3rem; font-size:0.85rem; font-weight:600;">'
+                f'🔥 {skill}</span>'
+                for skill in roadmap_data["priority_skills"]
+            ])
+            st.markdown(f'<div style="line-height:2.5; padding:0.5rem 0;">{priority_chips}</div>', unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Roadmap Steps
+        st.markdown("### 📋 Your Learning Roadmap")
+        st.caption("📡 Personalized roadmap generated using your profile and real-time job market trends")
+        
+        # Group steps by category
+        foundation_steps = [s for s in roadmap_data["roadmap_steps"] if s["category"] == "foundation"]
+        intermediate_steps = [s for s in roadmap_data["roadmap_steps"] if s["category"] == "intermediate"]
+        advanced_steps = [s for s in roadmap_data["roadmap_steps"] if s["category"] == "advanced"]
+        project_steps = [s for s in roadmap_data["roadmap_steps"] if s["category"] == "project"]
+        
+        # Display each category
+        if foundation_steps:
+            st.markdown("#### 🎯 Foundation Skills")
+            for step in foundation_steps:
+                priority_color = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}[step["priority"]]
+                trending_badge = "🔥 TRENDING" if step["is_trending"] else ""
+                
+                st.markdown(f"""
+                <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
+                            background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);
+                            border-radius:10px; margin-bottom:0.5rem;">
+                    <div style="background:{priority_color}20; border:1px solid {priority_color}40;
+                                border-radius:50%; width:32px; height:32px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700; color:{priority_color};">
+                        {step['step']}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
+                        <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
+                            {step['weeks']} weeks · {step['priority'].upper()} priority {trending_badge}
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        if intermediate_steps:
+            st.markdown("#### 🚀 Intermediate Skills")
+            for step in intermediate_steps:
+                priority_color = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}[step["priority"]]
+                trending_badge = "🔥 TRENDING" if step["is_trending"] else ""
+                
+                st.markdown(f"""
+                <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
+                            background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);
+                            border-radius:10px; margin-bottom:0.5rem;">
+                    <div style="background:{priority_color}20; border:1px solid {priority_color}40;
+                                border-radius:50%; width:32px; height:32px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700; color:{priority_color};">
+                        {step['step']}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
+                        <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
+                            {step['weeks']} weeks · {step['priority'].upper()} priority {trending_badge}
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        if advanced_steps:
+            st.markdown("#### 💎 Advanced Skills")
+            for step in advanced_steps:
+                priority_color = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}[step["priority"]]
+                trending_badge = "🔥 TRENDING" if step["is_trending"] else ""
+                
+                st.markdown(f"""
+                <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
+                            background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);
+                            border-radius:10px; margin-bottom:0.5rem;">
+                    <div style="background:{priority_color}20; border:1px solid {priority_color}40;
+                                border-radius:50%; width:32px; height:32px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700; color:{priority_color};">
+                        {step['step']}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
+                        <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
+                            {step['weeks']} weeks · {step['priority'].upper()} priority {trending_badge}
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        if project_steps:
+            st.markdown("#### 🎨 Capstone Projects")
+            for step in project_steps:
+                st.markdown(f"""
+                <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
+                            background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2);
+                            border-radius:10px; margin-bottom:0.5rem;">
+                    <div style="background:rgba(99,102,241,0.3); border:1px solid rgba(99,102,241,0.5);
+                                border-radius:50%; width:32px; height:32px; display:flex; align-items:center;
+                                justify-content:center; font-size:0.8rem; font-weight:700; color:#a5b4fc;">
+                        {step['step']}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
+                        <div style="color:#94a3b8; font-size:0.8rem; margin-top:0.2rem;">
+                            {step['weeks']} weeks · Portfolio project
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        # Methodology
+        with st.expander("📊 How this roadmap was generated"):
+            st.markdown("""
+            **9-Phase Personalized Roadmap Algorithm:**
+            
+            **Phase 1: Input Analysis**
+            - Your experience level: Determines starting point
+            - Known skills: Identifies what you already know
+            - Target role: Defines required skill set
+            
+            **Phase 2: Role Requirements**
+            - Lookup required skills for target role
+            - Categorized by: Foundation → Intermediate → Advanced
+            - Includes practical projects
+            
+            **Phase 3: Skill Gap Analysis**
+            - Compare required skills vs your known skills
+            - Identify missing skills you need to learn
+            - Remove skills you already know
+            
+            **Phase 4: Trend Integration**
+            - Fetch trending skills from job market (Adzuna API)
+            - Check which missing skills are currently trending
+            - Prioritize trending skills for faster job readiness
+            
+            **Phase 5: Roadmap Generation**
+            - Create ordered learning path
+            - Maintain logical dependencies (e.g., Python before ML)
+            - Foundation → Intermediate → Advanced progression
+            
+            **Phase 6: Personalization**
+            - **Beginner:** Start from foundation, cover all levels
+            - **Intermediate:** Skip basics, focus on intermediate + advanced
+            - **Advanced:** Focus on specialization + projects
+            
+            **Phase 7: Project Integration**
+            - Add 2-3 capstone projects at the end
+            - Projects match your target role
+            - Build portfolio while learning
+            
+            **Phase 8: Timeline Estimation**
+            - Foundation skills: 3 weeks each
+            - Intermediate skills: 4 weeks each
+            - Advanced skills: 4 weeks each
+            - Projects: 4 weeks each
+            
+            **Phase 9: Output Formatting**
+            - Structured step-by-step roadmap
+            - Priority indicators (trending skills highlighted)
+            - Estimated duration for planning
+            
+            **Key Features:**
+            - ✅ **Personalized** - Based on YOUR profile
+            - ✅ **Data-driven** - Uses real job market trends
+            - ✅ **Logical** - Maintains skill dependencies
+            - ✅ **Practical** - Includes hands-on projects
+            - ✅ **Adaptive** - Adjusts to your experience level
+            
+            **Data Sources:**
+            - Role requirements: Curated from industry standards
+            - Trending skills: Adzuna API (1,000+ job postings analyzed)
+            - Prioritization: Real-time job market demand scores
+            """)
+    
+    else:
+        st.info(f"🎉 Great news! You already know all required skills for **{target_role}**. Focus on building projects to showcase your expertise!")
+        
+        if roadmap_data["suggested_projects"]:
+            st.markdown("### 🎨 Suggested Projects")
+            for i, project in enumerate(roadmap_data["suggested_projects"], 1):
+                st.markdown(f"""
+                <div style="padding:0.8rem; background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2);
+                            border-radius:10px; margin-bottom:0.5rem;">
+                    <div style="color:#e2e8f0; font-weight:600;">{i}. {project}</div>
+                </div>
+                """, unsafe_allow_html=True)
