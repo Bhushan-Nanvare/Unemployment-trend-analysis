@@ -443,6 +443,11 @@ with col_out:
                 
                 st.info(benchmark_res.comparison_text)
                 
+                # Get user inputs for chart title
+                user_inputs = st.session_state.get("last_job_risk_inputs", {})
+                industry_label = user_inputs.get("industry", "your industry")
+                role_label = user_inputs.get("role_level", "your level")
+                
                 # Distribution chart
                 fig_bench = go.Figure()
                 
@@ -480,7 +485,7 @@ with col_out:
                 fig_bench.update_layout(
                     **plotly_dark_layout(height=300),
                     title=dict(
-                        text=f"Risk Distribution ({benchmark_res.peer_count} peers in {inp['industry']}, {inp['role_level']} level)",
+                        text=f"Risk Distribution ({benchmark_res.peer_count} peers in {industry_label}, {role_label} level)",
                         font=dict(color="#94a3b8", size=13)
                     ),
                     xaxis_title="Overall Risk (%)",
