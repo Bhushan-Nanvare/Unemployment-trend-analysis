@@ -126,6 +126,10 @@ with col_r:
     # Get real-time skill demand data
     skill_demand_data = career.get("skill_demand_data", {})
     
+    # Debug: Show what data we received
+    # st.write("DEBUG - skill_demand_data keys:", list(skill_demand_data.keys()) if skill_demand_data else "None")
+    # st.write("DEBUG - skills list:", skills[:3] if skills else "None")
+    
     if skill_demand_data and skill_demand_data.get("skills"):
         # Use real-time data from Adzuna API
         skills_data = skill_demand_data["skills"]
@@ -135,6 +139,8 @@ with col_r:
         data_source = skill_demand_data.get("data_source", "Unknown")
         if "Adzuna" in data_source:
             st.caption("📡 Skill demand based on real-time job market data (Adzuna API)")
+        elif "INSUFFICIENT" in data_source:
+            st.caption("⚠️ Adzuna API unavailable - Configure credentials in Streamlit secrets")
         else:
             st.caption("⚠️ Using cached data - Adzuna API unavailable")
         
@@ -181,15 +187,40 @@ with col_r:
             **No fake data:** All scores based on real job market
             """)
     elif skills:
-        # Fallback: Show skills without scores if API unavailable
-        st.warning("⚠️ Adzuna API unavailable. Configure ADZUNA_APP_ID and ADZUNA_APP_KEY in .env file.")
-        st.caption("📋 Showing recommended skills (demand scores unavailable)")
+        # Fallback: Show skills without fake scores
+        st.warning("⚠️ Real-time skill demand unavailable")
         
+        # Check if API credentials are configured
+        import os
+        has_api_id = bool(os.getenv("ADZUNA_APP_ID"))
+        has_api_key = bool(os.getenv("ADZUNA_APP_KEY"))
+        
+        if not has_api_id or not has_api_key:
+            st.info("💡 **To enable real-time data:** Configure ADZUNA_APP_ID and ADZUNA_APP_KEY in Streamlit secrets")
+            with st.expander("🔧 How to configure"):
+                st.markdown("""
+                **Step 1:** Get free API key from https://developer.adzuna.com/
+                
+                **Step 2:** In Streamlit Cloud dashboard:
+                - Go to app settings
+                - Click "Secrets"
+                - Add:
+                ```toml
+                ADZUNA_APP_ID = "your_app_id"
+                ADZUNA_APP_KEY = "your_app_key"
+                ```
+                - Save and restart app
+                """)
+        
+        st.caption("📋 Showing recommended skills (ranked by sector growth)")
+        
+        # Show skills as simple list (no fake percentages)
         for idx, skill in enumerate(skills[:10]):
             st.markdown(f"""
             <div style="padding:0.5rem; border-bottom:1px solid rgba(255,255,255,0.05);">
                 <span style="color:#64748b; font-weight:600;">{idx+1}.</span>
                 <span style="color:#e2e8f0; margin-left:0.5rem;">{skill}</span>
+                <span style="color:#64748b; font-size:0.85rem; margin-left:0.5rem;">(from growth sectors)</span>
             </div>
             """, unsafe_allow_html=True)
     else:
