@@ -17,17 +17,19 @@ from src.skill_demand_analyzer import get_skill_demand_dict
 
 class CareerAdvisor:
 
+    # Updated to match BASE_SKILLS in skill_demand_analyzer.py
+    # These are the skills with real-time Adzuna API data
     SECTOR_SKILLS = {
-        "Healthcare":        ["Telemedicine", "Geriatric Care", "Biotech", "Health Informatics"],
-        "Education":         ["EdTech Platforms", "Curriculum Design", "E-Learning", "Student Analytics"],
+        "Healthcare":        ["Healthcare Tech", "Telemedicine", "Biotech"],
+        "Education":         ["EdTech", "E-Learning", "Data Science"],
         "IT":                ["AI/ML", "Cybersecurity", "Cloud Computing", "Data Engineering"],
-        "Energy & Utilities":["Renewable Energy", "Smart Grid", "Energy Analytics", "Sustainability"],
-        "Finance & Banking": ["FinTech", "Risk Modeling", "Blockchain", "RegTech"],
-        "Agriculture":       ["Precision Agriculture", "Agri-Tech", "Supply Chain", "Soil Analytics"],
-        "Services":          ["Digital Marketing", "E-commerce Management", "CX Automation", "Crisis Management"],
-        "Retail & Trade":    ["Inventory Analytics", "Omnichannel Strategy", "POS Systems", "Trade Finance"],
-        "Manufacturing":     ["Robotics", "Supply Chain Analytics", "Lean Six Sigma", "IoT Maintenance"],
-        "Construction":      ["Green Building", "Project Management", "BIM (Building Info Modeling)", "Sustainable Urban Planning"],
+        "Energy & Utilities":["Data Science", "Cloud Computing", "Business Intelligence"],
+        "Finance & Banking": ["FinTech", "Blockchain", "Data Science"],
+        "Agriculture":       ["Data Science", "Cloud Computing", "Business Intelligence"],
+        "Services":          ["Digital Marketing", "Product Management", "Web Development"],
+        "Retail & Trade":    ["Data Science", "Digital Marketing", "Business Intelligence"],
+        "Manufacturing":     ["Data Engineering", "Cloud Computing", "DevOps"],
+        "Construction":      ["Product Management", "Data Science", "Cloud Computing"],
     }
 
     @staticmethod
