@@ -384,17 +384,19 @@ with col_out:
                     marker=dict(size=6)
                 ))
                 
-                fig_time.update_layout(
-                    **plotly_dark_layout(height=350),
-                    title=dict(
+                layout_config = plotly_dark_layout(height=350)
+                layout_config.update({
+                    'title': dict(
                         text="Risk Trajectory" + (" (with continuous learning)" if show_learning else " (without skill development)"),
                         font=dict(color="#94a3b8", size=14)
                     ),
-                    xaxis_title="Time Horizon",
-                    yaxis_title="Risk Score (%)",
-                    yaxis=dict(range=[0, 100]),
-                    hovermode='x unified'
-                )
+                    'xaxis_title': "Time Horizon",
+                    'yaxis_title': "Risk Score (%)",
+                    'hovermode': 'x unified'
+                })
+                layout_config['yaxis'].update({'range': [0, 100]})
+                
+                fig_time.update_layout(**layout_config)
                 
                 st.plotly_chart(fig_time, use_container_width=True)
                 
