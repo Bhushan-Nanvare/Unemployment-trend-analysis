@@ -337,7 +337,7 @@ class JobRiskResult:
     # Data quality metadata
     data_quality_warning: str = "⚠️  EXPERIMENTAL: Model trained on synthetic data, not validated"
     confidence_level: str = "LOW"
-    model_version: str = MODEL_VERSION
+    model_version: str = "2.1.0"  # Model version
 
 
 def _risk_level_from_prob(p: float) -> str:

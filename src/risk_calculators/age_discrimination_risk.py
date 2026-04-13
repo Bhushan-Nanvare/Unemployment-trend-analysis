@@ -1,4 +1,33 @@
-"""Age discrimination risk calculator based on age, industry, and role level."""
+"""
+Age discrimination risk calculator based on age, industry, and role level.
+
+FORMULA DOCUMENTATION:
+======================
+
+Age Discrimination Risk Score = (Base_Age_Risk × Diversity_Multiplier) 
+                                - Role_Protection - Experience_Benefit
+
+Where:
+  Base_Age_Risk = Age_Risk_Curve(age) × 100
+    - U-shaped curve with minimum at 35-45 years
+    - Increases for very young (<30) and older (>50) workers
+  
+  Diversity_Multiplier = 2.0 - Industry_Age_Diversity
+    - Lower diversity = higher multiplier
+  
+  Role_Protection = Role_Level_Protection × 100
+    - Senior roles more protected (0-30 points)
+  
+  Experience_Benefit = min(Experience_Years / 5 × 3, 15)
+    - More experience reduces risk (max 15 points)
+
+Final Score = clip(Age Discrimination Risk Score, 0, 100)
+
+VALIDATION:
+- All inputs are validated before calculation
+- Invalid inputs trigger clear error messages
+- All calculations are deterministic and explainable
+"""
 
 import numpy as np
 from typing import Dict, List

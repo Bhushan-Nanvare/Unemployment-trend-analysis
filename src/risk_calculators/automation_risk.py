@@ -1,4 +1,23 @@
-"""Automation risk calculator based on skills, industry, and role level."""
+"""
+Automation risk calculator based on skills, industry, and role level.
+
+FORMULA DOCUMENTATION:
+======================
+
+Automation Risk Score = Base Risk - Skill Protection + Skill Vulnerability
+
+Where:
+  Base Risk = Industry_Automation_Rate × 100 × (1 - Role_Resistance × 0.5)
+  Skill Protection = min(Σ(Resistant_Skills × Reduction_Factor) × 100, 40)
+  Skill Vulnerability = min(Σ(Vulnerable_Skills × Increase_Factor) × 100, 30)
+
+Final Score = clip(Automation Risk Score, 0, 100)
+
+VALIDATION:
+- All inputs are validated before calculation
+- Invalid inputs trigger clear error messages
+- All calculations are deterministic and explainable
+"""
 
 import numpy as np
 from typing import Dict, List

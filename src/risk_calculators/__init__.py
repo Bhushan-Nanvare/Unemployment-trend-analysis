@@ -22,14 +22,15 @@ class UserProfile:
 
 @dataclass
 class RiskProfile:
-    """Unified risk assessment result"""
+    """Unified risk assessment result with data quality tracking"""
     overall_risk: float  # 0-100
     automation_risk: float  # 0-100
     recession_risk: float  # 0-100
     age_discrimination_risk: float  # 0-100
-    risk_level: str  # "Low", "Medium", "High"
+    risk_level: str  # "Low", "Medium", "High", "Error"
     contributing_factors: Dict[str, float]  # Factor name -> contribution
     timestamp: datetime
+    data_quality_warnings: Optional[List[str]] = None  # Validation warnings
 
 
 @dataclass

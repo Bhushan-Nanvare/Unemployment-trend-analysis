@@ -1,4 +1,27 @@
-"""Recession vulnerability calculator based on industry, role, company, and experience."""
+"""
+Recession vulnerability calculator based on industry, role, company, and experience.
+
+FORMULA DOCUMENTATION:
+======================
+
+Recession Risk Score = (Base Risk × Company_Multiplier) - Experience_Protection 
+                       - Role_Protection + Performance_Adjustment - Remote_Benefit
+
+Where:
+  Base Risk = Industry_Vulnerability × 100
+  Company_Multiplier = Size-based multiplier (0.85 to 1.35)
+  Experience_Protection = min(Experience_Years / 5 × 5, 20)
+  Role_Protection = Role_Level_Protection × 100
+  Performance_Adjustment = (Performance_Rating - 3) × -5
+  Remote_Benefit = 5 if remote_capability else 0
+
+Final Score = clip(Recession Risk Score, 0, 100)
+
+VALIDATION:
+- All inputs are validated before calculation
+- Invalid inputs trigger clear error messages
+- All calculations are deterministic and explainable
+"""
 
 import numpy as np
 from typing import Dict, List
