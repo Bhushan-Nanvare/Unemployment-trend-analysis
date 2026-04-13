@@ -183,30 +183,14 @@ if insight_categories.get("skill_trends"):
         confidence_color = {"high": "#10b981", "medium": "#f59e0b", "low": "#64748b"}[insight["confidence"]]
         
         with st.expander(f"💡 {insight['title']} · Confidence: {insight['confidence'].upper()}", expanded=False):
-            st.markdown(f"""
-            <div style="background:rgba(255,255,255,0.02); border-left:3px solid {confidence_color}; 
-                        padding:1rem; border-radius:8px; margin-bottom:1rem;">
-                <div style="margin-bottom:0.8rem;">
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">📊 DATA OBSERVATION</div>
-                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['data']}</div>
-                </div>
-                
-                <div style="margin-bottom:0.8rem;">
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">🔍 PATTERN IDENTIFIED</div>
-                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['pattern']}</div>
-                </div>
-                
-                <div>
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">💭 INTERPRETATION</div>
-                    <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;">
-                        {insight['interpretation']}
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"**📊 DATA OBSERVATION**")
+            st.markdown(f"<div style='color:#e2e8f0; font-size:0.9rem; line-height:1.6; margin-bottom:1rem;'>{insight['data']}</div>", unsafe_allow_html=True)
+            
+            st.markdown(f"**🔍 PATTERN IDENTIFIED**")
+            st.markdown(f"<div style='color:#e2e8f0; font-size:0.9rem; line-height:1.6; margin-bottom:1rem;'>{insight['pattern']}</div>", unsafe_allow_html=True)
+            
+            st.markdown(f"**💭 INTERPRETATION**")
+            st.markdown(f"<div style='color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;'>{insight['interpretation']}</div>", unsafe_allow_html=True)
 
 # Sector Analysis Insights
 if insight_categories.get("sector_analysis"):
@@ -215,30 +199,14 @@ if insight_categories.get("sector_analysis"):
         confidence_color = {"high": "#10b981", "medium": "#f59e0b", "low": "#64748b"}[insight["confidence"]]
         
         with st.expander(f"💡 {insight['title']} · Confidence: {insight['confidence'].upper()}", expanded=False):
-            st.markdown(f"""
-            <div style="background:rgba(255,255,255,0.02); border-left:3px solid {confidence_color}; 
-                        padding:1rem; border-radius:8px; margin-bottom:1rem;">
-                <div style="margin-bottom:0.8rem;">
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">📊 DATA OBSERVATION</div>
-                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['data']}</div>
-                </div>
-                
-                <div style="margin-bottom:0.8rem;">
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">🔍 PATTERN IDENTIFIED</div>
-                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['pattern']}</div>
-                </div>
-                
-                <div>
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">💭 INTERPRETATION</div>
-                    <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;">
-                        {insight['interpretation']}
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"**📊 DATA OBSERVATION**")
+            st.markdown(f"<div style='color:#e2e8f0; font-size:0.9rem; line-height:1.6; margin-bottom:1rem;'>{insight['data']}</div>", unsafe_allow_html=True)
+            
+            st.markdown(f"**🔍 PATTERN IDENTIFIED**")
+            st.markdown(f"<div style='color:#e2e8f0; font-size:0.9rem; line-height:1.6; margin-bottom:1rem;'>{insight['pattern']}</div>", unsafe_allow_html=True)
+            
+            st.markdown(f"**💭 INTERPRETATION**")
+            st.markdown(f"<div style='color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;'>{insight['interpretation']}</div>", unsafe_allow_html=True)
 
 # Market Dynamics Insights
 if insight_categories.get("market_dynamics"):
@@ -247,30 +215,14 @@ if insight_categories.get("market_dynamics"):
         confidence_color = {"high": "#10b981", "medium": "#f59e0b", "low": "#64748b"}[insight["confidence"]]
         
         with st.expander(f"💡 {insight['title']} · Confidence: {insight['confidence'].upper()}", expanded=False):
-            st.markdown(f"""
-            <div style="background:rgba(255,255,255,0.02); border-left:3px solid {confidence_color}; 
-                        padding:1rem; border-radius:8px; margin-bottom:1rem;">
-                <div style="margin-bottom:0.8rem;">
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">📊 DATA OBSERVATION</div>
-                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['data']}</div>
-                </div>
-                
-                <div style="margin-bottom:0.8rem;">
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">🔍 PATTERN IDENTIFIED</div>
-                    <div style="color:#e2e8f0; font-size:0.9rem; line-height:1.6;">{insight['pattern']}</div>
-                </div>
-                
-                <div>
-                    <div style="color:#94a3b8; font-size:0.75rem; font-weight:600; text-transform:uppercase; 
-                                letter-spacing:0.05em; margin-bottom:0.4rem;">💭 INTERPRETATION</div>
-                    <div style="color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;">
-                        {insight['interpretation']}
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"**📊 DATA OBSERVATION**")
+            st.markdown(f"<div style='color:#e2e8f0; font-size:0.9rem; line-height:1.6; margin-bottom:1rem;'>{insight['data']}</div>", unsafe_allow_html=True)
+            
+            st.markdown(f"**🔍 PATTERN IDENTIFIED**")
+            st.markdown(f"<div style='color:#e2e8f0; font-size:0.9rem; line-height:1.6; margin-bottom:1rem;'>{insight['pattern']}</div>", unsafe_allow_html=True)
+            
+            st.markdown(f"**💭 INTERPRETATION**")
+            st.markdown(f"<div style='color:#cbd5e1; font-size:0.9rem; line-height:1.6; font-style:italic;'>{insight['interpretation']}</div>", unsafe_allow_html=True)
 
 # Insights Summary
 if ai_insights["total_insights"] > 0:
