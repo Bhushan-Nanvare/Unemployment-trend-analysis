@@ -39,10 +39,17 @@ class ForecastingEngine:
         self.mean_reversion_strength = mean_reversion_strength
 
     def _fit_trend(self, df: pd.DataFrame) -> np.poly1d:
+        """
+        Fit linear trend to recent unemployment data.
+        
+        CRITICAL: Uses RAW unemployment data, not smoothed.
+        Smoothing would distort the trend and produce incorrect forecasts.
+        """
         window = 10
         recent_df = df.tail(window)
         x = np.arange(len(recent_df))
-        y = recent_df["Unemployment_Smoothed"].values
+        # Use RAW data for forecasting (not smoothed)
+        y = recent_df["Unemployment_Rate"].values if "Unemployment_Rate" in recent_df.columns else recent_df["Unemployment_Smoothed"].values
         coeffs = np.polyfit(x, y, deg=1)
         return np.poly1d(coeffs)
 
@@ -50,12 +57,16 @@ class ForecastingEngine:
         """
         Trend + Mean-Reversion forecast (the core well-designed model).
         Each year: prediction = trend step + reversion pull toward long-run mean.
+        
+        CRITICAL: Uses RAW unemployment data, not smoothed.
         """
         trend_model = self._fit_trend(df)
         slope = float(trend_model(1) - trend_model(0))
-        long_run_level = float(df["Unemployment_Smoothed"].mean())
+        # Use RAW data for long-run level calculation
+        unemployment_col = "Unemployment_Rate" if "Unemployment_Rate" in df.columns else "Unemployment_Smoothed"
+        long_run_level = float(df[unemployment_col].mean())
         max_annual_step = 1.5
-        current_value = float(df["Unemployment_Smoothed"].iloc[-1])
+        current_value = float(df[unemployment_col].iloc[-1])
         predictions = []
 
         for h in range(1, self.forecast_horizon + 1):
@@ -76,7 +87,13 @@ class ForecastingEngine:
         return predictions
 
     def _exponential_smoothing(self, df: pd.DataFrame) -> list:
-        series = df["Unemployment_Smoothed"].values
+        """
+        Exponential smoothing forecast.
+        
+        CRITICAL: Uses RAW unemployment data, not smoothed.
+        """
+        unemployment_col = "Unemployment_Rate" if "Unemployment_Rate" in df.columns else "Unemployment_Smoothed"
+        series = df[unemployment_col].values
         alpha = 0.3
         smoothed = [series[0]]
         for i in range(1, len(series)):
@@ -86,7 +103,13 @@ class ForecastingEngine:
         return [max(0.0, last_smoothed + trend * (i + 1)) for i in range(self.forecast_horizon)]
 
     def _arima_inspired(self, df: pd.DataFrame) -> list:
-        series = df["Unemployment_Smoothed"].values
+        """
+        ARIMA-inspired forecast with mean reversion.
+        
+        CRITICAL: Uses RAW unemployment data, not smoothed.
+        """
+        unemployment_col = "Unemployment_Rate" if "Unemployment_Rate" in df.columns else "Unemployment_Smoothed"
+        series = df[unemployment_col].values
         # Compute per-step (annual) trend, not the raw N-year total difference.
         # The old code used the 5-year total and multiplied by 0.3 each step,
         # which added ~1.2× the correct annual rate each year instead of ~0.3×.
@@ -144,13 +167,17 @@ class ForecastingEngine:
         Monte Carlo simulation for real confidence bands.
         Adds noise based on historical volatility, runs n_simulations, returns
         mean + 10th/90th percentile bounds.
+        
+        CRITICAL: Uses RAW unemployment data for volatility calculation.
         """
         df = df.copy()
         last_year = int(df["Year"].max())
         future_years = np.arange(last_year + 1, last_year + 1 + self.forecast_horizon)
 
         # Historical residual std — the true uncertainty measure
-        hist_std = float(df["Unemployment_Smoothed"].diff().dropna().std())
+        # Use RAW data for volatility calculation
+        unemployment_col = "Unemployment_Rate" if "Unemployment_Rate" in df.columns else "Unemployment_Smoothed"
+        hist_std = float(df[unemployment_col].diff().dropna().std())
         base_preds = np.array(self._ensemble_forecast(df))
 
         all_sims = []

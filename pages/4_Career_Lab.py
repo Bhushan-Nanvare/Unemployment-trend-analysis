@@ -122,29 +122,78 @@ with col_l:
 with col_r:
     
     st.markdown('<div class="section-title">🎓 In-Demand Skills Ranking</div>', unsafe_allow_html=True)
-
-    if skills:
-        skill_scores = [round(1.0 - i * 0.08, 2) for i in range(len(skills))]
-        skill_df = pd.DataFrame({"Skill": skills, "Demand": skill_scores})
+    
+    # Get real-time skill demand data
+    skill_demand_data = career.get("skill_demand_data", {})
+    
+    if skill_demand_data and skill_demand_data.get("skills"):
+        # Use real-time data from Adzuna API
+        skills_data = skill_demand_data["skills"]
+        skill_df = pd.DataFrame(skills_data)
+        
+        # Display data source label
+        data_source = skill_demand_data.get("data_source", "Unknown")
+        if "Adzuna" in data_source:
+            st.caption("📡 Skill demand based on real-time job market data (Adzuna API)")
+        else:
+            st.caption("⚠️ Using cached data - Adzuna API unavailable")
+        
+        # Create bar chart with real demand scores
         fig_skill = go.Figure(go.Bar(
-            x=skill_df["Demand"],
-            y=skill_df["Skill"],
+            x=skill_df["demand"],
+            y=skill_df["name"],
             orientation="h",
             marker=dict(
-                color=skill_df["Demand"],
+                color=skill_df["demand"],
                 colorscale=[[0, "#312e81"], [0.5, "#6366f1"], [1, "#06b6d4"]],
                 line=dict(width=0),
             ),
-            text=[f"{v:.0%}" for v in skill_df["Demand"]],
+            text=[f"{v:.0%}" for v in skill_df["demand"]],
             textposition="outside",
             textfont=dict(color="#e2e8f0"),
+            customdata=skill_df[["job_count", "avg_salary"]],
+            hovertemplate="<b>%{y}</b><br>" +
+                         "Demand Score: %{x:.1%}<br>" +
+                         "Job Count: %{customdata[0]}<br>" +
+                         "Avg Salary: ₹%{customdata[1]:,.0f}<br>" +
+                         "<extra></extra>"
         ))
         fig_skill.update_layout(**plotly_dark_layout(height=340, showlegend=False, margin=dict(l=10, r=60, t=10, b=10)))
-        fig_skill.update_xaxes(range=[0, 1.2], title_text="Demand Index", showgrid=True, gridcolor="rgba(255,255,255,0.05)", linecolor="rgba(255,255,255,0.08)", tickfont=dict(color="#64748b"))
+        fig_skill.update_xaxes(range=[0, 1.2], title_text="Demand Score (Real-Time)", showgrid=True, gridcolor="rgba(255,255,255,0.05)", linecolor="rgba(255,255,255,0.08)", tickfont=dict(color="#64748b"))
         fig_skill.update_yaxes(title_text="", gridcolor="rgba(255,255,255,0.05)", linecolor="rgba(255,255,255,0.08)", tickfont=dict(color="#64748b"))
         st.plotly_chart(fig_skill, use_container_width=True)
+        
+        # Show methodology
+        with st.expander("📊 How demand is calculated"):
+            st.markdown("""
+            **Real-Time Demand Score Formula:**
+            ```
+            Demand = (0.5 × Job Count) + (0.3 × Salary) + (0.2 × Recency)
+            ```
+            
+            **Components:**
+            - **Job Count (50%):** Number of active job postings
+            - **Salary (30%):** Average salary offered
+            - **Recency (20%):** Percentage of recent postings (last 30 days)
+            
+            **Data Source:** Adzuna Job Search API (India)  
+            **Update Frequency:** Hourly (with 1-hour cache)  
+            **No fake data:** All scores based on real job market
+            """)
+    elif skills:
+        # Fallback: Show skills without scores if API unavailable
+        st.warning("⚠️ Adzuna API unavailable. Configure ADZUNA_APP_ID and ADZUNA_APP_KEY in .env file.")
+        st.caption("📋 Showing recommended skills (demand scores unavailable)")
+        
+        for idx, skill in enumerate(skills[:10]):
+            st.markdown(f"""
+            <div style="padding:0.5rem; border-bottom:1px solid rgba(255,255,255,0.05);">
+                <span style="color:#64748b; font-weight:600;">{idx+1}.</span>
+                <span style="color:#e2e8f0; margin-left:0.5rem;">{skill}</span>
+            </div>
+            """, unsafe_allow_html=True)
     else:
-        st.info("Skills data not available")
+        st.info("No skills data available")
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ─── Sector cards: growth vs risk ────────────────────────────────────────────

@@ -1,12 +1,18 @@
 """
 career_advisor.py
-Rule-based AI Career & Skill Advisor.
+Rule-based AI Career & Skill Advisor with Real-Time Skill Demand.
+
+REFACTORED: 2026-04-13
+- Removed fake positional scoring
+- Integrated real-time Adzuna API data
+- Skills ranked by actual job market demand
 
 Fix: Thresholds for "growth" vs "risk" classification now scale dynamically
 with shock_intensity so that a severe crisis produces appropriately pessimistic
 advice rather than falsely optimistic sector labels.
 """
 import pandas as pd
+from src.skill_demand_analyzer import get_skill_demand_dict
 
 
 class CareerAdvisor:
@@ -46,6 +52,8 @@ class CareerAdvisor:
         """
         Generates career advice based on sector stress and resilience.
         shock_intensity is used to set dynamic classification thresholds.
+        
+        REFACTORED: Now uses real-time skill demand data from Adzuna API.
         """
         thresholds = CareerAdvisor._dynamic_thresholds(shock_intensity)
         g_res = thresholds["growth_resilience"]
@@ -58,6 +66,7 @@ class CareerAdvisor:
             "growth_sectors": [],
             "risk_sectors": [],
             "recommended_skills": [],
+            "skill_demand_data": {},  # NEW: Real-time demand data
             "upskilling_pathways": [],
             "shock_severity": (
                 "Low" if shock_intensity <= 0.2 else
@@ -66,6 +75,8 @@ class CareerAdvisor:
             ),
         }
 
+        # Collect skills from growth sectors
+        all_skills = []
         for s in sectors:
             name = s["Sector"]
             resilience = s["Resilience_Score"]
@@ -74,11 +85,28 @@ class CareerAdvisor:
             if resilience > g_res and stress < g_str:
                 advice["growth_sectors"].append(name)
                 skills = CareerAdvisor.SECTOR_SKILLS.get(name, [])
-                advice["recommended_skills"].extend(skills[:3])
+                all_skills.extend(skills[:3])
             elif stress > r_str:
                 advice["risk_sectors"].append(name)
 
-        advice["recommended_skills"] = list(set(advice["recommended_skills"]))
+        # Remove duplicates
+        all_skills = list(set(all_skills))
+        
+        # Get real-time skill demand data
+        if all_skills:
+            skill_demand = get_skill_demand_dict(all_skills)
+            advice["skill_demand_data"] = skill_demand
+            
+            # Extract top skills by demand score
+            if skill_demand.get("skills"):
+                advice["recommended_skills"] = [
+                    s["name"] for s in skill_demand["skills"]
+                ]
+            else:
+                # Fallback if API unavailable
+                advice["recommended_skills"] = all_skills
+        else:
+            advice["recommended_skills"] = []
 
         narrative = []
         severity = advice["shock_severity"]
