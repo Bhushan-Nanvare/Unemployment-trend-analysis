@@ -140,7 +140,7 @@ with col_r:
         algorithm = skill_demand_data.get("algorithm", "")
         
         if "Adzuna" in data_source:
-            st.caption("📡 Skill demand based on real-time job market data (Adzuna API, log-normalized, keyword-expanded)")
+            st.caption("📡 Skill demand based on real-time job market data (Adzuna API, log-normalized, keyword-balanced)")
         elif "INSUFFICIENT" in data_source:
             st.caption("⚠️ Adzuna API unavailable - Configure credentials in Streamlit secrets")
         else:

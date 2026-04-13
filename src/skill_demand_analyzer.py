@@ -41,92 +41,139 @@ import re
 # BASE SKILL CONFIGURATION (Minimal anchor keywords)
 # ═══════════════════════════════════════════════════════════════════════════
 
+# ═══════════════════════════════════════════════════════════════════════════
+# BALANCED SKILL CONFIGURATION (Tech + Domain Coverage)
+# ═══════════════════════════════════════════════════════════════════════════
+
 BASE_SKILLS = {
-    # Core Tech Skills
-    "AI/ML": ["machine learning engineer", "ai engineer"],
-    "Data Science": ["data scientist", "data analyst"],
-    "Cloud Computing": ["cloud engineer", "aws engineer", "azure engineer"],
-    "Cybersecurity": ["security analyst", "cybersecurity engineer"],
-    "Web Development": ["frontend developer", "react developer", "full stack developer"],
-    "DevOps": ["devops engineer", "site reliability engineer"],
-    "Mobile Development": ["android developer", "ios developer", "mobile engineer"],
-    "Backend Development": ["backend developer", "api developer"],
+    # Core Tech Skills (High-demand programming/infrastructure)
+    "AI/ML": ["machine learning engineer", "ai engineer", "ml developer"],
+    "Data Science": ["data scientist", "data analyst", "analytics engineer"],
+    "Cloud Computing": ["cloud engineer", "aws engineer", "azure developer"],
+    "Python": ["python developer", "python engineer", "backend python"],
+    "DevOps": ["devops engineer", "site reliability engineer", "platform engineer"],
+    "Cybersecurity": ["security analyst", "cybersecurity engineer", "infosec specialist"],
+    "Web Development": ["frontend developer", "react developer", "javascript developer"],
+    "Data Engineering": ["data engineer", "etl developer", "big data engineer"],
     
-    # Healthcare Tech
-    "Healthcare Tech": ["healthtech engineer", "medical software developer"],
-    "Telemedicine": ["telemedicine developer", "telehealth engineer"],
-    "Biotech": ["bioinformatics engineer", "biotech developer"],
+    # Domain-Specific Tech Skills (Industry applications)
+    "Biotech": ["biotech engineer", "bioinformatics developer", "computational biology"],
+    "Healthcare Tech": ["healthtech engineer", "digital health developer", "medical software"],
+    "EdTech": ["edtech developer", "e-learning developer", "educational software"],
+    "FinTech": ["fintech developer", "financial software engineer", "payment systems"],
     
-    # Education Tech
-    "EdTech": ["edtech developer", "educational technology engineer"],
-    "E-Learning": ["elearning developer", "online education engineer"],
+    # Business & Product Skills (Cross-functional roles)
+    "Product Management": ["product manager", "technical product manager", "product owner"],
+    "Digital Marketing": ["digital marketing specialist", "growth hacker", "marketing automation"],
+    "Business Intelligence": ["business intelligence analyst", "bi developer", "data visualization"],
     
-    # Finance Tech
-    "FinTech": ["fintech developer", "financial technology engineer"],
-    "Blockchain": ["blockchain developer", "cryptocurrency engineer"],
-    
-    # Other Domains
-    "Digital Marketing": ["digital marketing specialist", "seo specialist"],
-    "Product Management": ["product manager", "technical product manager"],
-    "Data Engineering": ["data engineer", "etl developer"],
-    "Business Intelligence": ["business intelligence analyst", "bi developer"],
+    # Emerging Tech Areas (Future-focused)
+    "Blockchain": ["blockchain developer", "web3 developer", "smart contracts"],
+    "Mobile Development": ["mobile developer", "android developer", "ios developer"],
+    "UX/UI Design": ["ux designer", "ui developer", "product designer"],
 }
 
 # ═══════════════════════════════════════════════════════════════════════════
 # SMART SKILL EXPANSION (Detect hidden variations)
 # ═══════════════════════════════════════════════════════════════════════════
 
+# ═══════════════════════════════════════════════════════════════════════════
+# SMART SKILL EXPANSION (Detect hidden variations)
+# ═══════════════════════════════════════════════════════════════════════════
+
 SKILL_EXPANSIONS = {
+    # Core Tech Expansions
     "AI/ML": [
         "nlp", "natural language processing",
         "computer vision", "cv engineer",
         "deep learning", "neural network",
         "llm", "gpt", "transformer",
-        "pytorch", "tensorflow",
-        "ml engineer", "ai developer"
+        "pytorch", "tensorflow", "scikit-learn",
+        "ml engineer", "ai developer", "machine learning"
     ],
     "Data Science": [
         "data analyst", "analytics engineer",
         "statistical analyst", "quantitative analyst",
-        "ml scientist", "research scientist"
+        "ml scientist", "research scientist",
+        "pandas", "numpy", "jupyter", "r programming"
     ],
     "Cloud Computing": [
         "aws", "azure", "gcp", "google cloud",
         "cloud architect", "cloud solutions",
-        "kubernetes", "docker", "containerization"
+        "kubernetes", "docker", "containerization",
+        "serverless", "microservices", "terraform"
+    ],
+    "Python": [
+        "django", "flask", "fastapi",
+        "python backend", "python full stack",
+        "python automation", "python scripting",
+        "pandas", "numpy", "python web"
+    ],
+    "DevOps": [
+        "ci/cd", "jenkins", "gitlab ci",
+        "infrastructure engineer", "platform engineer",
+        "automation engineer", "release engineer",
+        "ansible", "puppet", "chef", "monitoring"
     ],
     "Cybersecurity": [
         "infosec", "information security",
         "penetration testing", "ethical hacking",
         "security operations", "soc analyst",
-        "threat intelligence", "incident response"
+        "threat intelligence", "incident response",
+        "vulnerability assessment", "security audit"
     ],
     "Web Development": [
-        "react", "angular", "vue",
+        "react", "angular", "vue", "nodejs",
         "javascript developer", "typescript developer",
         "ui developer", "ux developer",
-        "web designer", "frontend engineer"
+        "web designer", "frontend engineer",
+        "html", "css", "responsive design"
     ],
-    "DevOps": [
-        "ci/cd", "jenkins", "gitlab",
-        "infrastructure engineer", "platform engineer",
-        "automation engineer", "release engineer"
+    
+    # Domain-Specific Expansions
+    "Healthcare Tech": [
+        "digital health", "health informatics",
+        "medical device software", "healthcare analytics",
+        "telemedicine", "health tech", "mhealth",
+        "clinical software", "hospital management"
     ],
-    "Data Engineering": [
-        "etl", "data pipeline", "data warehouse",
-        "spark", "hadoop", "kafka",
-        "big data engineer", "data platform engineer"
+    "Biotech": [
+        "bioinformatics", "computational biology",
+        "genomics", "proteomics", "biostatistics",
+        "pharmaceutical software", "clinical trials",
+        "life sciences", "biotechnology"
+    ],
+    "EdTech": [
+        "educational technology", "e-learning",
+        "learning management system", "lms",
+        "educational software", "online learning",
+        "instructional design", "educational apps"
     ],
     "FinTech": [
-        "payment systems", "digital banking",
-        "financial software", "trading systems",
-        "regtech", "insurtech"
+        "financial technology", "payment systems",
+        "digital banking", "trading systems",
+        "regtech", "insurtech", "wealthtech",
+        "financial software", "banking software"
+    ],
+    
+    # Business & Emerging Tech Expansions
+    "Digital Marketing": [
+        "seo", "sem", "social media marketing",
+        "content marketing", "email marketing",
+        "marketing automation", "growth hacking",
+        "digital advertising", "marketing analytics"
     ],
     "Blockchain": [
+        "web3", "defi", "nft", "cryptocurrency",
         "smart contracts", "solidity", "ethereum",
-        "web3", "defi", "nft",
-        "cryptocurrency", "distributed ledger"
+        "distributed ledger", "crypto", "dapp"
     ],
+    "UX/UI Design": [
+        "user experience", "user interface",
+        "product design", "interaction design",
+        "design systems", "prototyping",
+        "figma", "sketch", "adobe xd"
+    ]
 }
 
 
@@ -253,9 +300,10 @@ class AdzunaSkillAnalyzer:
         
         Algorithm:
         1. Fetch jobs using base keywords
-        2. Analyze job titles/descriptions for expansion matches
-        3. Count base matches vs expanded matches (avoid double counting)
-        4. Aggregate metrics
+        2. If zero results, retry with broader but relevant queries
+        3. Analyze job titles/descriptions for expansion matches
+        4. Count base matches vs expanded matches (avoid double counting)
+        5. Aggregate metrics
         
         Returns:
             SkillDemandMetrics or None if API unavailable
@@ -269,104 +317,162 @@ class AdzunaSkillAnalyzer:
         if not self.app_id or not self.app_key:
             return None
         
-        try:
-            # Use first keyword as primary search term
-            primary_keyword = base_keywords[0]
-            
-            params = {
-                "app_id": self.app_id,
-                "app_key": self.app_key,
-                "what": primary_keyword,
-                "results_per_page": 50,
-                "content-type": "application/json"
-            }
-            
-            response = requests.get(self.base_url, params=params, timeout=10)
-            response.raise_for_status()
-            data = response.json()
-            
-            # Extract job count from API
-            job_count = data.get("count", 0)
-            results = data.get("results", [])
-            
-            # Phase 3: Smart Skill Expansion
-            # Analyze jobs for expansion matches
-            expansion_keywords = SKILL_EXPANSIONS.get(skill_name, [])
-            
-            base_match_ids: Set[int] = set()
-            expanded_match_ids: Set[int] = set()
-            
-            for idx, job in enumerate(results):
-                title = job.get("title", "").lower()
-                description = job.get("description", "").lower()
-                combined_text = f"{title} {description}"
+        # Phase 2: Zero-Signal Handling - Define broader fallback queries
+        fallback_queries = self._get_fallback_queries(skill_name, base_keywords)
+        
+        # Try primary keywords first, then fallbacks if needed
+        all_queries = [base_keywords[0]] + fallback_queries
+        
+        for query_idx, primary_keyword in enumerate(all_queries):
+            try:
+                params = {
+                    "app_id": self.app_id,
+                    "app_key": self.app_key,
+                    "what": primary_keyword,
+                    "results_per_page": 50,
+                    "content-type": "application/json"
+                }
                 
-                # Check if it's a base match (contains base keyword)
-                is_base_match = any(
-                    kw.lower() in combined_text 
-                    for kw in base_keywords
-                )
+                response = requests.get(self.base_url, params=params, timeout=10)
+                response.raise_for_status()
+                data = response.json()
                 
-                # Check if it's an expansion match
-                is_expansion_match = self._check_expansion_match(
-                    combined_text, 
-                    expansion_keywords
-                )
+                # Extract job count from API
+                job_count = data.get("count", 0)
+                results = data.get("results", [])
                 
-                # Avoid double counting: prioritize base matches
-                if is_base_match:
-                    base_match_ids.add(idx)
-                elif is_expansion_match:
-                    expanded_match_ids.add(idx)
-            
-            base_matches = len(base_match_ids)
-            expanded_matches = len(expanded_match_ids)
-            
-            # Phase 4: Metric Computation
-            # Calculate average salary
-            salaries = []
-            for job in results:
-                salary_min = job.get("salary_min")
-                salary_max = job.get("salary_max")
-                if salary_min and salary_max:
-                    salaries.append((salary_min + salary_max) / 2)
-            
-            avg_salary = sum(salaries) / len(salaries) if salaries else 0.0
-            
-            # Calculate recency (jobs posted in last 30 days)
-            recent_jobs = 0
-            cutoff_date = datetime.now() - timedelta(days=30)
-            
-            for job in results:
-                created = job.get("created")
-                if created:
-                    try:
-                        job_date = datetime.fromisoformat(created.replace('Z', '+00:00'))
-                        if job_date >= cutoff_date:
-                            recent_jobs += 1
-                    except Exception:
-                        pass
-            
-            metrics = SkillDemandMetrics(
-                skill_name=skill_name,
-                job_count=job_count,
-                base_matches=base_matches,
-                expanded_matches=expanded_matches,
-                avg_salary=avg_salary,
-                recent_jobs=recent_jobs,
-                total_jobs_checked=len(results),
-                data_source="Adzuna API (live, expanded)",
-                timestamp=datetime.now()
-            )
-            
-            # Cache the result
-            self._save_to_cache(metrics)
-            
-            return metrics
-            
-        except Exception as e:
-            print(f"⚠️  Adzuna API error for {skill_name}: {e}")
-            return None
+                # If we got results, proceed with analysis
+                if job_count > 0 or query_idx == len(all_queries) - 1:  # Last attempt or got results
+                    
+                    # Phase 3: Smart Skill Expansion
+                    # Analyze jobs for expansion matches
+                    expansion_keywords = SKILL_EXPANSIONS.get(skill_name, [])
+                    
+                    base_match_ids: Set[int] = set()
+                    expanded_match_ids: Set[int] = set()
+                    
+                    for idx, job in enumerate(results):
+                        title = job.get("title", "").lower()
+                        description = job.get("description", "").lower()
+                        combined_text = f"{title} {description}"
+                        
+                        # Check if it's a base match (contains base keyword)
+                        is_base_match = any(
+                            kw.lower() in combined_text 
+                            for kw in base_keywords
+                        )
+                        
+                        # Check if it's an expansion match
+                        is_expansion_match = self._check_expansion_match(
+                            combined_text, 
+                            expansion_keywords
+                        )
+                        
+                        # Avoid double counting: prioritize base matches
+                        if is_base_match:
+                            base_match_ids.add(idx)
+                        elif is_expansion_match:
+                            expanded_match_ids.add(idx)
+                    
+                    base_matches = len(base_match_ids)
+                    expanded_matches = len(expanded_match_ids)
+                    
+                    # Phase 4: Metric Computation
+                    # Calculate average salary
+                    salaries = []
+                    for job in results:
+                        salary_min = job.get("salary_min")
+                        salary_max = job.get("salary_max")
+                        if salary_min and salary_max:
+                            salaries.append((salary_min + salary_max) / 2)
+                    
+                    avg_salary = sum(salaries) / len(salaries) if salaries else 0.0
+                    
+                    # Calculate recency (jobs posted in last 30 days)
+                    recent_jobs = 0
+                    cutoff_date = datetime.now() - timedelta(days=30)
+                    
+                    for job in results:
+                        created = job.get("created")
+                        if created:
+                            try:
+                                job_date = datetime.fromisoformat(created.replace('Z', '+00:00'))
+                                if job_date >= cutoff_date:
+                                    recent_jobs += 1
+                            except Exception:
+                                pass
+                    
+                    # Determine data source based on query used and results
+                    if job_count == 0:
+                        data_source = "Adzuna API (low demand - insufficient listings)"
+                    elif query_idx > 0:
+                        data_source = f"Adzuna API (live, expanded, fallback query {query_idx})"
+                    else:
+                        data_source = "Adzuna API (live, expanded)"
+                    
+                    metrics = SkillDemandMetrics(
+                        skill_name=skill_name,
+                        job_count=job_count,
+                        base_matches=base_matches,
+                        expanded_matches=expanded_matches,
+                        avg_salary=avg_salary,
+                        recent_jobs=recent_jobs,
+                        total_jobs_checked=len(results),
+                        data_source=data_source,
+                        timestamp=datetime.now()
+                    )
+                    
+                    # Cache the result
+                    self._save_to_cache(metrics)
+                    
+                    return metrics
+                
+                # If job_count is 0, try next fallback query
+                print(f"⚠️  Zero results for {skill_name} with query '{primary_keyword}', trying fallback...")
+                
+            except Exception as e:
+                print(f"⚠️  Adzuna API error for {skill_name} with query '{primary_keyword}': {e}")
+                continue
+        
+        # If all queries failed
+        return None
+    
+    def _get_fallback_queries(self, skill_name: str, base_keywords: List[str]) -> List[str]:
+        """
+        Generate broader but relevant fallback queries for skills with zero results.
+        
+        Phase 2: Fix Zero-Signal Skills
+        """
+        fallback_map = {
+            # Tech Skills - Broader but relevant
+            "AI/ML": ["artificial intelligence jobs", "machine learning jobs"],
+            "Data Science": ["data analyst jobs", "analytics jobs"],
+            "Python": ["python programming jobs", "backend developer"],
+            "Biotech": ["biotechnology jobs", "life sciences developer"],
+            "Healthcare Tech": ["digital health jobs", "health tech jobs"],
+            "EdTech": ["educational technology jobs", "e-learning jobs"],
+            "FinTech": ["financial technology jobs", "banking software"],
+            "Blockchain": ["cryptocurrency jobs", "web3 developer"],
+            "UX/UI Design": ["user experience jobs", "product designer"],
+            "Cybersecurity": ["information security jobs", "security engineer"],
+            "Cloud Computing": ["cloud developer jobs", "aws jobs"],
+            "DevOps": ["infrastructure engineer", "platform engineer"],
+            "Web Development": ["web developer jobs", "frontend jobs"],
+            "Mobile Development": ["mobile app developer", "app developer"],
+            "Digital Marketing": ["marketing specialist", "growth marketing"],
+            "Product Management": ["product manager jobs", "product owner"],
+            "Business Intelligence": ["business analyst", "data visualization"],
+            "Data Engineering": ["big data engineer", "data pipeline"]
+        }
+        
+        # Get fallback queries for this skill, or generate generic ones
+        fallbacks = fallback_map.get(skill_name, [])
+        
+        # If no specific fallbacks, create generic ones from base keywords
+        if not fallbacks:
+            fallbacks = [f"{kw} jobs" for kw in base_keywords[1:]]  # Skip first (already tried)
+        
+        return fallbacks[:2]  # Limit to 2 fallback attempts
 
 
 # ═══════════════════════════════════════════════════════════════════════════

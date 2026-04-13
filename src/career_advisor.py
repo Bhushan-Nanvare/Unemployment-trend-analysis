@@ -17,13 +17,13 @@ from src.skill_demand_analyzer import get_skill_demand_dict
 
 class CareerAdvisor:
 
-    # Updated to match BASE_SKILLS in skill_demand_analyzer.py
-    # These are the skills with real-time Adzuna API data
+    # Updated to match balanced BASE_SKILLS in skill_demand_analyzer.py
+    # Ensures comprehensive coverage across tech and domain skills
     SECTOR_SKILLS = {
-        "Healthcare":        ["Healthcare Tech", "Telemedicine", "Biotech"],
-        "Education":         ["EdTech", "E-Learning", "Data Science"],
-        "IT":                ["AI/ML", "Cybersecurity", "Cloud Computing", "Data Engineering"],
-        "Energy & Utilities":["Data Science", "Cloud Computing", "Business Intelligence"],
+        "Healthcare":        ["Healthcare Tech", "Biotech", "Data Science"],
+        "Education":         ["EdTech", "Data Science", "UX/UI Design"],
+        "IT":                ["AI/ML", "Data Science", "Cloud Computing", "Python"],
+        "Energy & Utilities":["Data Engineering", "Cloud Computing", "Business Intelligence"],
         "Finance & Banking": ["FinTech", "Blockchain", "Data Science"],
         "Agriculture":       ["Data Science", "Cloud Computing", "Business Intelligence"],
         "Services":          ["Digital Marketing", "Product Management", "Web Development"],
