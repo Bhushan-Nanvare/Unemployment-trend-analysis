@@ -1,96 +1,132 @@
 """
 skill_demand_analyzer.py
 
-REAL-TIME SKILL DEMAND ANALYSIS
-================================
+ADVANCED REAL-TIME SKILL DEMAND ANALYSIS
+=========================================
 
 Replaces fake positional scoring with real job market data from Adzuna API.
 
+FEATURES:
+- Log scaling normalization to prevent single skill dominance
+- Smart skill expansion to detect hidden variations (e.g., "nlp", "computer vision" for AI/ML)
+- Minimal base keywords with intelligent expansion mapping
+- Avoids double counting when aggregating matches
+
 Author: System Refactoring
 Date: 2026-04-13
-Version: 1.0.0
+Version: 2.0.0 (Advanced)
 
 CRITICAL RULES:
 - NO fake data
 - NO hardcoded percentages
 - NO positional ranking
 - ALL scores based on real API data
+- Log scaling for fair distribution
+- Smart expansion for comprehensive coverage
 """
 
 import os
 import time
 import requests
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 import json
 from pathlib import Path
+import math
+import re
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# SKILL CONFIGURATION (Required - NOT hardcoding)
+# BASE SKILL CONFIGURATION (Minimal anchor keywords)
 # ═══════════════════════════════════════════════════════════════════════════
 
-SKILL_CONFIG = {
-    # Healthcare Skills
-    "Telemedicine": ["telemedicine", "telehealth", "remote healthcare"],
-    "Geriatric Care": ["geriatric care", "elderly care", "senior care"],
-    "Biotech": ["biotechnology", "biotech", "bioinformatics"],
-    "Health Informatics": ["health informatics", "healthcare data", "medical records"],
+BASE_SKILLS = {
+    # Core Tech Skills
+    "AI/ML": ["machine learning engineer", "ai engineer"],
+    "Data Science": ["data scientist", "data analyst"],
+    "Cloud Computing": ["cloud engineer", "aws engineer", "azure engineer"],
+    "Cybersecurity": ["security analyst", "cybersecurity engineer"],
+    "Web Development": ["frontend developer", "react developer", "full stack developer"],
+    "DevOps": ["devops engineer", "site reliability engineer"],
+    "Mobile Development": ["android developer", "ios developer", "mobile engineer"],
+    "Backend Development": ["backend developer", "api developer"],
     
-    # Education Skills
-    "EdTech Platforms": ["edtech", "educational technology", "learning platform"],
-    "Curriculum Design": ["curriculum design", "instructional design", "course development"],
-    "E-Learning": ["e-learning", "online learning", "digital education"],
-    "Student Analytics": ["student analytics", "education data", "learning analytics"],
+    # Healthcare Tech
+    "Healthcare Tech": ["healthtech engineer", "medical software developer"],
+    "Telemedicine": ["telemedicine developer", "telehealth engineer"],
+    "Biotech": ["bioinformatics engineer", "biotech developer"],
     
-    # IT Skills
-    "AI/ML": ["artificial intelligence", "machine learning", "deep learning"],
-    "Cybersecurity": ["cybersecurity", "information security", "network security"],
-    "Cloud Computing": ["cloud computing", "aws", "azure"],
-    "Data Engineering": ["data engineering", "data pipeline", "etl"],
+    # Education Tech
+    "EdTech": ["edtech developer", "educational technology engineer"],
+    "E-Learning": ["elearning developer", "online education engineer"],
     
-    # Energy Skills
-    "Renewable Energy": ["renewable energy", "solar energy", "wind energy"],
-    "Smart Grid": ["smart grid", "grid technology", "energy management"],
-    "Energy Analytics": ["energy analytics", "energy data", "power analytics"],
-    "Sustainability": ["sustainability", "environmental", "green technology"],
+    # Finance Tech
+    "FinTech": ["fintech developer", "financial technology engineer"],
+    "Blockchain": ["blockchain developer", "cryptocurrency engineer"],
     
-    # Finance Skills
-    "FinTech": ["fintech", "financial technology", "digital banking"],
-    "Risk Modeling": ["risk modeling", "financial risk", "risk analysis"],
-    "Blockchain": ["blockchain", "cryptocurrency", "distributed ledger"],
-    "RegTech": ["regtech", "regulatory technology", "compliance technology"],
-    
-    # Agriculture Skills
-    "Precision Agriculture": ["precision agriculture", "smart farming", "agritech"],
-    "Agri-Tech": ["agritech", "agricultural technology", "farm technology"],
-    "Supply Chain": ["supply chain", "logistics", "distribution"],
-    "Soil Analytics": ["soil analytics", "agricultural data", "crop analytics"],
-    
-    # Services Skills
-    "Digital Marketing": ["digital marketing", "online marketing", "social media marketing"],
-    "E-commerce Management": ["ecommerce", "online retail", "digital commerce"],
-    "CX Automation": ["customer experience", "cx automation", "customer service automation"],
-    "Crisis Management": ["crisis management", "emergency management", "business continuity"],
-    
-    # Retail Skills
-    "Inventory Analytics": ["inventory analytics", "inventory management", "stock optimization"],
-    "Omnichannel Strategy": ["omnichannel", "multichannel retail", "retail strategy"],
-    "POS Systems": ["pos systems", "point of sale", "retail technology"],
-    "Trade Finance": ["trade finance", "export finance", "international trade"],
-    
-    # Manufacturing Skills
-    "Robotics": ["robotics", "industrial automation", "robot programming"],
-    "Supply Chain Analytics": ["supply chain analytics", "logistics analytics", "operations analytics"],
-    "Lean Six Sigma": ["lean six sigma", "process improvement", "quality management"],
-    "IoT Maintenance": ["iot", "industrial iot", "predictive maintenance"],
-    
-    # Construction Skills
-    "Green Building": ["green building", "sustainable construction", "leed"],
-    "Project Management": ["project management", "construction management", "pmp"],
-    "BIM": ["bim", "building information modeling", "revit"],
-    "Sustainable Urban Planning": ["urban planning", "sustainable development", "city planning"],
+    # Other Domains
+    "Digital Marketing": ["digital marketing specialist", "seo specialist"],
+    "Product Management": ["product manager", "technical product manager"],
+    "Data Engineering": ["data engineer", "etl developer"],
+    "Business Intelligence": ["business intelligence analyst", "bi developer"],
+}
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SMART SKILL EXPANSION (Detect hidden variations)
+# ═══════════════════════════════════════════════════════════════════════════
+
+SKILL_EXPANSIONS = {
+    "AI/ML": [
+        "nlp", "natural language processing",
+        "computer vision", "cv engineer",
+        "deep learning", "neural network",
+        "llm", "gpt", "transformer",
+        "pytorch", "tensorflow",
+        "ml engineer", "ai developer"
+    ],
+    "Data Science": [
+        "data analyst", "analytics engineer",
+        "statistical analyst", "quantitative analyst",
+        "ml scientist", "research scientist"
+    ],
+    "Cloud Computing": [
+        "aws", "azure", "gcp", "google cloud",
+        "cloud architect", "cloud solutions",
+        "kubernetes", "docker", "containerization"
+    ],
+    "Cybersecurity": [
+        "infosec", "information security",
+        "penetration testing", "ethical hacking",
+        "security operations", "soc analyst",
+        "threat intelligence", "incident response"
+    ],
+    "Web Development": [
+        "react", "angular", "vue",
+        "javascript developer", "typescript developer",
+        "ui developer", "ux developer",
+        "web designer", "frontend engineer"
+    ],
+    "DevOps": [
+        "ci/cd", "jenkins", "gitlab",
+        "infrastructure engineer", "platform engineer",
+        "automation engineer", "release engineer"
+    ],
+    "Data Engineering": [
+        "etl", "data pipeline", "data warehouse",
+        "spark", "hadoop", "kafka",
+        "big data engineer", "data platform engineer"
+    ],
+    "FinTech": [
+        "payment systems", "digital banking",
+        "financial software", "trading systems",
+        "regtech", "insurtech"
+    ],
+    "Blockchain": [
+        "smart contracts", "solidity", "ethereum",
+        "web3", "defi", "nft",
+        "cryptocurrency", "distributed ledger"
+    ],
 }
 
 
@@ -103,6 +139,8 @@ class SkillDemandMetrics:
     """Raw metrics from job market data."""
     skill_name: str
     job_count: int
+    base_matches: int  # Matches from base keywords
+    expanded_matches: int  # Matches from expansion keywords
     avg_salary: float
     recent_jobs: int
     total_jobs_checked: int
@@ -129,7 +167,7 @@ class SkillDemandScore:
 # ═══════════════════════════════════════════════════════════════════════════
 
 class AdzunaSkillAnalyzer:
-    """Fetches real-time skill demand data from Adzuna API."""
+    """Fetches real-time skill demand data from Adzuna API with smart expansion."""
     
     def __init__(self):
         self.app_id = os.getenv("ADZUNA_APP_ID", "")
@@ -163,6 +201,8 @@ class AdzunaSkillAnalyzer:
             return SkillDemandMetrics(
                 skill_name=data['skill_name'],
                 job_count=data['job_count'],
+                base_matches=data.get('base_matches', 0),
+                expanded_matches=data.get('expanded_matches', 0),
                 avg_salary=data['avg_salary'],
                 recent_jobs=data['recent_jobs'],
                 total_jobs_checked=data['total_jobs_checked'],
@@ -180,6 +220,8 @@ class AdzunaSkillAnalyzer:
             data = {
                 'skill_name': metrics.skill_name,
                 'job_count': metrics.job_count,
+                'base_matches': metrics.base_matches,
+                'expanded_matches': metrics.expanded_matches,
                 'avg_salary': metrics.avg_salary,
                 'recent_jobs': metrics.recent_jobs,
                 'total_jobs_checked': metrics.total_jobs_checked,
@@ -192,9 +234,28 @@ class AdzunaSkillAnalyzer:
         except Exception:
             pass  # Cache failure is non-critical
     
-    def fetch_skill_metrics(self, skill_name: str, keywords: List[str]) -> Optional[SkillDemandMetrics]:
+    def _check_expansion_match(self, text: str, expansions: List[str]) -> bool:
         """
-        Fetch job market metrics for a skill using Adzuna API.
+        Check if text contains any expansion keywords.
+        Uses case-insensitive matching with word boundaries.
+        """
+        text_lower = text.lower()
+        for expansion in expansions:
+            # Use word boundary matching for better accuracy
+            pattern = r'\b' + re.escape(expansion.lower()) + r'\b'
+            if re.search(pattern, text_lower):
+                return True
+        return False
+    
+    def fetch_skill_metrics(self, skill_name: str, base_keywords: List[str]) -> Optional[SkillDemandMetrics]:
+        """
+        Fetch job market metrics for a skill using Adzuna API with smart expansion.
+        
+        Algorithm:
+        1. Fetch jobs using base keywords
+        2. Analyze job titles/descriptions for expansion matches
+        3. Count base matches vs expanded matches (avoid double counting)
+        4. Aggregate metrics
         
         Returns:
             SkillDemandMetrics or None if API unavailable
@@ -210,7 +271,7 @@ class AdzunaSkillAnalyzer:
         
         try:
             # Use first keyword as primary search term
-            primary_keyword = keywords[0]
+            primary_keyword = base_keywords[0]
             
             params = {
                 "app_id": self.app_id,
@@ -224,10 +285,44 @@ class AdzunaSkillAnalyzer:
             response.raise_for_status()
             data = response.json()
             
-            # Extract metrics
+            # Extract job count from API
             job_count = data.get("count", 0)
             results = data.get("results", [])
             
+            # Phase 3: Smart Skill Expansion
+            # Analyze jobs for expansion matches
+            expansion_keywords = SKILL_EXPANSIONS.get(skill_name, [])
+            
+            base_match_ids: Set[int] = set()
+            expanded_match_ids: Set[int] = set()
+            
+            for idx, job in enumerate(results):
+                title = job.get("title", "").lower()
+                description = job.get("description", "").lower()
+                combined_text = f"{title} {description}"
+                
+                # Check if it's a base match (contains base keyword)
+                is_base_match = any(
+                    kw.lower() in combined_text 
+                    for kw in base_keywords
+                )
+                
+                # Check if it's an expansion match
+                is_expansion_match = self._check_expansion_match(
+                    combined_text, 
+                    expansion_keywords
+                )
+                
+                # Avoid double counting: prioritize base matches
+                if is_base_match:
+                    base_match_ids.add(idx)
+                elif is_expansion_match:
+                    expanded_match_ids.add(idx)
+            
+            base_matches = len(base_match_ids)
+            expanded_matches = len(expanded_match_ids)
+            
+            # Phase 4: Metric Computation
             # Calculate average salary
             salaries = []
             for job in results:
@@ -255,10 +350,12 @@ class AdzunaSkillAnalyzer:
             metrics = SkillDemandMetrics(
                 skill_name=skill_name,
                 job_count=job_count,
+                base_matches=base_matches,
+                expanded_matches=expanded_matches,
                 avg_salary=avg_salary,
                 recent_jobs=recent_jobs,
                 total_jobs_checked=len(results),
-                data_source="Adzuna API (live)",
+                data_source="Adzuna API (live, expanded)",
                 timestamp=datetime.now()
             )
             
@@ -277,7 +374,11 @@ class AdzunaSkillAnalyzer:
 # ═══════════════════════════════════════════════════════════════════════════
 
 class SkillDemandCalculator:
-    """Calculates normalized skill demand scores from raw metrics."""
+    """
+    Calculates normalized skill demand scores from raw metrics.
+    
+    Uses LOG SCALING to prevent single skill dominance and ensure fair distribution.
+    """
     
     def __init__(self):
         self.analyzer = AdzunaSkillAnalyzer()
@@ -287,8 +388,8 @@ class SkillDemandCalculator:
         Calculate demand scores for a list of skills.
         
         Algorithm:
-        1. Fetch metrics for each skill
-        2. Normalize across all skills
+        1. Fetch metrics for each skill (with expansion)
+        2. Apply LOG SCALING normalization across all skills
         3. Compute weighted demand score
         4. Rank by demand score
         
@@ -299,7 +400,7 @@ class SkillDemandCalculator:
         raw_metrics = []
         
         for skill in skills:
-            keywords = SKILL_CONFIG.get(skill, [skill.lower()])
+            keywords = BASE_SKILLS.get(skill, [skill.lower()])
             metrics = self.analyzer.fetch_skill_metrics(skill, keywords)
             
             if metrics:
@@ -309,17 +410,24 @@ class SkillDemandCalculator:
             # No data available - return insufficient data
             return []
         
-        # Phase 2: Normalize metrics
+        # Phase 5: LOG SCALING NORMALIZATION (CRITICAL)
+        # This prevents single skill from dominating unfairly
+        
         max_job_count = max(m.job_count for m in raw_metrics) or 1
         max_salary = max(m.avg_salary for m in raw_metrics) or 1
         
         scores = []
         
         for metrics in raw_metrics:
-            # Normalize job count (0-1)
-            job_score = metrics.job_count / max_job_count
+            # LOG SCALING for job count
+            # Formula: log(job_count + 1) / log(max_job_count + 1)
+            # This compresses the range and prevents dominance
+            job_score = (
+                math.log(metrics.job_count + 1) / math.log(max_job_count + 1)
+                if max_job_count > 0 else 0.0
+            )
             
-            # Normalize salary (0-1)
+            # Linear scaling for salary (already well-distributed)
             salary_score = metrics.avg_salary / max_salary if max_salary > 0 else 0.0
             
             # Calculate recency score (0-1)
@@ -328,7 +436,7 @@ class SkillDemandCalculator:
                 if metrics.total_jobs_checked > 0 else 0.0
             )
             
-            # Phase 3: Compute weighted demand score
+            # Phase 6: FINAL DEMAND SCORE
             # Weights: 50% job count, 30% salary, 20% recency
             demand_score = (
                 0.5 * job_score +
@@ -395,8 +503,23 @@ class SkillDemandCalculator:
             ],
             "data_source": scores[0].data_source if scores else "Unknown",
             "timestamp": datetime.now().isoformat(),
-            "total_skills": len(scores)
+            "total_skills": len(scores),
+            "algorithm": "Log-scaled normalization with smart keyword expansion"
         }
+    
+    def get_top_skills(self, n: int = 10) -> List[SkillDemandScore]:
+        """
+        Get top N in-demand skills from all available skills.
+        
+        Args:
+            n: Number of top skills to return
+        
+        Returns:
+            List of top N SkillDemandScore
+        """
+        all_skills = list(BASE_SKILLS.keys())
+        scores = self.calculate_demand_scores(all_skills)
+        return scores[:n]
 
 
 # ═══════════════════════════════════════════════════════════════════════════

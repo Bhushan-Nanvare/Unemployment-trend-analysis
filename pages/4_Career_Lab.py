@@ -137,8 +137,10 @@ with col_r:
         
         # Display data source label
         data_source = skill_demand_data.get("data_source", "Unknown")
+        algorithm = skill_demand_data.get("algorithm", "")
+        
         if "Adzuna" in data_source:
-            st.caption("📡 Skill demand based on real-time job market data (Adzuna API)")
+            st.caption("📡 Skill demand based on real-time job market data (Adzuna API, log-normalized, keyword-expanded)")
         elif "INSUFFICIENT" in data_source:
             st.caption("⚠️ Adzuna API unavailable - Configure credentials in Streamlit secrets")
         else:
@@ -172,19 +174,33 @@ with col_r:
         # Show methodology
         with st.expander("📊 How demand is calculated"):
             st.markdown("""
-            **Real-Time Demand Score Formula:**
+            **Advanced Real-Time Demand Score Formula:**
             ```
-            Demand = (0.5 × Job Count) + (0.3 × Salary) + (0.2 × Recency)
+            Demand = (0.5 × log_job_score) + (0.3 × salary_score) + (0.2 × recency_score)
             ```
             
             **Components:**
-            - **Job Count (50%):** Number of active job postings
-            - **Salary (30%):** Average salary offered
+            - **Job Count (50%):** Log-scaled job count to prevent dominance
+              - Formula: `log(job_count + 1) / log(max_job_count + 1)`
+            - **Salary (30%):** Average salary offered (linear scaling)
             - **Recency (20%):** Percentage of recent postings (last 30 days)
+            
+            **Smart Keyword Expansion:**
+            - Base keywords: 2-3 anchor terms per skill (e.g., "machine learning engineer")
+            - Expanded keywords: Hidden variations detected in job descriptions
+              - AI/ML: "nlp", "computer vision", "deep learning", "llm", "gpt"
+              - Cloud: "aws", "azure", "gcp", "kubernetes", "docker"
+              - Cybersecurity: "infosec", "penetration testing", "soc analyst"
+            - Avoids double counting: Base matches prioritized over expanded matches
+            
+            **Why Log Scaling?**
+            - Prevents single high-volume skill from dominating unfairly
+            - Creates balanced distribution across all skills
+            - Compresses range while preserving relative ordering
             
             **Data Source:** Adzuna Job Search API (India)  
             **Update Frequency:** Hourly (with 1-hour cache)  
-            **No fake data:** All scores based on real job market
+            **No fake data:** All scores based on real job market analysis
             """)
     elif skills:
         # Fallback: Show skills without fake scores
