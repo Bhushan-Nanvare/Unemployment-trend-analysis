@@ -65,20 +65,6 @@ PAGE_DESCRIPTIONS = {
         "short": "City-wise job opportunities and relocation guidance",
         "description": "Compare job markets across Indian cities, get relocation recommendations, analyze cost of living impacts, and skill demand by location.",
         "use_case": "Professionals considering relocation, remote workers, urban planners"
-    },
-    
-    "Skill Demand Analysis": {
-        "title": "📊 Skill Intelligence", 
-        "short": "Comprehensive skill market analysis and career guidance",
-        "description": "Track skill popularity, assess personal skill portfolios, understand market categories, and get targeted skill development recommendations.",
-        "use_case": "Professionals planning development, students, training providers"
-    },
-    
-    "Phillips Curve": {
-        "title": "📉 Economic Theory",
-        "short": "Inflation-unemployment relationship and policy analysis",
-        "description": "Explore the Phillips Curve for India, analyze inflation-unemployment trade-offs, understand policy implications, and assess current economic stance for monetary policy decisions.",
-        "use_case": "Economists, monetary policy analysts, academic researchers"
     }
 }
 
@@ -135,16 +121,11 @@ def get_recommended_journey() -> list:
         },
         {
             "step": 6,
-            "page": "Skill Demand Analysis",
-            "reason": "Plan skill development strategy"
-        },
-        {
-            "step": 7,
             "page": "Geo Career Advisor",
             "reason": "Consider location-based opportunities"
         },
         {
-            "step": 8,
+            "step": 7,
             "page": "AI Insights",
             "reason": "Get plain-language explanations of findings"
         }

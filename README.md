@@ -28,8 +28,6 @@ UIP is a full-stack analytics platform that combines real World Bank data, machi
 | 🎯 Job Risk Predictor | **Enhanced Multi-Risk Assessment** - 4 risk types (Overall, Automation, Recession, Age), time-based predictions (6mo-5yr), salary analysis, peer benchmarking, ROI-ranked recommendations |
 | 📡 Job Market Pulse | 29,425 real Naukri.com job postings analysis |
 | 🗺️ Geo Career Advisor | 55-city map with cost of living, industry hubs, state unemployment |
-| ⚡ Skill Obsolescence | Skill demand trends + 6-month forecast |
-| 📉 Phillips Curve | Inflation vs unemployment correlation analysis |
 
 ---
 
@@ -216,9 +214,7 @@ services:
 │   ├── 6_Model_Validation.py
 │   ├── 7_Job_Risk_Predictor.py
 │   ├── 8_Job_Market_Pulse.py
-│   ├── 9_Geo_Career_Advisor.py
-│   ├── 10_Skill_Obsolescence.py
-│   └── 11_Phillips_Curve.py
+│   └── 9_Geo_Career_Advisor.py
 └── data/
     ├── raw/india_unemployment.csv
     ├── market_pulse/job_postings_sample.csv

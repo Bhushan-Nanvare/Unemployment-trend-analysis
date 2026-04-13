@@ -100,11 +100,12 @@ def simulate_scenario(request: ScenarioRequest):
     baseline_conf = engine.forecast_with_confidence(df)
     forecasting_method = "Time Series"
 
-    # Scenario simulation (shock now hits immediately — fixed logic)
+    # Scenario simulation with policy-aware shock model
     scenario = ShockScenario(
         shock_intensity=request.shock_intensity,
         shock_duration=request.shock_duration,
         recovery_rate=request.recovery_rate,
+        policy_name=request.policy_name,  # Pass policy to shock calculation
     ).apply(baseline)
 
     # Metrics
@@ -426,7 +427,193 @@ def sensitivity_analysis(request: SensitivityRequest):
     }
 
 
-# -------- GDP Scenario Analysis Endpoint --------
+# -------- Enhanced Simulation Endpoints --------
+class MonteCarloRequest(BaseModel):
+    base_shock_intensity: float
+    base_shock_duration: int
+    base_recovery_rate: float
+    forecast_horizon: int = 6
+    num_simulations: int = 1000
+    shock_intensity_std: float = 0.1
+    recovery_rate_std: float = 0.05
+    duration_variance: int = 1
+
+
+class MultiShockRequest(BaseModel):
+    shock_events: List[Dict[str, Any]]
+    policy_responses: Optional[Dict[int, str]] = None
+    forecast_horizon: int = 6
+
+
+class StressTestRequest(BaseModel):
+    test_scenarios: List[Dict[str, Any]]
+    forecast_horizon: int = 6
+
+
+class EconomicCycleRequest(BaseModel):
+    cycle_length: int = 8
+    amplitude: float = 0.15
+    current_phase: str = "expansion"  # expansion, peak, contraction, trough
+    forecast_horizon: int = 6
+
+
+@app.post("/monte_carlo")
+def monte_carlo_simulation(request: MonteCarloRequest):
+    """Run Monte Carlo simulation with parameter uncertainty"""
+    try:
+        from src.advanced_simulation import AdvancedSimulationEngine, MonteCarloConfig
+        
+        df = _load_prepared_series()
+        engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
+        baseline = engine.forecast(df)
+        
+        config = MonteCarloConfig(
+            num_simulations=min(request.num_simulations, 2000),  # Cap at 2000 for performance
+            shock_intensity_std=request.shock_intensity_std,
+            recovery_rate_std=request.recovery_rate_std,
+            duration_variance=request.duration_variance
+        )
+        
+        advanced_engine = AdvancedSimulationEngine()
+        result = advanced_engine.monte_carlo_simulation(
+            baseline_df=baseline,
+            base_shock_intensity=request.base_shock_intensity,
+            base_shock_duration=request.base_shock_duration,
+            base_recovery_rate=request.base_recovery_rate,
+            config=config
+        )
+        
+        return result
+        
+    except Exception as e:
+        return {"error": str(e), "message": "Monte Carlo simulation failed"}
+
+
+@app.post("/multi_shock")
+def multi_shock_simulation(request: MultiShockRequest):
+    """Simulate multiple overlapping shocks (compound crises)"""
+    try:
+        from src.advanced_simulation import AdvancedSimulationEngine, ShockEvent, ShockType
+        
+        df = _load_prepared_series()
+        engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
+        baseline = engine.forecast(df)
+        
+        # Convert request data to ShockEvent objects
+        shock_events = []
+        for event_data in request.shock_events:
+            shock_event = ShockEvent(
+                shock_type=ShockType(event_data["shock_type"]),
+                intensity=event_data["intensity"],
+                duration=event_data["duration"],
+                start_year=event_data["start_year"],
+                sector_impacts=event_data.get("sector_impacts", {}),
+                description=event_data.get("description", "")
+            )
+            shock_events.append(shock_event)
+        
+        advanced_engine = AdvancedSimulationEngine()
+        result = advanced_engine.multi_shock_scenario(
+            baseline_df=baseline,
+            shock_events=shock_events,
+            policy_responses=request.policy_responses
+        )
+        
+        return result
+        
+    except Exception as e:
+        return {"error": str(e), "message": "Multi-shock simulation failed"}
+
+
+@app.post("/stress_test")
+def stress_test_framework(request: StressTestRequest):
+    """Run comprehensive stress testing framework"""
+    try:
+        from src.advanced_simulation import AdvancedSimulationEngine, get_predefined_stress_scenarios
+        
+        df = _load_prepared_series()
+        engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
+        baseline = engine.forecast(df)
+        
+        # Use predefined scenarios if none provided
+        test_scenarios = request.test_scenarios
+        if not test_scenarios:
+            test_scenarios = get_predefined_stress_scenarios()
+        
+        advanced_engine = AdvancedSimulationEngine()
+        result = advanced_engine.stress_test_framework(
+            baseline_df=baseline,
+            stress_scenarios=test_scenarios
+        )
+        
+        return result
+        
+    except Exception as e:
+        return {"error": str(e), "message": "Stress test framework failed"}
+
+
+@app.post("/economic_cycle")
+def economic_cycle_simulation(request: EconomicCycleRequest):
+    """Simulate economic cycles overlaid on baseline forecast"""
+    try:
+        from src.advanced_simulation import AdvancedSimulationEngine, EconomicCycle
+        
+        df = _load_prepared_series()
+        engine = ForecastingEngine(forecast_horizon=request.forecast_horizon)
+        baseline = engine.forecast(df)
+        
+        # Convert phase string to enum
+        phase_map = {
+            "expansion": EconomicCycle.EXPANSION,
+            "peak": EconomicCycle.PEAK,
+            "contraction": EconomicCycle.CONTRACTION,
+            "trough": EconomicCycle.TROUGH
+        }
+        current_phase = phase_map.get(request.current_phase.lower(), EconomicCycle.EXPANSION)
+        
+        advanced_engine = AdvancedSimulationEngine()
+        result = advanced_engine.economic_cycle_simulation(
+            baseline_df=baseline,
+            cycle_length=request.cycle_length,
+            amplitude=request.amplitude,
+            current_phase=current_phase
+        )
+        
+        return result
+        
+    except Exception as e:
+        return {"error": str(e), "message": "Economic cycle simulation failed"}
+
+
+@app.get("/predefined_stress_scenarios")
+def get_predefined_stress_scenarios_endpoint():
+    """Get predefined stress test scenarios"""
+    try:
+        from src.advanced_simulation import get_predefined_stress_scenarios
+        scenarios = get_predefined_stress_scenarios()
+        
+        # Convert ShockEvent objects to dictionaries for JSON serialization
+        serializable_scenarios = []
+        for scenario in scenarios:
+            if scenario.get("type") == "multi_shock":
+                shock_events = []
+                for event in scenario["shock_events"]:
+                    shock_events.append({
+                        "shock_type": event.shock_type.value,
+                        "intensity": event.intensity,
+                        "duration": event.duration,
+                        "start_year": event.start_year,
+                        "sector_impacts": event.sector_impacts,
+                        "description": event.description
+                    })
+                scenario["shock_events"] = shock_events
+            
+            serializable_scenarios.append(scenario)
+        
+        return {"scenarios": serializable_scenarios}
+        
+    except Exception as e:
+        return {"error": str(e), "scenarios": []}
 # -------- Data Source Status --------
 @app.get("/data-status")
 def data_status():

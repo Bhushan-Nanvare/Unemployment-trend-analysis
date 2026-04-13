@@ -2,6 +2,12 @@
 Page 1 — Overview Dashboard
 Live KPIs, forecast trajectory with confidence bands, historical event overlays,
 and an evidence-based forecast seeded from real World Bank historical data.
+
+VALIDATION SYSTEM INTEGRATED:
+- Uses central_data.py for validated data loading
+- Displays quality indicators (🟢 🟡 🔴)
+- Shows data source labels and quality scores
+- Validation warnings visible to users
 """
 import streamlit as st
 import requests
@@ -13,6 +19,15 @@ from src.historical_events import get_events_in_range
 from src.live_data import fetch_world_bank, fetch_gdp_growth, get_data_source_label
 from src.forecasting import ForecastingEngine
 from src.live_insights import generate_forecast_insights
+
+# NEW: Import validation system
+from src.central_data import load_unemployment, load_inflation, get_data_quality_report
+from src.validation_ui_helpers import (
+    render_quality_dashboard,
+    render_quality_summary_compact,
+    render_validation_warnings,
+    display_quality_metrics
+)
 
 @st.cache_data(ttl=86400, show_spinner=False)
 def get_gdp_growth():
@@ -44,6 +59,16 @@ with st.sidebar:
     horizon = st.slider("Forecast Horizon (years)", 3, 10, 6)
     show_events = st.checkbox("Show Historical Events", value=True)
     show_band = st.checkbox("Show Uncertainty Band", value=True)
+    
+    # NEW: Data Quality Summary in Sidebar
+    st.markdown("---")
+    st.markdown("### 🔍 Data Quality")
+    try:
+        quality_report = get_data_quality_report()
+        st.markdown(render_quality_summary_compact(quality_report), unsafe_allow_html=True)
+    except Exception as e:
+        st.caption(f"⚠️ Quality report unavailable")
+    
     st.markdown("---")
     st.markdown("**🌐 Navigation**")
     st.page_link("app.py", label="🏠 Home")
@@ -56,8 +81,6 @@ with st.sidebar:
     st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
     st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
     st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
-    st.page_link("pages/10_Skill_Obsolescence.py", label="📊 Skill Demand Analysis")
-    st.page_link("pages/11_Phillips_Curve.py", label="📉 Phillips Curve")
 
 # ─── Page hero ─────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -65,6 +88,26 @@ st.markdown("""
     <div class="hero-title">📊 Live Overview Dashboard</div>
     <div class="hero-subtitle">Real-time baseline forecast with uncertainty bands and historical event markers</div>
 </div>""", unsafe_allow_html=True)
+
+# ─── Data Quality Dashboard (NEW) ──────────────────────────────────────────────
+st.markdown("<br>", unsafe_allow_html=True)
+
+# Load and display data quality report
+try:
+    quality_report = get_data_quality_report()
+    st.markdown(render_quality_dashboard(quality_report), unsafe_allow_html=True)
+    
+    # Show validation warnings if any
+    all_warnings = (
+        quality_report['unemployment'].get('warnings', []) +
+        quality_report['inflation'].get('warnings', [])
+    )
+    if all_warnings:
+        st.markdown(render_validation_warnings(all_warnings), unsafe_allow_html=True)
+except Exception as e:
+    st.warning(f"⚠️ Could not load data quality report: {e}")
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 data = get_baseline(horizon)
 

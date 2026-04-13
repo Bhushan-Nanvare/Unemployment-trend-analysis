@@ -23,8 +23,6 @@ with st.sidebar:
     st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
     st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
     st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
-    st.page_link("pages/10_Skill_Obsolescence.py", label="📊 Skill Demand Analysis")
-    st.page_link("pages/11_Phillips_Curve.py", label="📉 Phillips Curve")
 
 st.markdown("""
 <div class="page-hero">
@@ -56,7 +54,7 @@ with col2:
                 border-radius:12px; padding:1.5rem; margin-bottom:1rem;">
         <div style="font-size:1.2rem; margin-bottom:0.5rem;">🏛️ <strong>Policymakers</strong></div>
         <div style="color:#94a3b8; font-size:0.9rem; line-height:1.6;">
-            Start with <strong>Overview</strong> → <strong>Simulator</strong> → <strong>Phillips Curve</strong>
+            Start with <strong>Overview</strong> → <strong>Simulator</strong> → <strong>Sector Analysis</strong>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -67,7 +65,7 @@ with col3:
                 border-radius:12px; padding:1.5rem; margin-bottom:1rem;">
         <div style="font-size:1.2rem; margin-bottom:0.5rem;">📊 <strong>Researchers</strong></div>
         <div style="color:#94a3b8; font-size:0.9rem; line-height:1.6;">
-            Start with <strong>Overview</strong> → <strong>Phillips Curve</strong> → <strong>Sector Analysis</strong>
+            Start with <strong>Overview</strong> → <strong>Sector Analysis</strong> → <strong>AI Insights</strong>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -165,7 +163,7 @@ with tab2:
 with tab3:
     st.markdown("### Policy & Research Tools")
     
-    policy_pages = ["Simulator", "Phillips Curve"]
+    policy_pages = ["Simulator", "Sector Analysis"]
     
     for page_name in policy_pages:
         if page_name in PAGE_DESCRIPTIONS:
@@ -300,9 +298,9 @@ with st.expander("🏛️ **How can policymakers use this platform?**"):
     st.markdown("""
     **Key tools for policy analysis:**
     - **Simulator**: Test policy interventions (stimulus, training programs, benefits)
-    - **Phillips Curve**: Analyze inflation-unemployment relationships for monetary policy
     - **Sector Analysis**: Identify vulnerable industries for targeted support
     - **Overview Dashboard**: Monitor real-time unemployment trends and recession risk
+    - **AI Insights**: Get natural language explanations of economic trends
     
     All scenarios include quantitative metrics for policy effectiveness evaluation.
     """)

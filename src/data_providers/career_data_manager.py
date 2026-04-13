@@ -9,6 +9,7 @@ import logging
 from collections import Counter
 
 from .adzuna_client import AdzunaClient
+from .job_market_validator import JobMarketValidator
 
 logger = logging.getLogger(__name__)
 
@@ -70,12 +71,15 @@ class CareerDataManager:
     
     def get_role_market_data(self, role: str, location: str = "india") -> Dict:
         """
-        Get comprehensive market data for a role
+        Get comprehensive market data for a role with validation.
         
-        Strategy:
+        Strategy (STRICT - NO MIXING):
         1. Check cache (fast)
-        2. Try Adzuna API (current data)
-        3. Fallback to historical data (reliable)
+        2. Try Adzuna API (current data) → VALIDATE → Use if valid
+        3. Fallback to historical data (reliable) → VALIDATE → Label as historical
+        
+        Returns:
+            Dict with validated market data and clear source labeling
         """
         
         cache_key = f"market_{role.lower().replace(' ', '_')}_{location.lower()}"
@@ -83,21 +87,52 @@ class CareerDataManager:
         # Try cache first
         if cached_data := self.cache.get(cache_key):
             logger.info(f"Using cached data for {role}")
+            # Add source label
+            cached_data["source_label"] = JobMarketValidator.get_data_source_label(cached_data)
             return cached_data
         
-        # Try live API
+        # Try live API with validation
         try:
             live_data = self._fetch_live_data(role, location)
-            if live_data.get("success"):
-                self.cache.set(cache_key, live_data)
-                logger.info(f"Fetched live data for {role}")
-                return live_data
+            
+            # VALIDATE live data
+            cleaned_data, validation_result = JobMarketValidator.validate_and_clean(live_data)
+            
+            if cleaned_data and validation_result.is_valid:
+                # Add clear labeling
+                cleaned_data["source_label"] = JobMarketValidator.get_data_source_label(cleaned_data)
+                cleaned_data["data_age_warning"] = JobMarketValidator.get_data_age_warning(cleaned_data)
+                
+                # Cache validated data
+                self.cache.set(cache_key, cleaned_data)
+                
+                logger.info(f"✅ Using validated live data for {role} (Quality: {validation_result.data_quality_score:.1f}/100)")
+                return cleaned_data
+            else:
+                logger.warning(f"❌ Live data validation failed for {role}: {validation_result.errors}")
+                # Discard invalid data, fall through to historical
+                
         except Exception as e:
             logger.warning(f"Live API failed for {role}: {e}")
         
-        # Fallback to historical data
-        logger.info(f"Using historical data for {role}")
-        return self._get_historical_data(role, location)
+        # Fallback to historical data with validation
+        logger.info(f"⚠️ Using historical data for {role}")
+        historical_data = self._get_historical_data(role, location)
+        
+        # VALIDATE historical data
+        cleaned_data, validation_result = JobMarketValidator.validate_and_clean(historical_data)
+        
+        if cleaned_data and validation_result.is_valid:
+            # Add clear labeling
+            cleaned_data["source_label"] = JobMarketValidator.get_data_source_label(cleaned_data)
+            cleaned_data["data_age_warning"] = JobMarketValidator.get_data_age_warning(cleaned_data)
+            
+            logger.info(f"✅ Using validated historical data for {role} (Quality: {validation_result.data_quality_score:.1f}/100)")
+            return cleaned_data
+        else:
+            logger.error(f"❌ Historical data validation failed for {role}: {validation_result.errors}")
+            # Last resort: default data
+            return self._get_default_data(role)
     
     def _fetch_live_data(self, role: str, location: str) -> Dict:
         """Fetch data from Adzuna API"""
@@ -114,7 +149,8 @@ class CareerDataManager:
             "demand_level": self._calculate_demand_level(result["total_jobs"]),
             "salary_trend": self._analyze_salary_trend(result.get("avg_salary", 0)),
             "data_freshness": datetime.now().isoformat(),
-            "confidence_score": 0.9  # High confidence for live data
+            "source": "adzuna",  # Explicit source
+            "success": True
         }
         
         return enhanced_data
@@ -155,8 +191,7 @@ class CareerDataManager:
             "demand_level": "medium",
             "salary_trend": "stable",
             "data_freshness": "2019-07-01",  # Historical data date
-            "confidence_score": 0.6,  # Lower confidence for old data
-            "source": "historical_csv",
+            "source": "historical_csv",  # Explicit source
             "success": True
         }
     
@@ -221,7 +256,7 @@ class CareerDataManager:
     def _get_default_data(self, role: str) -> Dict:
         """Default data when no other source is available"""
         
-        return {
+        default_data = {
             "total_jobs": 100,  # Conservative estimate
             "avg_salary": 600000,  # 6 LPA average
             "top_skills": ["communication", "problem solving", "teamwork"],
@@ -231,10 +266,19 @@ class CareerDataManager:
             "demand_level": "medium",
             "salary_trend": "stable",
             "data_freshness": datetime.now().isoformat(),
-            "confidence_score": 0.3,  # Low confidence
-            "source": "default",
+            "source": "default",  # Explicit source
             "success": True
         }
+        
+        # Add validation and labeling
+        cleaned_data, validation_result = JobMarketValidator.validate_and_clean(default_data)
+        
+        if cleaned_data:
+            cleaned_data["source_label"] = JobMarketValidator.get_data_source_label(cleaned_data)
+            cleaned_data["data_age_warning"] = JobMarketValidator.get_data_age_warning(cleaned_data)
+            return cleaned_data
+        
+        return default_data
     
     def get_industry_trends(self) -> Dict:
         """Get overall industry trends"""
@@ -254,3 +298,57 @@ class CareerDataManager:
         """Test if live APIs are working"""
         
         return self.adzuna.test_connection()
+    
+    def get_multiple_roles_data(self, roles: List[str], location: str = "india") -> Dict[str, Dict]:
+        """
+        Get market data for multiple roles with consistency enforcement.
+        
+        ENSURES: All roles use the SAME data source (no mixing).
+        
+        Args:
+            roles: List of role names
+            location: Location to search
+            
+        Returns:
+            Dict mapping role -> market data
+        """
+        results = {}
+        sources_used = set()
+        
+        for role in roles:
+            data = self.get_role_market_data(role, location)
+            results[role] = data
+            sources_used.add(data.get("source", "unknown"))
+        
+        # Check consistency
+        if len(sources_used) > 1:
+            logger.warning(f"⚠️ MIXED DATA SOURCES DETECTED: {sources_used}")
+            logger.warning("This violates consistency requirement. Consider using single source.")
+        else:
+            logger.info(f"✅ Consistent data source across all roles: {sources_used.pop()}")
+        
+        return results
+    
+    def get_data_source_summary(self) -> Dict:
+        """
+        Get summary of current data sources being used.
+        
+        Returns:
+            Summary dict with source information
+        """
+        # Test API connection
+        api_available = self.test_api_connection()
+        
+        # Check historical data
+        historical_available = self.historical_data is not None
+        
+        return {
+            "adzuna_api_available": api_available,
+            "historical_data_available": historical_available,
+            "primary_source": "adzuna" if api_available else "historical_csv",
+            "fallback_source": "historical_csv" if historical_available else "default",
+            "recommendation": (
+                "✅ Using live Adzuna API (Current 2026 data)" if api_available
+                else "⚠️ Using historical data (2019 - 7 years old). Enable Adzuna API for current data."
+            )
+        }

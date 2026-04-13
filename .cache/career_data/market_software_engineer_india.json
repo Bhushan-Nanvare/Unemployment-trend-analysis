@@ -1,0 +1,42 @@
+{
+  "cached_at": "2026-04-13T17:55:23.819748",
+  "data": {
+    "total_jobs": 29815,
+    "avg_salary": 1529116.24,
+    "top_skills": [
+      "r",
+      "scala",
+      "go",
+      "api",
+      "rust",
+      "communication",
+      "java",
+      "testing",
+      "microservices",
+      "leadership"
+    ],
+    "top_companies": [
+      "Under Armour India",
+      "FM India",
+      "TMUS Global Solutions",
+      "Costco",
+      "Ferguson",
+      "Stolt-Nielsen Digital Innovation Centre",
+      "Best Buy",
+      "Xtel",
+      "Evernorth",
+      "Sedgwick India"
+    ],
+    "remote_percentage": 2.0,
+    "source": "adzuna",
+    "market_health": "excellent",
+    "demand_level": "very_high",
+    "salary_trend": "increasing",
+    "data_freshness": "2026-04-13T17:55:23.819748",
+    "confidence_score": 1.0,
+    "validation_passed": true,
+    "validation_warnings": [],
+    "source_label": "\ud83d\udfe2 Live Market Data (Current - 2026)",
+    "data_age_warning": null
+  }
+}

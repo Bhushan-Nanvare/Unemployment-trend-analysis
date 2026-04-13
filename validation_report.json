@@ -1,0 +1,107 @@
+{
+  "overall_status": "WARNING",
+  "confidence_level": "MEDIUM",
+  "total_issues": 8,
+  "total_fixes": 0,
+  "summary": {
+    "total_phases": 4,
+    "passed_phases": 3,
+    "warning_phases": 1,
+    "failed_phases": 0,
+    "total_issues": 8,
+    "total_fixes": 0
+  },
+  "timestamp": "2026-04-13T19:15:08.062495",
+  "phases": [
+    {
+      "phase_number": 1,
+      "phase_name": "System Execution",
+      "status": "PASS",
+      "issues_found": [],
+      "fixes_applied": [],
+      "metrics": {
+        "unemployment_rows": 34,
+        "unemployment_year_range": "1991-2024",
+        "inflation_rows": 34,
+        "inflation_year_range": "1991-2024",
+        "processed_rows": 34,
+        "forecast_years": 6,
+        "forecast_range": "2025-2030",
+        "forecast_values": [
+          6.1908,
+          6.175,
+          6.1279,
+          6.0539,
+          5.9587,
+          5.8482
+        ],
+        "simulation_years": 6,
+        "simulation_peak": 7.345,
+        "simulation_values": [
+          6.7758,
+          7.345,
+          6.9947,
+          6.696,
+          6.4344,
+          6.2006
+        ],
+        "unemployment_stress_index": 4.09,
+        "peak_delta": 1.17
+      },
+      "timestamp": "2026-04-13T19:15:08.024243"
+    },
+    {
+      "phase_number": 2,
+      "phase_name": "Data Validation Tests",
+      "status": "WARNING",
+      "issues_found": [
+        "\u26a0\ufe0f  Unemployment Year 2019: Statistical outlier detected (Z-score: 3.78)",
+        "\u26a0\ufe0f  Unemployment Year 2020: Statistical outlier detected (Z-score: 3.64)",
+        "\u26a0\ufe0f  Unemployment Year 2021: Statistical outlier detected (Z-score: 3.37)",
+        "\u26a0\ufe0f  Unemployment Year 2022: Statistical outlier detected (Z-score: 3.91)",
+        "\u26a0\ufe0f  Unemployment Year 2023: Statistical outlier detected (Z-score: 2.83)",
+        "\u26a0\ufe0f  Inflation Year 1993: Large YoY change: 5.40pp (max: 5.0pp)",
+        "\u26a0\ufe0f  Inflation Year 1998: Large YoY change: 6.00pp (max: 5.0pp)",
+        "\u26a0\ufe0f  Inflation Year 1999: Large YoY change: 8.50pp (max: 5.0pp)"
+      ],
+      "fixes_applied": [],
+      "metrics": {
+        "unemployment_quality_score": 90.0,
+        "unemployment_errors": 0,
+        "unemployment_warnings": 5,
+        "inflation_quality_score": 94.0,
+        "inflation_errors": 0,
+        "inflation_warnings": 3
+      },
+      "timestamp": "2026-04-13T19:15:08.040696"
+    },
+    {
+      "phase_number": 3,
+      "phase_name": "Forecast Backtesting",
+      "status": "PASS",
+      "issues_found": [],
+      "fixes_applied": [],
+      "metrics": {
+        "backtest_mae": 0.5539999999999998,
+        "backtest_mape": 8.736015563017778,
+        "backtest_years": 4
+      },
+      "timestamp": "2026-04-13T19:15:08.052190"
+    },
+    {
+      "phase_number": 4,
+      "phase_name": "Simulation Validation",
+      "status": "PASS",
+      "issues_found": [],
+      "fixes_applied": [],
+      "metrics": {
+        "no_shock_diff": 0.0,
+        "high_shock_peak": 9.175,
+        "high_shock_increase": 2.9842000000000004,
+        "policy_reduction": 0.6299999999999999,
+        "sudden_drops": 0
+      },
+      "timestamp": "2026-04-13T19:15:08.062495"
+    }
+  ]
+}

@@ -50,7 +50,6 @@ with st.sidebar:
     st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
     st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
     st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
-    st.page_link("pages/10_Skill_Obsolescence.py", label="⚡ Skill Obsolescence")
 
 
 @st.cache_data(ttl=86400, show_spinner=False)
@@ -105,16 +104,42 @@ else:
 
 user_ck = normalize_city_key(home_display)
 
-# Map Options UI
+# ── STEP 1: Mode Detection (Safe) ──────────────────────────────────────────────
+# Determine if we're in personalized mode based on user input
+personalized_mode = bool(phrases) or bool(home_display != loc_values[0])
+default_mode = not personalized_mode
 
+# Debug info (can be removed later)
+# if personalized_mode:
+#     st.caption(f"🎯 **Personalized Mode**: Analyzing for your skills: {', '.join(phrases) if phrases else 'None'} | City: {home_display}")
+# else:
+#     st.caption("📊 **Default Mode**: Showing general market overview")
+
+# Map Options UI
 col_m1, col_m2 = st.columns([1, 1])
 with col_m1:
-    st.markdown('<div class="section-title">Hiring intensity map</div>', unsafe_allow_html=True)
-    st.caption("Basemap: CartoDB Positron (OSM). Circle area scales with posting count.")
+    # STEP 4: Make map title skill-aware
+    if personalized_mode and phrases:
+        map_title = "🗺️ Hiring demand for YOUR skills"
+        map_subtitle = f"Skills: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}"
+    else:
+        map_title = "🗺️ Hiring intensity map"
+        map_subtitle = "Basemap: CartoDB Positron (OSM). Circle area scales with posting count."
+    
+    st.markdown(f'<div class="section-title">{map_title}</div>', unsafe_allow_html=True)
+    st.caption(map_subtitle)
+    
 with col_m2:
+    # STEP 4: Auto-select skill mode when in personalized mode
+    if personalized_mode and phrases:
+        default_map_index = 1  # "Matched to My Skills (Dynamic)"
+    else:
+        default_map_index = 0  # "Total Market Demand"
+    
     map_mode = st.radio(
         "Map Data Source", 
         ["Total Market Demand", "Matched to My Skills (Dynamic)"], 
+        index=default_map_index,
         horizontal=True,
         help="Switch to 'My Skills' to see only job postings that match the skills you entered above."
     )
@@ -151,7 +176,8 @@ if geocode_query.strip():
         st.caption("Geocoder returned no result — check spelling or try a larger nearby city.")
 
 # ── Personalized Recommendation Header ─────────────────────────────────────────
-if phrases and not map_agg.empty:
+# STEP 2: Conditional rendering - show personalized header only in personalized mode
+if personalized_mode and phrases and not map_agg.empty:
     rk_quick = rank_relocation_targets(df_jobs, user_ck, phrases)
     lq_quick = skill_location_quotients(df_jobs, user_ck, phrases)
     
@@ -192,12 +218,19 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── City posting volume + salary chart ────────────────────────────────────────
+# STEP 2: Show in both modes, but with different context
 if not agg.empty:
     
-    st.markdown(
-        '<div class="section-title">📊 City hiring volume & median salary</div>',
-        unsafe_allow_html=True,
-    )
+    # Different titles based on mode
+    if personalized_mode:
+        chart_title = f"📊 Job opportunities by city (Your context: {home_display})"
+        chart_subtitle = "Cities highlighted based on your profile and skills"
+    else:
+        chart_title = "📊 City hiring volume & median salary"
+        chart_subtitle = "General market overview across all cities"
+    
+    st.markdown(f'<div class="section-title">{chart_title}</div>', unsafe_allow_html=True)
+    st.caption(chart_subtitle)
     agg_disp = agg.copy()
     agg_disp["City"] = agg_disp.get("display_name", agg_disp["city_key"])
     agg_disp = agg_disp.sort_values("postings", ascending=False).head(15)
@@ -702,19 +735,37 @@ with tab4:
 
 # ── TAB 5 — COST OF LIVING ANALYSIS ────────────────────────────────────────────
 with tab5:
-    st.markdown("""
-    <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.25);
-                border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-        <div style="font-size:0.82rem; font-weight:700; color:#f59e0b;
-                    text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-            💰 Purchasing Power Analysis</div>
-        <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-            Cost of Living Index (base 50 = India average). Higher index = more expensive.
-            <strong style="color:#e2e8f0;">Real Salary</strong> = Nominal Salary ÷ (COL Index / 50).
-            This shows your actual purchasing power after adjusting for local costs.
+    # STEP 5: Transform component based on mode
+    if personalized_mode and phrases:
+        # Personalized mode: Real salary impact for user profile
+        st.markdown("""
+        <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:700; color:#f59e0b;
+                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+                💰 Real Salary Impact for Your Profile</div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                How cost of living affects YOUR earning potential in different cities.
+                <strong style="color:#e2e8f0;">Your Effective Salary</strong> = Expected Salary ÷ (COL Index / 50).
+                This shows your actual purchasing power based on your skills and local costs.
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    else:
+        # Default mode: Generic cost of living analysis
+        st.markdown("""
+        <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:700; color:#f59e0b;
+                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+                💰 Purchasing Power Analysis</div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                Cost of Living Index (base 50 = India average). Higher index = more expensive.
+                <strong style="color:#e2e8f0;">Real Salary</strong> = Nominal Salary ÷ (COL Index / 50).
+                This shows your actual purchasing power after adjusting for local costs.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     from src.geo_career_advisor import get_cost_of_living_index, calculate_real_salary, get_city_state
     
@@ -827,19 +878,37 @@ with tab5:
 
 # ── TAB 6 — INDUSTRY CONCENTRATION ─────────────────────────────────────────────
 with tab6:
-    st.markdown("""
-    <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
-                border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-        <div style="font-size:0.82rem; font-weight:700; color:#818cf8;
-                    text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-            🏭 Industry Specialization Analysis</div>
-        <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-            <strong style="color:#e2e8f0;">Location Quotient (LQ)</strong> measures industry concentration.
-            LQ > 1.5 = city specializes in that industry. LQ < 0.7 = underrepresented.
-            Based on keyword analysis of job descriptions.
+    # STEP 5: Transform component based on mode
+    if personalized_mode and phrases:
+        # Personalized mode: Industry alignment for user skills
+        st.markdown("""
+        <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:700; color:#818cf8;
+                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+                🎯 Industry Alignment for Your Skills</div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                Which industries in this city match your skill profile?
+                <strong style="color:#e2e8f0;">Location Quotient (LQ) > 1.5</strong> = city specializes in that industry.
+                Focus on industries where your skills overlap with city strengths.
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    else:
+        # Default mode: Generic industry analysis
+        st.markdown("""
+        <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:700; color:#818cf8;
+                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+                🏭 Industry Specialization Analysis</div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                <strong style="color:#e2e8f0;">Location Quotient (LQ)</strong> measures industry concentration.
+                LQ > 1.5 = city specializes in that industry. LQ < 0.7 = underrepresented.
+                Based on keyword analysis of job descriptions.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     from src.geo_career_advisor import analyze_industry_concentration
     
@@ -930,19 +999,37 @@ with tab6:
 
 # ── TAB 7 — STATE UNEMPLOYMENT CHOROPLETH ──────────────────────────────────────
 with tab7:
-    st.markdown("""
-    <div style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25);
-                border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-        <div style="font-size:0.82rem; font-weight:700; color:#10b981;
-                    text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-            🗺️ State-Level Unemployment Context</div>
-        <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-            PLFS 2022-23 official data overlaid with city job demand.
-            <strong style="color:#e2e8f0;">High state unemployment + high city job demand</strong>
-            = opportunity for local talent. Low state unemployment = competitive labor market.
+    # STEP 5: Transform component based on mode
+    if personalized_mode and phrases:
+        # Personalized mode: Competition level analysis
+        st.markdown("""
+        <div style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:700; color:#10b981;
+                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+                🏆 Competition Level for Your Skills</div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                PLFS 2022-23 official data interpreted for your job search context.
+                <strong style="color:#e2e8f0;">Low unemployment = High competition</strong> for jobs.
+                <strong style="color:#e2e8f0;">High unemployment + High job demand</strong> = Good opportunity for your skills.
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    else:
+        # Default mode: Generic state unemployment analysis
+        st.markdown("""
+        <div style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:700; color:#10b981;
+                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
+                🗺️ State-Level Unemployment Context</div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                PLFS 2022-23 official data overlaid with city job demand.
+                <strong style="color:#e2e8f0;">High state unemployment + high city job demand</strong>
+                = opportunity for local talent. Low state unemployment = competitive labor market.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     state_df = get_state_unemployment()
     
@@ -1055,3 +1142,184 @@ with tab7:
         """)
     else:
         st.info("State unemployment data not available for cities in the dataset.")
+
+# ── STEP 8: FINAL RECOMMENDATION LAYER ────────────────────────────────────────
+if personalized_mode and phrases and not agg.empty:
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Generate comprehensive recommendation using existing data
+    rk_data = rank_relocation_targets(df_jobs, user_ck, phrases)
+    lq_data = skill_location_quotients(df_jobs, user_ck, phrases)
+    
+    if not rk_data.empty:
+        # Get top recommendation
+        best_city = rk_data.iloc[0]["display_name"]
+        best_score = rk_data.iloc[0]["score"]
+        best_skill_match = rk_data.iloc[0]["your_skill_match_rate"]
+        best_postings = rk_data.iloc[0]["postings"]
+        
+        # Get cost of living impact
+        from src.geo_career_advisor import get_cost_of_living_index
+        best_city_key = rk_data.iloc[0]["city_key"]
+        col_index = get_cost_of_living_index(best_city_key)
+        
+        # Get competition level (state unemployment) - create mapping here
+        state_df_rec = get_state_unemployment()
+        state_ue_map_rec = dict(zip(state_df_rec["State"], state_df_rec["Combined_UE"]))
+        best_state = get_city_state(best_city_key)
+        state_ue = state_ue_map_rec.get(best_state, None) if best_state else None
+        
+        # Generate risk assessment
+        risks = []
+        opportunities = []
+        
+        if col_index and col_index > 60:
+            risks.append(f"High cost of living (Index: {col_index})")
+        elif col_index and col_index < 40:
+            opportunities.append(f"Affordable living costs (Index: {col_index})")
+        
+        if state_ue and state_ue < 3:
+            risks.append(f"Competitive job market ({state_ue:.1f}% unemployment)")
+        elif state_ue and state_ue > 5:
+            opportunities.append(f"Less competitive market ({state_ue:.1f}% unemployment)")
+        
+        if best_skill_match < 0.3:
+            risks.append(f"Limited skill match ({best_skill_match:.1%} of jobs)")
+        elif best_skill_match > 0.5:
+            opportunities.append(f"Strong skill alignment ({best_skill_match:.1%} of jobs)")
+        
+        # Get current city comparison
+        current_city_data = rk_data[rk_data["city_key"] == user_ck]
+        current_postings = current_city_data.iloc[0]["postings"] if not current_city_data.empty else 0
+        volume_improvement = best_postings / current_postings if current_postings > 0 else 1
+        
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(99,102,241,0.1) 100%);
+                    border:2px solid rgba(16,185,129,0.3); border-radius:16px; padding:2rem; margin:2rem 0;">
+            <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;">
+                <span style="font-size:2rem;">🎯</span>
+                <div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#10b981;
+                                text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.3rem;">
+                        Final Recommendation
+                    </div>
+                    <div style="font-size:0.9rem; color:#94a3b8;">
+                        Based on your skills: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
+                <div style="font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:0.8rem;">
+                    🏆 Best City: {best_city}
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                    <div>
+                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
+                            Composite Score
+                        </div>
+                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
+                            {best_score:.2f}/1.00
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
+                            Skill Match Rate
+                        </div>
+                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
+                            {best_skill_match:.1%}
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
+                            Job Volume vs Your City
+                        </div>
+                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
+                            {volume_improvement:.1f}× more jobs
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
+                            Available Positions
+                        </div>
+                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
+                            {best_postings:,} jobs
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                <div>
+                    <div style="font-size:0.9rem; font-weight:700; color:#10b981; margin-bottom:0.8rem;">
+                        ✅ Opportunities
+                    </div>
+                    <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
+                        {"".join(f"<li>{opp}</li>" for opp in opportunities) if opportunities else "<li>Strong overall ranking in our analysis</li>"}
+                        <li>Higher job volume than your current city</li>
+                        {"<li>Good skill-job alignment</li>" if best_skill_match > 0.4 else ""}
+                    </ul>
+                </div>
+                <div>
+                    <div style="font-size:0.9rem; font-weight:700; color:#f59e0b; margin-bottom:0.8rem;">
+                        ⚠️ Considerations
+                    </div>
+                    <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
+                        {"".join(f"<li>{risk}</li>" for risk in risks) if risks else "<li>Research local industry trends</li>"}
+                        <li>Verify housing and commute options</li>
+                        <li>Consider networking and cultural fit</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid rgba(148,163,184,0.2);">
+                <div style="font-size:0.8rem; color:#94a3b8; line-height:1.6;">
+                    <strong style="color:#e2e8f0;">Methodology:</strong> Ranking based on 55% job volume vs your city + 45% skill match rate.
+                    Cost of living and unemployment data from official sources. This is a data-driven suggestion — 
+                    consider personal factors like family, lifestyle, and career goals in your final decision.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Alternative recommendations
+        if len(rk_data) > 1:
+            st.markdown("**🔄 Alternative Options**")
+            alt_cities = rk_data.iloc[1:4]  # Top 2-4 cities
+            
+            alt_cols = st.columns(min(3, len(alt_cities)))
+            for i, (_, city_row) in enumerate(alt_cities.iterrows()):
+                if i < len(alt_cols):
+                    with alt_cols[i]:
+                        city_col_index = get_cost_of_living_index(city_row["city_key"])
+                        col_indicator = ""
+                        if city_col_index:
+                            if city_col_index > 60:
+                                col_indicator = "💰 Expensive"
+                            elif city_col_index < 40:
+                                col_indicator = "💚 Affordable"
+                            else:
+                                col_indicator = "💛 Moderate"
+                        
+                        st.markdown(f"""
+                        <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.25);
+                                    border-radius:10px; padding:1rem; text-align:center;">
+                            <div style="font-weight:700; color:#e2e8f0; margin-bottom:0.5rem;">
+                                {city_row['display_name']}
+                            </div>
+                            <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:0.3rem;">
+                                Score: {city_row['score']:.2f}
+                            </div>
+                            <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:0.3rem;">
+                                Skills: {city_row['your_skill_match_rate']:.1%}
+                            </div>
+                            <div style="font-size:0.75rem; color:#6366f1;">
+                                {col_indicator}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+            
+            st.caption("💡 **Tip:** Use the tabs above to dive deeper into cost of living, competition levels, and industry alignment for your shortlisted cities.")
+    
+    else:
+        st.info("Enter your skills above to get personalized city recommendations based on job market analysis.")
