@@ -1,36 +1,24 @@
 """
 career_advisor.py
-Rule-based AI Career & Skill Advisor with Real-Time Skill Demand.
+Rule-based AI Career & Skill Advisor with Dynamic Skill Detection.
 
-REFACTORED: 2026-04-13
-- Removed fake positional scoring
-- Integrated real-time Adzuna API data
-- Skills ranked by actual job market demand
+REFACTORED: 2026-04-13 (Version 4.0.0)
+- Removed predefined skill lists
+- Integrated dynamic skill detection from real job postings
+- Automatically evolving skill recommendations
 
 Fix: Thresholds for "growth" vs "risk" classification now scale dynamically
 with shock_intensity so that a severe crisis produces appropriately pessimistic
 advice rather than falsely optimistic sector labels.
 """
 import pandas as pd
-from src.skill_demand_analyzer import get_skill_demand_dict
+from src.dynamic_skill_detector import get_dynamic_trending_skills
 
 
 class CareerAdvisor:
 
-    # Updated to match balanced BASE_SKILLS in skill_demand_analyzer.py
-    # Ensures comprehensive coverage across tech and domain skills
-    SECTOR_SKILLS = {
-        "Healthcare":        ["Healthcare Tech", "Biotech", "Data Science"],
-        "Education":         ["EdTech", "Data Science", "UX/UI Design"],
-        "IT":                ["AI/ML", "Data Science", "Cloud Computing", "Python"],
-        "Energy & Utilities":["Data Engineering", "Cloud Computing", "Business Intelligence"],
-        "Finance & Banking": ["FinTech", "Blockchain", "Data Science"],
-        "Agriculture":       ["Data Science", "Cloud Computing", "Business Intelligence"],
-        "Services":          ["Digital Marketing", "Product Management", "Web Development"],
-        "Retail & Trade":    ["Data Science", "Digital Marketing", "Business Intelligence"],
-        "Manufacturing":     ["Data Engineering", "Cloud Computing", "DevOps"],
-        "Construction":      ["Product Management", "Data Science", "Cloud Computing"],
-    }
+    # NO MORE PREDEFINED SECTOR_SKILLS
+    # Skills are now dynamically detected from real job market data
 
     @staticmethod
     def _dynamic_thresholds(shock_intensity: float) -> dict:
@@ -55,7 +43,8 @@ class CareerAdvisor:
         Generates career advice based on sector stress and resilience.
         shock_intensity is used to set dynamic classification thresholds.
         
-        REFACTORED: Now uses real-time skill demand data from Adzuna API.
+        REFACTORED (v4.0.0): Now uses dynamic skill detection from real job postings.
+        NO predefined skill lists - automatically discovers trending skills.
         """
         thresholds = CareerAdvisor._dynamic_thresholds(shock_intensity)
         g_res = thresholds["growth_resilience"]
@@ -68,7 +57,7 @@ class CareerAdvisor:
             "growth_sectors": [],
             "risk_sectors": [],
             "recommended_skills": [],
-            "skill_demand_data": {},  # NEW: Real-time demand data
+            "skill_demand_data": {},  # Dynamic skill detection data
             "upskilling_pathways": [],
             "shock_severity": (
                 "Low" if shock_intensity <= 0.2 else
@@ -77,8 +66,7 @@ class CareerAdvisor:
             ),
         }
 
-        # Collect skills from growth sectors
-        all_skills = []
+        # Identify growth and risk sectors
         for s in sectors:
             name = s["Sector"]
             resilience = s["Resilience_Score"]
@@ -86,27 +74,19 @@ class CareerAdvisor:
 
             if resilience > g_res and stress < g_str:
                 advice["growth_sectors"].append(name)
-                skills = CareerAdvisor.SECTOR_SKILLS.get(name, [])
-                all_skills.extend(skills[:3])
             elif stress > r_str:
                 advice["risk_sectors"].append(name)
 
-        # Remove duplicates
-        all_skills = list(set(all_skills))
+        # Get dynamically detected trending skills from job market
+        # NO predefined lists - automatically discovers what's trending
+        skill_demand = get_dynamic_trending_skills(top_n=15)
+        advice["skill_demand_data"] = skill_demand
         
-        # Get real-time skill demand data
-        if all_skills:
-            skill_demand = get_skill_demand_dict(all_skills)
-            advice["skill_demand_data"] = skill_demand
-            
-            # Extract top skills by demand score
-            if skill_demand.get("skills"):
-                advice["recommended_skills"] = [
-                    s["name"] for s in skill_demand["skills"]
-                ]
-            else:
-                # Fallback if API unavailable
-                advice["recommended_skills"] = all_skills
+        # Extract top skills by demand score
+        if skill_demand.get("skills"):
+            advice["recommended_skills"] = [
+                s["name"] for s in skill_demand["skills"]
+            ]
         else:
             advice["recommended_skills"] = []
 

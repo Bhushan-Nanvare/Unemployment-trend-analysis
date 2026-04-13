@@ -139,8 +139,8 @@ with col_r:
         data_source = skill_demand_data.get("data_source", "Unknown")
         algorithm = skill_demand_data.get("algorithm", "")
         
-        if "Adzuna" in data_source:
-            st.caption("📡 Skill demand based on real-time job market data (Adzuna API, log-normalized, keyword-balanced)")
+        if "Adzuna" in data_source and "dynamic extraction" in data_source:
+            st.caption("📡 Skill demand dynamically extracted from real job postings (Adzuna API)")
         elif "INSUFFICIENT" in data_source:
             st.caption("⚠️ Adzuna API unavailable - Configure credentials in Streamlit secrets")
         else:
@@ -172,35 +172,46 @@ with col_r:
         st.plotly_chart(fig_skill, use_container_width=True)
         
         # Show methodology
-        with st.expander("📊 How demand is calculated"):
+        with st.expander("📊 How skills are detected"):
             st.markdown("""
-            **Advanced Real-Time Demand Score Formula:**
-            ```
-            Demand = (0.5 × log_job_score) + (0.3 × salary_score) + (0.2 × recency_score)
-            ```
+            **Dynamic Skill Detection Algorithm:**
             
-            **Components:**
-            - **Job Count (50%):** Log-scaled job count to prevent dominance
-              - Formula: `log(job_count + 1) / log(max_job_count + 1)`
-            - **Salary (30%):** Average salary offered (linear scaling)
-            - **Recency (20%):** Percentage of recent postings (last 30 days)
+            **Phase 1: Data Collection**
+            - Fetch 1,000+ job postings from Adzuna API
+            - Use broad queries: "software engineer", "developer", "data", "analyst", "engineer"
+            - Multiple pages per query for comprehensive coverage
             
-            **Smart Keyword Expansion:**
-            - Base keywords: 2-3 anchor terms per skill (e.g., "machine learning engineer")
-            - Expanded keywords: Hidden variations detected in job descriptions
-              - AI/ML: "nlp", "computer vision", "deep learning", "llm", "gpt"
-              - Cloud: "aws", "azure", "gcp", "kubernetes", "docker"
-              - Cybersecurity: "infosec", "penetration testing", "soc analyst"
-            - Avoids double counting: Base matches prioritized over expanded matches
+            **Phase 2: Text Extraction**
+            - Extract title and description from each job
+            - Combine into text corpus for analysis
             
-            **Why Log Scaling?**
-            - Prevents single high-volume skill from dominating unfairly
-            - Creates balanced distribution across all skills
-            - Compresses range while preserving relative ordering
+            **Phase 3: Skill Extraction**
+            - Detect skills using keyword pattern matching
+            - Count frequency of each skill mention
+            - Track which jobs mention each skill
+            - Calculate salary data per skill
+            
+            **Phase 4: Normalization**
+            - Apply log scaling to prevent dominance:
+              ```
+              freq_score = log(frequency + 1) / log(max_frequency + 1)
+              demand_score = (0.5 × freq_score) + (0.3 × salary_score) + (0.2 × recency_score)
+              ```
+            
+            **Phase 5: Ranking**
+            - Sort skills by demand score (descending)
+            - Return top 15-20 trending skills
+            
+            **Key Advantages:**
+            - ✅ **No predefined lists** - Automatically discovers trending skills
+            - ✅ **Future-proof** - Adapts to market changes automatically
+            - ✅ **Real job data** - Based on actual job postings, not assumptions
+            - ✅ **Hourly updates** - Reflects current market trends
             
             **Data Source:** Adzuna Job Search API (India)  
             **Update Frequency:** Hourly (with 1-hour cache)  
-            **No fake data:** All scores based on real job market analysis
+            **Jobs Analyzed:** 1,000+ per refresh  
+            **Detection Method:** Frequency analysis with log-scaled normalization
             """)
     elif skills:
         # Fallback: Show skills without fake scores
