@@ -38,6 +38,25 @@ st.markdown(DARK_CSS, unsafe_allow_html=True)
 with st.sidebar:
     st.markdown("### 🎯 Job Risk Predictor")
     st.markdown("---")
+    
+    # Upgrade Banner in Sidebar
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(6,182,212,0.15)); 
+                border: 2px solid rgba(99,102,241,0.3); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+        <div style="font-size: 0.9rem; font-weight: 700; color: #818cf8; margin-bottom: 0.5rem;">
+            🚀 Upgrade to Premium
+        </div>
+        <div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 0.8rem;">
+            Unlock unlimited assessments, GPT-4 insights, and personalized career roadmaps
+        </div>
+        <a href="/Pricing" target="_self" style="display: inline-block; padding: 0.5rem 1rem; 
+           background: linear-gradient(135deg, #6366f1, #818cf8); color: white; 
+           text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">
+            View Plans →
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown("**🌐 Navigation**")
     st.page_link("app.py", label="🏠 Home")
     st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
@@ -48,6 +67,8 @@ with st.sidebar:
     st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
 
     st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
+    st.page_link("pages/10_Pricing.py", label="💰 Pricing")
+    st.page_link("pages/11_For_Business.py", label="🏢 For Business")
     st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
 
 st.markdown("""
@@ -58,6 +79,23 @@ st.markdown("""
         with feature contributions, industry comparison, and what-if skill upgrades.
     </div>
 </div>""", unsafe_allow_html=True)
+
+# Usage Limit Banner (Demo/Showcase)
+if 'risk_assessments_count' not in st.session_state:
+    st.session_state.risk_assessments_count = 0
+
+# Show usage banner
+if st.session_state.risk_assessments_count >= 3:
+    st.warning("""
+    ⚠️ **Free Tier Limit Reached** - You've used 3/5 free assessments this session.  
+    Upgrade to **Premium** for unlimited assessments + GPT-4 insights + career roadmaps.  
+    [View Pricing Plans →](/Pricing)
+    """)
+elif st.session_state.risk_assessments_count > 0:
+    st.info(f"""
+    ℹ️ **Free Tier**: {st.session_state.risk_assessments_count}/5 assessments used this session.  
+    [Upgrade to Premium](/Pricing) for unlimited access.
+    """)
 
 st.caption("🔍 Risk estimates trained on **real market demand data** (29,000+ job postings) — ground truths derive from salary benchmarks and hiring frequency trends.")
 
@@ -143,6 +181,9 @@ with col_out:
     st.markdown('<div class="section-title">Results</div>', unsafe_allow_html=True)
 
     if run:
+        # Increment usage counter (for demo purposes)
+        st.session_state.risk_assessments_count += 1
+        
         # Validate inputs
         validator = ProfileValidator()
         
