@@ -1,7 +1,7 @@
 """
-Page 3 — Sector Analysis
-Tab 1: Scenario simulation — heatmap, radar chart, treemap, and sector cards.
-Tab 2: Live Data        — real World Bank sector indicators for India.
+Page 3 â€” Sector Analysis
+Tab 1: Scenario simulation â€” heatmap, radar chart, treemap, and sector cards.
+Tab 2: Live Data        â€” real World Bank sector indicators for India.
 """
 import streamlit as st
 import requests
@@ -12,38 +12,38 @@ from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_
 from src.live_data import fetch_sector_indicators
 from src.live_insights import generate_sector_insights
 
-st.set_page_config(page_title="Sector Analysis | UIP", page_icon="🏭", layout="wide")
+st.set_page_config(page_title="Sector Analysis | UIP", page_icon="ðŸ­", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown("### 🏭 Sector Analysis")
+    st.markdown("### ðŸ­ Sector Analysis")
     shock_intensity = st.slider("Shock Intensity", 0.0, 0.6, 0.3, 0.05)
     recovery_rate   = st.slider("Recovery Rate", 0.05, 0.6, 0.3, 0.05)
     st.markdown("---")
-    st.markdown("**🌐 Navigation**")
-    st.page_link("app.py", label="🏠 Home")
-    st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
-    st.page_link("pages/1_Overview.py", label="📊 Overview")
-    st.page_link("pages/2_Simulator.py", label="🧪 Simulator")
-    st.page_link("pages/4_Career_Lab.py", label="💼 Career Lab")
-    st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
-    st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
-    st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
-    st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
+    st.markdown("**ðŸŒ Navigation**")
+    st.page_link("app.py", label="ðŸ  Home")
+    st.page_link("pages/0_Help_Guide.py", label="â“ Help Guide")
+    st.page_link("pages/1_Overview.py", label="ðŸ“Š Overview")
+    st.page_link("pages/2_Simulator.py", label="ðŸ§ª Simulator")
+    st.page_link("pages/4_Career_Lab.py", label="ðŸ’¼ Career Lab")
+    st.page_link("pages/5_AI_Insights.py", label="ðŸ¤– AI Insights")
+    st.page_link("pages/7_Job_Risk_Predictor.py", label="ðŸŽ¯ Job Risk (AI)")
+    st.page_link("pages/8_Job_Market_Pulse.py", label="ðŸ“¡ Market Pulse")
+    st.page_link("pages/9_Geo_Career_Advisor.py", label="ðŸ—ºï¸ Geo Career")
 
 st.markdown("""
 <div class="page-hero">
-    <div class="hero-title">🏭 Sector Intelligence</div>
+    <div class="hero-title">ðŸ­ Sector Intelligence</div>
     <div class="hero-subtitle">Scenario stress analysis alongside real World Bank sector indicators</div>
 </div>""", unsafe_allow_html=True)
 
 from src.api import simulate_scenario, ScenarioRequest
 
-tab_sim, tab_live = st.tabs(["🧪 Scenario Simulation", "🌐 Live World Bank Data"])
+tab_sim, tab_live = st.tabs(["ðŸ§ª Scenario Simulation", "ðŸŒ Live World Bank Data"])
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 1 — SCENARIO SIMULATION (original content unchanged)
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 1 â€” SCENARIO SIMULATION (original content unchanged)
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_sim:
 
     @st.cache_data(ttl=60)
@@ -65,7 +65,7 @@ with tab_sim:
     data = get_sector_data(shock_intensity, recovery_rate)
 
     if not data:
-        st.error("⚠️ Cannot connect to API. Start: `uvicorn src.api:app --reload`")
+        st.error("âš ï¸ Cannot connect to API. Start: `uvicorn src.api:app --reload`")
         st.stop()
 
     sector_raw = data.get("sector_impact", [])
@@ -75,7 +75,7 @@ with tab_sim:
 
     df = pd.DataFrame(sector_raw)
 
-    # ─── Summary KPIs ──────────────────────────────────────────────────────────
+    # â”€â”€â”€ Summary KPIs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     most_stressed  = df.loc[df["Stress_Score"].idxmax(), "Sector"]
     most_resilient = df.loc[df["Resilience_Score"].idxmax(), "Sector"]
     avg_stress     = round(df["Stress_Score"].mean(), 2)
@@ -83,24 +83,24 @@ with tab_sim:
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.markdown(render_kpi_card("🔥", "Most Stressed", most_stressed, delta_type="neutral"), unsafe_allow_html=True)
+        st.markdown(render_kpi_card("ðŸ”¥", "Most Stressed", most_stressed, delta_type="neutral"), unsafe_allow_html=True)
     with c2:
-        st.markdown(render_kpi_card("💪", "Most Resilient", most_resilient, delta_type="neutral"), unsafe_allow_html=True)
+        st.markdown(render_kpi_card("ðŸ’ª", "Most Resilient", most_resilient, delta_type="neutral"), unsafe_allow_html=True)
     with c3:
         at = "up" if avg_stress > 0.4 else "down"
-        st.markdown(render_kpi_card("📊", "Avg Stress Score", f"{avg_stress:.2f}", delta_type=at), unsafe_allow_html=True)
+        st.markdown(render_kpi_card("ðŸ“Š", "Avg Stress Score", f"{avg_stress:.2f}", delta_type=at), unsafe_allow_html=True)
     with c4:
         bt = "up" if high_risk_count > 2 else "neutral"
-        st.markdown(render_kpi_card("⚠️", "High-Risk Sectors", str(high_risk_count), delta_type=bt), unsafe_allow_html=True)
+        st.markdown(render_kpi_card("âš ï¸", "High-Risk Sectors", str(high_risk_count), delta_type=bt), unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ─── Main Charts Row ────────────────────────────────────────────────────────
+    # â”€â”€â”€ Main Charts Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     col_heat, col_radar = st.columns([3, 2])
 
     with col_heat:
         
-        st.markdown('<div class="section-title">🌡️ Stress vs Resilience Heatmap</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">ðŸŒ¡ï¸ Stress vs Resilience Heatmap</div>', unsafe_allow_html=True)
         heat_df     = df[["Sector", "Stress_Score", "Resilience_Score"]].copy()
         heat_matrix = heat_df.set_index("Sector").T
 
@@ -125,11 +125,11 @@ with tab_sim:
         fig_heat.update_layout(**plotly_dark_layout(height=280))
         fig_heat.update_layout(margin=dict(l=10, r=10, t=10, b=10))
         st.plotly_chart(fig_heat, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+
 
     with col_radar:
         
-        st.markdown('<div class="section-title">🕸️ Resilience Radar</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">ðŸ•¸ï¸ Resilience Radar</div>', unsafe_allow_html=True)
         sectors        = df["Sector"].tolist()
         resilience_vals = df["Resilience_Score"].tolist()
         stress_vals    = df["Stress_Score"].tolist()
@@ -163,11 +163,11 @@ with tab_sim:
             ),
         )
         st.plotly_chart(fig_r, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ─── Treemap ────────────────────────────────────────────────────────────────
+
+    # â”€â”€â”€ Treemap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     
-    st.markdown('<div class="section-title">🗺️ Sector Impact Treemap</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ—ºï¸ Sector Impact Treemap</div>', unsafe_allow_html=True)
     fig_tree = px.treemap(
         df, path=["Sector"], values="Stress_Score",
         color="Stress_Score",
@@ -181,11 +181,11 @@ with tab_sim:
                                 title=dict(text="Stress", font=dict(color="#94a3b8"))),
     )
     st.plotly_chart(fig_tree, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ─── Sector Cards ───────────────────────────────────────────────────────────
+
+    # â”€â”€â”€ Sector Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="section-title">🏷️ Sector Detail Cards</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ·ï¸ Sector Detail Cards</div>', unsafe_allow_html=True)
 
     cols = st.columns(min(len(df), 4))
     for i, row in df.iterrows():
@@ -193,11 +193,11 @@ with tab_sim:
         stress = row["Stress_Score"]
         res    = row["Resilience_Score"]
         if stress >= 60:
-            badge = render_badge("🔴 High Risk", "danger")
+            badge = render_badge("ðŸ”´ High Risk", "danger")
         elif stress >= 35:
-            badge = render_badge("🟡 Moderate", "warning")
+            badge = render_badge("ðŸŸ¡ Moderate", "warning")
         else:
-            badge = render_badge("🟢 Stable", "success")
+            badge = render_badge("ðŸŸ¢ Stable", "success")
 
         sp = int(min(100, stress))
         rp = int(min(100, res))
@@ -229,19 +229,19 @@ with tab_sim:
             """, unsafe_allow_html=True)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — LIVE WORLD BANK DATA
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 2 â€” LIVE WORLD BANK DATA
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_live:
     st.markdown("""
     <div style="background:rgba(6,182,212,0.07); border:1px solid rgba(6,182,212,0.2);
                 border-radius:14px; padding:1rem 1.4rem; margin-bottom:1.5rem;">
         <div style="font-size:0.78rem; font-weight:700; color:#06b6d4; text-transform:uppercase;
-                    letter-spacing:1px; margin-bottom:0.3rem;">🌐 Data Source</div>
+                    letter-spacing:1px; margin-bottom:0.3rem;">ðŸŒ Data Source</div>
         <div style="font-size:0.88rem; color:#94a3b8; line-height:1.6;">
             Employment and GDP figures come from the
             <strong style="color:#e2e8f0;">World Bank Open Data API</strong> (free, no key required).
-            Figures are the most recently published annual values — typically 1–2 years behind the current calendar year
+            Figures are the most recently published annual values â€” typically 1â€“2 years behind the current calendar year
             due to national statistical reporting lags. Cached for 24 hours.
         </div>
     </div>
@@ -251,18 +251,18 @@ with tab_live:
     def load_live_sector_data():
         return fetch_sector_indicators("India")
 
-    if st.button("🔄 Refresh Live Data", key="refresh_live"):
+    if st.button("ðŸ”„ Refresh Live Data", key="refresh_live"):
         st.cache_data.clear()
         st.rerun()
 
-    with st.spinner("Fetching sector data from World Bank API…"):
+    with st.spinner("Fetching sector data from World Bank APIâ€¦"):
         live_df = load_live_sector_data()
 
     if live_df.empty:
         st.warning("Could not retrieve live sector data. Please check your internet connection.")
         st.stop()
 
-    # ─── AI Insight Box ─────────────────────────────────────────────────────────
+    # â”€â”€â”€ AI Insight Box â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     sector_insights = generate_sector_insights(live_df)
     if sector_insights:
         bullets_html = "".join(
@@ -275,17 +275,17 @@ with tab_live:
         <div style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.22);
                     border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.4rem;">
             <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.6rem;">
-                <span style="font-size:1.1rem;">💡</span>
+                <span style="font-size:1.1rem;">ðŸ’¡</span>
                 <span style="font-size:0.78rem; font-weight:700; color:#34d399;
                               text-transform:uppercase; letter-spacing:1px;">
-                    Sector Intelligence — Key Insights
+                    Sector Intelligence â€” Key Insights
                 </span>
             </div>
             <ul style="margin:0; padding-left:1.2rem;">{bullets_html}</ul>
         </div>
         """, unsafe_allow_html=True)
 
-    # ─── KPI strip ──────────────────────────────────────────────────────────────
+    # â”€â”€â”€ KPI strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     live_valid_emp = live_df.dropna(subset=["Employment_Share"])
     live_valid_gdp = live_df.dropna(subset=["GDP_Share"])
 
@@ -293,26 +293,26 @@ with tab_live:
     with k1:
         if not live_valid_emp.empty:
             top_emp = live_valid_emp.loc[live_valid_emp["Employment_Share"].idxmax(), "Sector"]
-            st.markdown(render_kpi_card("👷", "Largest Employer", top_emp, delta_type="neutral"), unsafe_allow_html=True)
+            st.markdown(render_kpi_card("ðŸ‘·", "Largest Employer", top_emp, delta_type="neutral"), unsafe_allow_html=True)
     with k2:
         if not live_valid_gdp.empty:
             top_gdp = live_valid_gdp.loc[live_valid_gdp["GDP_Share"].idxmax(), "Sector"]
-            st.markdown(render_kpi_card("💰", "Largest GDP Sector", top_gdp, delta_type="neutral"), unsafe_allow_html=True)
+            st.markdown(render_kpi_card("ðŸ’°", "Largest GDP Sector", top_gdp, delta_type="neutral"), unsafe_allow_html=True)
     with k3:
         live_count = int((live_df["Source"] == "World Bank (live)").sum())
-        st.markdown(render_kpi_card("🟢", "Live Indicators", str(live_count), delta_type="neutral"), unsafe_allow_html=True)
+        st.markdown(render_kpi_card("ðŸŸ¢", "Live Indicators", str(live_count), delta_type="neutral"), unsafe_allow_html=True)
     with k4:
         total = len(live_df)
-        st.markdown(render_kpi_card("📋", "Sectors Tracked", str(total), delta_type="neutral"), unsafe_allow_html=True)
+        st.markdown(render_kpi_card("ðŸ“‹", "Sectors Tracked", str(total), delta_type="neutral"), unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ─── Side-by-side bar charts ─────────────────────────────────────────────────
+    # â”€â”€â”€ Side-by-side bar charts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     col_emp, col_gdp = st.columns(2)
 
     with col_emp:
         
-        st.markdown('<div class="section-title">👷 Employment Share by Sector (%)</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">ðŸ‘· Employment Share by Sector (%)</div>', unsafe_allow_html=True)
         emp_df = live_df.dropna(subset=["Employment_Share"]).sort_values("Employment_Share", ascending=True)
         if emp_df.empty:
             st.info("Employment share data not available from World Bank for these sectors.")
@@ -337,11 +337,10 @@ with tab_live:
                 xaxis=dict(range=[0, max(emp_df["Employment_Share"]) * 1.25]),
             )
             st.plotly_chart(fig_emp, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     with col_gdp:
         
-        st.markdown('<div class="section-title">💰 GDP Contribution by Sector (%)</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">ðŸ’° GDP Contribution by Sector (%)</div>', unsafe_allow_html=True)
         gdp_df = live_df.dropna(subset=["GDP_Share"]).sort_values("GDP_Share", ascending=True)
         if gdp_df.empty:
             st.info("GDP share data not available from World Bank for these sectors.")
@@ -366,19 +365,18 @@ with tab_live:
                 xaxis=dict(range=[0, max(gdp_df["GDP_Share"]) * 1.25]),
             )
             st.plotly_chart(fig_gdp, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ─── Scatter: Employment vs GDP ─────────────────────────────────────────────
+    # â”€â”€â”€ Scatter: Employment vs GDP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     scatter_df = live_df.dropna(subset=["Employment_Share", "GDP_Share"])
     if not scatter_df.empty:
         st.markdown("<br>", unsafe_allow_html=True)
         
         st.markdown(
-            '<div class="section-title">📌 Employment Share vs GDP Contribution</div>',
+            '<div class="section-title">ðŸ“Œ Employment Share vs GDP Contribution</div>',
             unsafe_allow_html=True,
         )
         st.caption(
-            "Sectors above the diagonal employ a larger share of the workforce than they contribute to GDP — "
+            "Sectors above the diagonal employ a larger share of the workforce than they contribute to GDP â€” "
             "indicating lower productivity per worker. Sectors below are higher-productivity."
         )
         fig_sc = px.scatter(
@@ -408,12 +406,11 @@ with tab_live:
             yaxis_title="Employment Share (%)",
         )
         st.plotly_chart(fig_sc, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ─── Raw data table ──────────────────────────────────────────────────────────
+    # â”€â”€â”€ Raw data table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     st.markdown("<br>", unsafe_allow_html=True)
     
-    st.markdown('<div class="section-title">📋 Raw Indicator Values</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“‹ Raw Indicator Values</div>', unsafe_allow_html=True)
     display_df = live_df.copy()
     display_df["Employment_Share"] = display_df["Employment_Share"].apply(
         lambda v: f"{v:.2f}%" if pd.notna(v) else "N/A"
@@ -422,5 +419,4 @@ with tab_live:
         lambda v: f"{v:.2f}%" if pd.notna(v) else "N/A"
     )
     st.dataframe(display_df, use_container_width=True, hide_index=True)
-    st.caption("Source: World Bank Open Data · Indicators: SL.AGR/IND/SRV.EMPL.ZS · NV.AGR/IND/SRV/IND.MANF.ZS")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.caption("Source: World Bank Open Data Â· Indicators: SL.AGR/IND/SRV.EMPL.ZS Â· NV.AGR/IND/SRV/IND.MANF.ZS")

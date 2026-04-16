@@ -1,5 +1,5 @@
 """
-Page 4 — Career Lab
+Page 4 â€” Career Lab
 Skill demand chart, growth vs risk bubble chart, career path cards.
 """
 import streamlit as st
@@ -9,28 +9,28 @@ import plotly.graph_objects as go
 import plotly.express as px
 from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout, API_BASE_URL
 
-st.set_page_config(page_title="Career Lab | UIP", page_icon="💼", layout="wide")
+st.set_page_config(page_title="Career Lab | UIP", page_icon="ðŸ’¼", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown("### 💼 Career Lab")
+    st.markdown("### ðŸ’¼ Career Lab")
     shock_intensity = st.slider("Shock Intensity", 0.0, 0.6, 0.3, 0.05)
     recovery_rate   = st.slider("Recovery Rate", 0.05, 0.6, 0.3, 0.05)
     st.markdown("---")
-    st.markdown("**🌐 Navigation**")
-    st.page_link("app.py", label="🏠 Home")
-    st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
-    st.page_link("pages/1_Overview.py", label="📊 Overview")
-    st.page_link("pages/2_Simulator.py", label="🧪 Simulator")
-    st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")
-    st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
-    st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
-    st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
-    st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
+    st.markdown("**ðŸŒ Navigation**")
+    st.page_link("app.py", label="ðŸ  Home")
+    st.page_link("pages/0_Help_Guide.py", label="â“ Help Guide")
+    st.page_link("pages/1_Overview.py", label="ðŸ“Š Overview")
+    st.page_link("pages/2_Simulator.py", label="ðŸ§ª Simulator")
+    st.page_link("pages/3_Sector_Analysis.py", label="ðŸ­ Sector Analysis")
+    st.page_link("pages/5_AI_Insights.py", label="ðŸ¤– AI Insights")
+    st.page_link("pages/7_Job_Risk_Predictor.py", label="ðŸŽ¯ Job Risk (AI)")
+    st.page_link("pages/8_Job_Market_Pulse.py", label="ðŸ“¡ Market Pulse")
+    st.page_link("pages/9_Geo_Career_Advisor.py", label="ðŸ—ºï¸ Geo Career")
 
 st.markdown("""
 <div class="page-hero">
-    <div class="hero-title">💼 Career Intelligence Lab</div>
+    <div class="hero-title">ðŸ’¼ Career Intelligence Lab</div>
     <div class="hero-subtitle">Discover which sectors are growing, which are at risk, and what skills to build</div>
 </div>""", unsafe_allow_html=True)
 
@@ -53,7 +53,7 @@ def get_career_data(si, rr):
 
 data = get_career_data(shock_intensity, recovery_rate)
 if not data:
-    st.error("⚠️ Cannot connect to API. Start: `uvicorn src.api:app --reload`")
+    st.error("âš ï¸ Cannot connect to API. Start: `uvicorn src.api:app --reload`")
     st.stop()
 
 career = data.get("career_advice", {})
@@ -65,26 +65,26 @@ risk_sectors    = career.get("risk_sectors", [])
 skills          = career.get("recommended_skills", [])
 narrative       = career.get("narrative", "No guidance available.")
 
-# ─── KPI cards ────────────────────────────────────────────────────────────────
+# â”€â”€â”€ KPI cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 c1, c2, c3, c4 = st.columns(4)
 with c1:
-    st.markdown(render_kpi_card("🌱", "Growth Sectors", str(len(growth_sectors)), delta_type="down"), unsafe_allow_html=True)
+    st.markdown(render_kpi_card("ðŸŒ±", "Growth Sectors", str(len(growth_sectors)), delta_type="down"), unsafe_allow_html=True)
 with c2:
-    st.markdown(render_kpi_card("⚠️", "Risk Sectors", str(len(risk_sectors)), delta_type="up"), unsafe_allow_html=True)
+    st.markdown(render_kpi_card("âš ï¸", "Risk Sectors", str(len(risk_sectors)), delta_type="up"), unsafe_allow_html=True)
 with c3:
-    st.markdown(render_kpi_card("🎓", "Skills to Learn", str(len(skills)), delta_type="neutral"), unsafe_allow_html=True)
+    st.markdown(render_kpi_card("ðŸŽ“", "Skills to Learn", str(len(skills)), delta_type="neutral"), unsafe_allow_html=True)
 with c4:
-    ew = data.get("indices", {}).get("early_warning", "🟢 Stable")
-    st.markdown(render_kpi_card("🚦", "Market Outlook", ew.split(" ",1)[-1] if " " in ew else ew, delta_type="neutral"), unsafe_allow_html=True)
+    ew = data.get("indices", {}).get("early_warning", "ðŸŸ¢ Stable")
+    st.markdown(render_kpi_card("ðŸš¦", "Market Outlook", ew.split(" ",1)[-1] if " " in ew else ew, delta_type="neutral"), unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ─── Top row: Sector risk/growth + Skills chart ───────────────────────────────
+# â”€â”€â”€ Top row: Sector risk/growth + Skills chart â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 col_l, col_r = st.columns([1, 1])
 
 with col_l:
     
-    st.markdown('<div class="section-title">📊 Sector Opportunity vs Risk</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“Š Sector Opportunity vs Risk</div>', unsafe_allow_html=True)
 
     if not sector_df.empty:
         sector_df_plot = sector_df.copy()
@@ -92,9 +92,9 @@ with col_l:
         sector_df_plot["Stress_Norm"] = sector_df_plot["Stress_Score"] / 100.0
         sector_df_plot["Opportunity"] = 1 - sector_df_plot["Stress_Norm"]
         sector_df_plot["Category"] = sector_df_plot.apply(
-            lambda r: "🌱 Growth" if r["Resilience_Score"] > 60 and r["Stress_Score"] < 40 else "⚠️ Risk" if r["Stress_Score"] > 60 else "⚖️ Neutral", axis=1
+            lambda r: "ðŸŒ± Growth" if r["Resilience_Score"] > 60 and r["Stress_Score"] < 40 else "âš ï¸ Risk" if r["Stress_Score"] > 60 else "âš–ï¸ Neutral", axis=1
         )
-        color_map = {"🌱 Growth": "#10b981", "⚠️ Risk": "#ef4444", "⚖️ Neutral": "#f59e0b"}
+        color_map = {"ðŸŒ± Growth": "#10b981", "âš ï¸ Risk": "#ef4444", "âš–ï¸ Neutral": "#f59e0b"}
         fig_bub = px.scatter(
             sector_df_plot,
             x="Resilience_Score", y="Stress_Score",
@@ -116,11 +116,10 @@ with col_l:
         st.plotly_chart(fig_bub, use_container_width=True)
     else:
         st.info("Sector data not available")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_r:
     
-    st.markdown('<div class="section-title">🎓 In-Demand Skills Ranking</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸŽ“ In-Demand Skills Ranking</div>', unsafe_allow_html=True)
     
     # Get real-time skill demand data
     skill_demand_data = career.get("skill_demand_data", {})
@@ -139,11 +138,11 @@ with col_r:
         algorithm = skill_demand_data.get("algorithm", "")
         
         if "Adzuna" in data_source and "dynamic extraction" in data_source:
-            st.caption("📡 Skill demand dynamically extracted from real job postings (Adzuna API)")
+            st.caption("ðŸ“¡ Skill demand dynamically extracted from real job postings (Adzuna API)")
         elif "INSUFFICIENT" in data_source:
-            st.caption("⚠️ Adzuna API unavailable - Configure credentials in Streamlit secrets")
+            st.caption("âš ï¸ Adzuna API unavailable - Configure credentials in Streamlit secrets")
         else:
-            st.caption("⚠️ Using cached data - Adzuna API unavailable")
+            st.caption("âš ï¸ Using cached data - Adzuna API unavailable")
         
         # Create bar chart with real demand scores
         fig_skill = go.Figure(go.Bar(
@@ -162,7 +161,7 @@ with col_r:
             hovertemplate="<b>%{y}</b><br>" +
                          "Demand Score: %{x:.1%}<br>" +
                          "Job Count: %{customdata[0]}<br>" +
-                         "Avg Salary: ₹%{customdata[1]:,.0f}<br>" +
+                         "Avg Salary: â‚¹%{customdata[1]:,.0f}<br>" +
                          "<extra></extra>"
         ))
         fig_skill.update_layout(**plotly_dark_layout(height=340, showlegend=False, margin=dict(l=10, r=60, t=10, b=10)))
@@ -171,7 +170,7 @@ with col_r:
         st.plotly_chart(fig_skill, use_container_width=True)
         
         # Show methodology
-        with st.expander("📊 How skills are detected"):
+        with st.expander("ðŸ“Š How skills are detected"):
             st.markdown("""
             **Dynamic Skill Detection Algorithm:**
             
@@ -194,7 +193,7 @@ with col_r:
             - Apply log scaling to prevent dominance:
               ```
               freq_score = log(frequency + 1) / log(max_frequency + 1)
-              demand_score = (0.5 × freq_score) + (0.3 × salary_score) + (0.2 × recency_score)
+              demand_score = (0.5 Ã— freq_score) + (0.3 Ã— salary_score) + (0.2 Ã— recency_score)
               ```
             
             **Phase 5: Ranking**
@@ -202,10 +201,10 @@ with col_r:
             - Return top 15-20 trending skills
             
             **Key Advantages:**
-            - ✅ **No predefined lists** - Automatically discovers trending skills
-            - ✅ **Future-proof** - Adapts to market changes automatically
-            - ✅ **Real job data** - Based on actual job postings, not assumptions
-            - ✅ **Hourly updates** - Reflects current market trends
+            - âœ… **No predefined lists** - Automatically discovers trending skills
+            - âœ… **Future-proof** - Adapts to market changes automatically
+            - âœ… **Real job data** - Based on actual job postings, not assumptions
+            - âœ… **Hourly updates** - Reflects current market trends
             
             **Data Source:** Adzuna Job Search API (India)  
             **Update Frequency:** Hourly (with 1-hour cache)  
@@ -214,7 +213,7 @@ with col_r:
             """)
     elif skills:
         # Fallback: Show skills without fake scores
-        st.warning("⚠️ Real-time skill demand unavailable")
+        st.warning("âš ï¸ Real-time skill demand unavailable")
         
         # Check if API credentials are configured
         import os
@@ -222,8 +221,8 @@ with col_r:
         has_api_key = bool(os.getenv("ADZUNA_APP_KEY"))
         
         if not has_api_id or not has_api_key:
-            st.info("💡 **To enable real-time data:** Configure ADZUNA_APP_ID and ADZUNA_APP_KEY in Streamlit secrets")
-            with st.expander("🔧 How to configure"):
+            st.info("ðŸ’¡ **To enable real-time data:** Configure ADZUNA_APP_ID and ADZUNA_APP_KEY in Streamlit secrets")
+            with st.expander("ðŸ”§ How to configure"):
                 st.markdown("""
                 **Step 1:** Get free API key from https://developer.adzuna.com/
                 
@@ -238,7 +237,7 @@ with col_r:
                 - Save and restart app
                 """)
         
-        st.caption("📋 Showing recommended skills (ranked by sector growth)")
+        st.caption("ðŸ“‹ Showing recommended skills (ranked by sector growth)")
         
         # Show skills as simple list (no fake percentages)
         for idx, skill in enumerate(skills[:10]):
@@ -251,15 +250,14 @@ with col_r:
             """, unsafe_allow_html=True)
     else:
         st.info("No skills data available")
-    st.markdown("</div>", unsafe_allow_html=True)
 
-# ─── Sector cards: growth vs risk ────────────────────────────────────────────
+# â”€â”€â”€ Sector cards: growth vs risk â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 st.markdown("<br>", unsafe_allow_html=True)
 col_g, col_rsk = st.columns(2)
 
 with col_g:
     
-    st.markdown('<div class="section-title">🌱 Growth Sectors</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸŒ± Growth Sectors</div>', unsafe_allow_html=True)
     if growth_sectors:
         for idx, s in enumerate(growth_sectors):
             st.markdown(f"""
@@ -278,11 +276,10 @@ with col_g:
             """, unsafe_allow_html=True)
     else:
         st.info("No growth sectors identified")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_rsk:
     
-    st.markdown('<div class="section-title">⚠️ At-Risk Sectors</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">âš ï¸ At-Risk Sectors</div>', unsafe_allow_html=True)
     if risk_sectors:
         for idx, s in enumerate(risk_sectors):
             st.markdown(f"""
@@ -301,37 +298,34 @@ with col_rsk:
             """, unsafe_allow_html=True)
     else:
         st.info("No high-risk sectors identified")
-    st.markdown("</div>", unsafe_allow_html=True)
 
-# ─── Skills wall + Career narrative ──────────────────────────────────────────
+# â”€â”€â”€ Skills wall + Career narrative â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 st.markdown("<br>", unsafe_allow_html=True)
 col_sw, col_nar = st.columns([1, 1])
 
 with col_sw:
     
-    st.markdown('<div class="section-title">🏅 Your Skill Roadmap</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ… Your Skill Roadmap</div>', unsafe_allow_html=True)
     if skills:
         chips = "".join([f'<span class="skill-chip">{s}</span>' for s in skills])
         st.markdown(f'<div style="line-height:2.5; padding:0.5rem 0;">{chips}</div>', unsafe_allow_html=True)
     else:
         st.info("No skills data available")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_nar:
     
-    st.markdown('<div class="section-title">📝 Career Guidance Narrative</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“ Career Guidance Narrative</div>', unsafe_allow_html=True)
     st.markdown(f"""
     <div style="background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.15);
                 border-radius:14px; padding:1.2rem; line-height:1.7;">
         <p style="color:#cbd5e1; font-size:0.92rem; margin:0;">{narrative}</p>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ─── Personalized Career Roadmap ──────────────────────────────────────────────
+# â”€â”€â”€ Personalized Career Roadmap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 st.markdown("<br><br>", unsafe_allow_html=True)
-st.markdown('<div class="section-title">🗺️ Personalized Career Roadmap Generator</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">ðŸ—ºï¸ Personalized Career Roadmap Generator</div>', unsafe_allow_html=True)
 st.markdown('<p style="color:#94a3b8; font-size:0.9rem; margin-bottom:1.5rem;">Generate a step-by-step learning path based on your profile and real-time job market trends</p>', unsafe_allow_html=True)
 
 from src.career_roadmap_generator import generate_career_roadmap, get_available_roles
@@ -362,14 +356,14 @@ with st.form("roadmap_form"):
             label_visibility="collapsed"
         )
     
-    submit_button = st.form_submit_button("🚀 Generate My Roadmap", use_container_width=True)
+    submit_button = st.form_submit_button("ðŸš€ Generate My Roadmap", use_container_width=True)
 
 if submit_button:
     # Parse known skills
     known_skills = [s.strip() for s in known_skills_input.split(",") if s.strip()]
     
     # Generate roadmap
-    with st.spinner("🔍 Analyzing job market trends and generating your personalized roadmap..."):
+    with st.spinner("ðŸ” Analyzing job market trends and generating your personalized roadmap..."):
         roadmap_data = generate_career_roadmap(
             user_level=user_level,
             known_skills=known_skills,
@@ -378,7 +372,7 @@ if submit_button:
     
     # Display roadmap
     if roadmap_data["roadmap_steps"]:
-        st.success(f"✅ Personalized roadmap generated for **{target_role}** ({user_level} level)")
+        st.success(f"âœ… Personalized roadmap generated for **{target_role}** ({user_level} level)")
         
         # Summary metrics
         col_m1, col_m2, col_m3, col_m4 = st.columns(4)
@@ -395,19 +389,19 @@ if submit_button:
         
         # Priority Skills (Trending)
         if roadmap_data["priority_skills"]:
-            st.markdown("### 🔥 Priority Skills (Trending in Job Market)")
+            st.markdown("### ðŸ”¥ Priority Skills (Trending in Job Market)")
             priority_chips = "".join([
                 f'<span style="display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); '
                 f'color:#fca5a5; padding:0.4rem 0.8rem; border-radius:8px; margin:0.3rem; font-size:0.85rem; font-weight:600;">'
-                f'🔥 {skill}</span>'
+                f'ðŸ”¥ {skill}</span>'
                 for skill in roadmap_data["priority_skills"]
             ])
             st.markdown(f'<div style="line-height:2.5; padding:0.5rem 0;">{priority_chips}</div>', unsafe_allow_html=True)
             st.markdown("<br>", unsafe_allow_html=True)
         
         # Roadmap Steps
-        st.markdown("### 📋 Your Learning Roadmap")
-        st.caption("📡 Personalized roadmap generated using your profile and real-time job market trends")
+        st.markdown("### ðŸ“‹ Your Learning Roadmap")
+        st.caption("ðŸ“¡ Personalized roadmap generated using your profile and real-time job market trends")
         
         # Group steps by category
         foundation_steps = [s for s in roadmap_data["roadmap_steps"] if s["category"] == "foundation"]
@@ -417,10 +411,10 @@ if submit_button:
         
         # Display each category
         if foundation_steps:
-            st.markdown("#### 🎯 Foundation Skills")
+            st.markdown("#### ðŸŽ¯ Foundation Skills")
             for step in foundation_steps:
                 priority_color = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}[step["priority"]]
-                trending_badge = "🔥 TRENDING" if step["is_trending"] else ""
+                trending_badge = "ðŸ”¥ TRENDING" if step["is_trending"] else ""
                 
                 st.markdown(f"""
                 <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
@@ -434,17 +428,17 @@ if submit_button:
                     <div style="flex:1;">
                         <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
                         <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
-                            {step['weeks']} weeks · {step['priority'].upper()} priority {trending_badge}
+                            {step['weeks']} weeks Â· {step['priority'].upper()} priority {trending_badge}
                         </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
         
         if intermediate_steps:
-            st.markdown("#### 🚀 Intermediate Skills")
+            st.markdown("#### ðŸš€ Intermediate Skills")
             for step in intermediate_steps:
                 priority_color = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}[step["priority"]]
-                trending_badge = "🔥 TRENDING" if step["is_trending"] else ""
+                trending_badge = "ðŸ”¥ TRENDING" if step["is_trending"] else ""
                 
                 st.markdown(f"""
                 <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
@@ -458,17 +452,17 @@ if submit_button:
                     <div style="flex:1;">
                         <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
                         <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
-                            {step['weeks']} weeks · {step['priority'].upper()} priority {trending_badge}
+                            {step['weeks']} weeks Â· {step['priority'].upper()} priority {trending_badge}
                         </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
         
         if advanced_steps:
-            st.markdown("#### 💎 Advanced Skills")
+            st.markdown("#### ðŸ’Ž Advanced Skills")
             for step in advanced_steps:
                 priority_color = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}[step["priority"]]
-                trending_badge = "🔥 TRENDING" if step["is_trending"] else ""
+                trending_badge = "ðŸ”¥ TRENDING" if step["is_trending"] else ""
                 
                 st.markdown(f"""
                 <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
@@ -482,14 +476,14 @@ if submit_button:
                     <div style="flex:1;">
                         <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
                         <div style="color:#64748b; font-size:0.8rem; margin-top:0.2rem;">
-                            {step['weeks']} weeks · {step['priority'].upper()} priority {trending_badge}
+                            {step['weeks']} weeks Â· {step['priority'].upper()} priority {trending_badge}
                         </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
         
         if project_steps:
-            st.markdown("#### 🎨 Capstone Projects")
+            st.markdown("#### ðŸŽ¨ Capstone Projects")
             for step in project_steps:
                 st.markdown(f"""
                 <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; 
@@ -503,14 +497,14 @@ if submit_button:
                     <div style="flex:1;">
                         <div style="color:#e2e8f0; font-weight:600; font-size:0.95rem;">{step['skill']}</div>
                         <div style="color:#94a3b8; font-size:0.8rem; margin-top:0.2rem;">
-                            {step['weeks']} weeks · Portfolio project
+                            {step['weeks']} weeks Â· Portfolio project
                         </div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
         
         # Methodology
-        with st.expander("📊 How this roadmap was generated"):
+        with st.expander("ðŸ“Š How this roadmap was generated"):
             st.markdown("""
             **9-Phase Personalized Roadmap Algorithm:**
             
@@ -521,7 +515,7 @@ if submit_button:
             
             **Phase 2: Role Requirements**
             - Lookup required skills for target role
-            - Categorized by: Foundation → Intermediate → Advanced
+            - Categorized by: Foundation â†’ Intermediate â†’ Advanced
             - Includes practical projects
             
             **Phase 3: Skill Gap Analysis**
@@ -537,7 +531,7 @@ if submit_button:
             **Phase 5: Roadmap Generation**
             - Create ordered learning path
             - Maintain logical dependencies (e.g., Python before ML)
-            - Foundation → Intermediate → Advanced progression
+            - Foundation â†’ Intermediate â†’ Advanced progression
             
             **Phase 6: Personalization**
             - **Beginner:** Start from foundation, cover all levels
@@ -561,11 +555,11 @@ if submit_button:
             - Estimated duration for planning
             
             **Key Features:**
-            - ✅ **Personalized** - Based on YOUR profile
-            - ✅ **Data-driven** - Uses real job market trends
-            - ✅ **Logical** - Maintains skill dependencies
-            - ✅ **Practical** - Includes hands-on projects
-            - ✅ **Adaptive** - Adjusts to your experience level
+            - âœ… **Personalized** - Based on YOUR profile
+            - âœ… **Data-driven** - Uses real job market trends
+            - âœ… **Logical** - Maintains skill dependencies
+            - âœ… **Practical** - Includes hands-on projects
+            - âœ… **Adaptive** - Adjusts to your experience level
             
             **Data Sources:**
             - Role requirements: Curated from industry standards
@@ -574,10 +568,10 @@ if submit_button:
             """)
     
     else:
-        st.info(f"🎉 Great news! You already know all required skills for **{target_role}**. Focus on building projects to showcase your expertise!")
+        st.info(f"ðŸŽ‰ Great news! You already know all required skills for **{target_role}**. Focus on building projects to showcase your expertise!")
         
         if roadmap_data["suggested_projects"]:
-            st.markdown("### 🎨 Suggested Projects")
+            st.markdown("### ðŸŽ¨ Suggested Projects")
             for i, project in enumerate(roadmap_data["suggested_projects"], 1):
                 st.markdown(f"""
                 <div style="padding:0.8rem; background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2);

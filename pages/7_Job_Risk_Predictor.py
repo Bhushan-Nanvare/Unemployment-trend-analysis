@@ -85,9 +85,9 @@ if 'risk_assessments_count' not in st.session_state:
     st.session_state.risk_assessments_count = 0
 
 # Show usage banner
-if st.session_state.risk_assessments_count >= 3:
+if st.session_state.risk_assessments_count >= 5:
     st.warning("""
-    ⚠️ **Free Tier Limit Reached** - You've used 3/5 free assessments this session.  
+    ⚠️ **Free Tier Limit Reached** - You've used 5/5 free assessments this session.  
     Upgrade to **Premium** for unlimited assessments + GPT-4 insights + career roadmaps.  
     [View Pricing Plans →](/Pricing)
     """)

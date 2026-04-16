@@ -147,6 +147,11 @@ with c1:
     st.markdown(render_kpi_card("🧠", "AI Risk Signal", ew.split(" ", 1)[-1] if " " in str(ew) else str(ew), delta_type="neutral"), unsafe_allow_html=True)
 with c2:
     st.markdown(render_kpi_card("📊", "Stress Index", str(usi), delta_type="neutral"), unsafe_allow_html=True)
+with c3:
+    st.markdown(render_kpi_card("🔄", "Recovery Quality", str(rqi), delta_type="neutral"), unsafe_allow_html=True)
+with c4:
+    st.markdown(render_kpi_card("🎯", "Scenario Peak", f"{peak}%", delta_type="neutral"), unsafe_allow_html=True)
+
 
 # ─── AI-Generated Insights ────────────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
@@ -243,14 +248,7 @@ if ai_insights["total_insights"] > 0:
 else:
     st.info("💡 Insufficient data to generate insights. Adjust simulation parameters or ensure API connectivity.")
 
-st.markdown("<br>", unsafe_allow_html=True)
 
-with c3:
-    st.markdown(render_kpi_card("🔄", "Recovery Quality", str(rqi), delta_type="neutral"), unsafe_allow_html=True)
-with c4:
-    st.markdown(render_kpi_card("🎯", "Scenario Peak", f"{peak}%", delta_type="neutral"), unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ─── AI Summary Banner ────────────────────────────────────────────────────────

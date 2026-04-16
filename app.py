@@ -282,6 +282,7 @@ st.markdown("<div style='text-align:center; font-size:0.78rem; font-weight:700; 
 pages = [
     ("📊", "Overview Dashboard", "Live KPIs, forecast trajectories & historical event overlays", "pages/1_Overview.py"),
     ("🧪", "Scenario Simulator", "Design & compare two economic shock scenarios", "pages/2_Simulator.py"),
+    ("🧬", "Advanced Simulator", "Monte Carlo, multi-shock & stress testing simulations", "pages/12_Advanced_Simulator.py"),
     ("🏭", "Sector Analysis", "Heatmap, radar chart & sector resilience breakdown", "pages/3_Sector_Analysis.py"),
     ("💼", "Career Lab", "Skill demand, growth sectors & career path guidance", "pages/4_Career_Lab.py"),
     ("🤖", "AI Insights", "AI-generated narratives & story-mode timeline", "pages/5_AI_Insights.py"),

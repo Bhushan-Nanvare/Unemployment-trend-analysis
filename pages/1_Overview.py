@@ -97,7 +97,7 @@ with col4:
     st.markdown(render_kpi_card("🚦", "Risk Status", label, delta_type="neutral"), unsafe_allow_html=True)
 with col5:
     try:
-        gdp_df = get_gdp_growth()
+        gdp_df = fetch_gdp_growth("India")
         if not gdp_df.empty:
             gdp_latest = round(float(gdp_df.iloc[-1]["Value"]), 2)
             gdp_yr = int(gdp_df.iloc[-1]["Year"])
@@ -211,7 +211,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 try:
-    gdp_df_chart = get_gdp_growth()
+    gdp_df_chart = fetch_gdp_growth("India")
     wb_hist = fetch_world_bank("India")
 except Exception as e:
     gdp_df_chart = pd.DataFrame()
@@ -521,11 +521,10 @@ st.markdown('<div class="section-title">🔮 Real-Data Forecast</div>',
 @st.cache_data(ttl=86400, show_spinner=False)
 def get_real_forecast(fc_horizon: int):
     wb_df = fetch_world_bank("India")
-    gdp_df = fetch_gdp_growth("India")
-    
+
     if wb_df.empty:
         return None, None, "No unemployment data"
-    
+
     wb_df = wb_df.sort_values("Year").tail(35).copy()
     wb_df["Unemployment_Smoothed"] = (
         wb_df["Unemployment_Rate"]
@@ -533,21 +532,13 @@ def get_real_forecast(fc_horizon: int):
         .mean()
         .round(4)
     )
-    
-    # Try time-series forecasting
-    if not wb_df.empty:
-        wb_df = wb_df.sort_values("Year").tail(35).copy()
-        wb_df["Unemployment_Smoothed"] = (
-            wb_df["Unemployment_Rate"]
-            .rolling(3, min_periods=1, center=True)
-            .mean()
-            .round(4)
-        )
-        
-        # Use time-series forecasting
+
+    try:
         engine = ForecastingEngine(forecast_horizon=fc_horizon, method="ensemble")
         fc_df = engine.forecast_with_confidence(wb_df)
         return wb_df, fc_df, "Time Series (Ensemble)"
+    except Exception as e:
+        return None, None, f"Forecasting error: {e}"
 
 fc_horizon_real = st.slider("Forecast horizon (real-data)", 3, 8, 5, key="real_fc_horizon")
 
@@ -566,8 +557,36 @@ else:
         {'— pure time-series analysis of historical patterns' if 'Time Series' in forecast_method_used else '— statistical forecasting approach'}
     </div>
     """, unsafe_allow_html=True)
-    # ── Insights box
-    fc_insights = generate_forecast_insights(hist_df, fc_df_real)
+
+    # ── Auto-generate forecast insights from data
+    def _gen_forecast_insights(hist_df, fc_df):
+        insights = []
+        try:
+            last_actual = round(float(hist_df["Unemployment_Rate"].iloc[-1]), 2)
+            last_yr     = int(hist_df["Year"].iloc[-1])
+            fc_end      = round(float(fc_df["Predicted_Unemployment"].iloc[-1]), 2)
+            fc_end_yr   = int(fc_df["Year"].iloc[-1])
+            direction   = "rise" if fc_end > last_actual else "fall"
+            delta       = abs(round(fc_end - last_actual, 2))
+            insights.append(
+                f"**Starting point:** Unemployment is at **{last_actual}%** ({last_yr}) "
+                f"and is projected to **{direction} by {delta} pp** to {fc_end}% by {fc_end_yr}."
+            )
+            peak_val = round(float(fc_df["Predicted_Unemployment"].max()), 2)
+            peak_yr  = int(fc_df.loc[fc_df["Predicted_Unemployment"].idxmax(), "Year"])
+            if peak_yr != fc_end_yr:
+                insights.append(f"**Peak forecast:** The model projects a peak of **{peak_val}%** in {peak_yr} before declining.")
+            upper_80  = round(float(fc_df["Upper_80"].iloc[-1]), 2)
+            lower_80  = round(float(fc_df["Lower_80"].iloc[-1]), 2)
+            insights.append(
+                f"**Uncertainty range:** 80% confidence band for {fc_end_yr} spans **{lower_80}% – {upper_80}%**, "
+                "reflecting structural uncertainty in India's informal-sector economy."
+            )
+        except Exception:
+            pass
+        return insights
+
+    fc_insights = _gen_forecast_insights(hist_df, fc_df_real)
     if fc_insights:
         bullets_html = "".join(
             f'<li style="margin-bottom:0.45rem; color:#cbd5e1; font-size:0.9rem; line-height:1.6;">'
@@ -672,6 +691,24 @@ else:
         fc_display.columns = ["Year", "Central (%)", "Lower 80% (%)", "Upper 80% (%)"]
         st.dataframe(fc_display, use_container_width=True, hide_index=True)
         st.caption("Ensemble forecast with Monte Carlo confidence bands, trained on World Bank data.")
+
+    with col_fc2:
+        st.markdown("**How this forecast works**")
+        st.markdown("""
+        <div style="background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.18);
+                    border-radius:12px; padding:1rem; font-size:0.85rem; color:#94a3b8; line-height:1.7;">
+            <strong style="color:#818cf8;">Ensemble method</strong> combines three time-series models:
+            <ul style="margin:0.5rem 0 0; padding-left:1.2rem; color:#cbd5e1;">
+                <li><strong>Linear Trend</strong> — captures long-run trajectory</li>
+                <li><strong>Exponential Smoothing</strong> — weights recent data higher</li>
+                <li><strong>Moving Average</strong> — smooths short-term noise</li>
+            </ul>
+            <div style="margin-top:0.7rem;">
+                Confidence bands are generated via <strong style="color:#818cf8;">Monte Carlo simulation</strong>
+                (1,000 paths) seeded from historical variance.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
     st.caption(

@@ -245,7 +245,8 @@ with col_side:
             </div>
         </div>
         """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)  # close glass-card
+
 
 # ─── Parameter + Indices table ────────────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)

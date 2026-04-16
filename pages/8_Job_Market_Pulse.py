@@ -1,7 +1,7 @@
 """
-Page 8 — Job Market Pulse
-Tab 1: Job Postings Analysis — skill demand from CSV / upload.
-Tab 2: Live India Labor Data  — real World Bank labor indicators for India.
+Page 8 â€” Job Market Pulse
+Tab 1: Job Postings Analysis â€” skill demand from CSV / upload.
+Tab 2: Live India Labor Data  â€” real World Bank labor indicators for India.
 """
 import io
 
@@ -26,36 +26,36 @@ from src.live_data import fetch_labor_market_pulse, LABOR_MARKET_INDICATORS
 from src.live_insights import generate_labor_market_insights
 from src.ui_helpers import DARK_CSS, render_kpi_card, plotly_dark_layout
 
-st.set_page_config(page_title="Market Pulse | UIP", page_icon="📡", layout="wide")
+st.set_page_config(page_title="Market Pulse | UIP", page_icon="ðŸ“¡", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown("### 📡 Job Market Pulse")
+    st.markdown("### ðŸ“¡ Job Market Pulse")
     st.markdown("---")
-    st.markdown("**🌐 Navigation**")
-    st.page_link("app.py", label="🏠 Home")
-    st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
-    st.page_link("pages/1_Overview.py", label="📊 Overview")
-    st.page_link("pages/2_Simulator.py", label="🧪 Simulator")
-    st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")
-    st.page_link("pages/4_Career_Lab.py", label="💼 Career Lab")
-    st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
-    st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
-    st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
+    st.markdown("**ðŸŒ Navigation**")
+    st.page_link("app.py", label="ðŸ  Home")
+    st.page_link("pages/0_Help_Guide.py", label="â“ Help Guide")
+    st.page_link("pages/1_Overview.py", label="ðŸ“Š Overview")
+    st.page_link("pages/2_Simulator.py", label="ðŸ§ª Simulator")
+    st.page_link("pages/3_Sector_Analysis.py", label="ðŸ­ Sector Analysis")
+    st.page_link("pages/4_Career_Lab.py", label="ðŸ’¼ Career Lab")
+    st.page_link("pages/5_AI_Insights.py", label="ðŸ¤– AI Insights")
+    st.page_link("pages/7_Job_Risk_Predictor.py", label="ðŸŽ¯ Job Risk (AI)")
+    st.page_link("pages/9_Geo_Career_Advisor.py", label="ðŸ—ºï¸ Geo Career")
 
 st.markdown("""
 <div class="page-hero">
-    <div class="hero-title">📡 Job Market Pulse</div>
+    <div class="hero-title">ðŸ“¡ Job Market Pulse</div>
     <div class="hero-subtitle">
-        Skill & role demand from job postings — plus real-time World Bank India labor indicators.
+        Skill & role demand from job postings â€” plus real-time World Bank India labor indicators.
     </div>
 </div>""", unsafe_allow_html=True)
 
-tab_postings, tab_live = st.tabs(["📋 Job Postings Analysis", "🌐 Live India Labor Data"])
+tab_postings, tab_live = st.tabs(["ðŸ“‹ Job Postings Analysis", "ðŸŒ Live India Labor Data"])
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 1 — JOB POSTINGS ANALYSIS
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 1 â€” JOB POSTINGS ANALYSIS
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_postings:
 
     df = load_job_postings()
@@ -81,7 +81,7 @@ with tab_postings:
 
     filtered = df if loc == "All locations" else df[df["location"].astype(str) == loc]
 
-    # ── Dataset snapshot
+    # â”€â”€ Dataset snapshot
     
     st.markdown('<div class="section-title">Dataset snapshot</div>', unsafe_allow_html=True)
     k1, k2, k3 = st.columns(3)
@@ -91,22 +91,21 @@ with tab_postings:
         dmin = filtered["post_date"].min() if "post_date" in filtered.columns else pd.NaT
         dmax = filtered["post_date"].max() if "post_date" in filtered.columns else pd.NaT
         span = (
-            f"{pd.Timestamp(dmin).date()} → {pd.Timestamp(dmax).date()}"
+            f"{pd.Timestamp(dmin).date()} â†’ {pd.Timestamp(dmax).date()}"
             if pd.notna(dmin) and pd.notna(dmax)
-            else "—"
+            else "â€”"
         )
         st.metric("Date span", span)
     with k3:
         titles = filtered.get("job_title", pd.Series(dtype=str))
         st.metric("Unique titles", titles.nunique())
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     skills = skill_demand_counts(filtered).head(top_n)
     roles  = role_demand_counts(filtered).head(12)
 
-    # ── Skill demand + role families
+    # â”€â”€ Skill demand + role families
     col_a, col_b = st.columns(2)
     with col_a:
         
@@ -122,7 +121,6 @@ with tab_postings:
             fig_s.update_yaxes(autorange="reversed")
             fig_s.update_layout(showlegend=False, coloraxis_showscale=False)
             st.plotly_chart(fig_s, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     with col_b:
         
@@ -138,13 +136,12 @@ with tab_postings:
             fig_r.update_yaxes(autorange="reversed")
             fig_r.update_layout(showlegend=False, coloraxis_showscale=False)
             st.plotly_chart(fig_r, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Skill momentum
+    # â”€â”€ Skill momentum
     
-    st.markdown('<div class="section-title">📈 Skill demand momentum (recent vs earlier weeks)</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“ˆ Skill demand momentum (recent vs earlier weeks)</div>', unsafe_allow_html=True)
     mom_df = skill_momentum(filtered, top_n_skills=top_n)
     if mom_df.empty:
         st.info("Need valid `post_date` values with multiple weeks to compute momentum.")
@@ -158,7 +155,7 @@ with tab_postings:
             return MOMENTUM_COLORS.get(val, "")
         display_mom = mom_df.rename(columns={
             "skill": "Skill", "recent": "Recent weeks", "earlier": "Earlier weeks",
-            "delta_pct": "Δ % change", "momentum": "Momentum",
+            "delta_pct": "Î” % change", "momentum": "Momentum",
         })
         col_m1, col_m2 = st.columns([3, 2])
         with col_m1:
@@ -174,11 +171,10 @@ with tab_postings:
             ))
             fig_mom.update_layout(**plotly_dark_layout(height=220), xaxis_title="Skill count")
             st.plotly_chart(fig_mom, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Weekly demand trend
+    # â”€â”€ Weekly demand trend
     
     st.markdown('<div class="section-title">Weekly demand trend (top skills)</div>', unsafe_allow_html=True)
     trend_df = weekly_skill_trends(filtered, top_n_skills=trend_skills)
@@ -193,15 +189,14 @@ with tab_postings:
         fig_t.update_xaxes(title_text="Week (start)")
         fig_t.update_yaxes(title_text="Postings mentioning skill")
         st.plotly_chart(fig_t, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Location demand
+    # â”€â”€ Location demand
     loc_counts = location_demand_counts(filtered)
     if not loc_counts.empty and loc == "All locations":
         
-        st.markdown('<div class="section-title">📍 Postings by location</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">ðŸ“ Postings by location</div>', unsafe_allow_html=True)
         lf = loc_counts.reset_index()
         lf.columns = ["location", "postings"]
         fig_loc = px.bar(lf, x="postings", y="location", orientation="h", color="postings",
@@ -210,10 +205,9 @@ with tab_postings:
         fig_loc.update_yaxes(autorange="reversed")
         fig_loc.update_layout(showlegend=False, coloraxis_showscale=False)
         st.plotly_chart(fig_loc, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Salary insight
+    # â”€â”€ Salary insight
     
     st.markdown('<div class="section-title">Salary insight (median LPA by role)</div>', unsafe_allow_html=True)
     sal = salary_summary_by_role(filtered)
@@ -227,13 +221,12 @@ with tab_postings:
         fig_h.update_xaxes(title_text="Median of (min+max)/2 LPA")
         st.plotly_chart(fig_h, use_container_width=True)
         st.dataframe(sal, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Skill gap analyzer
+    # â”€â”€ Skill gap analyzer
     
-    st.markdown('<div class="section-title">🎯 Personal skill gap analyzer</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸŽ¯ Personal skill gap analyzer</div>', unsafe_allow_html=True)
     st.caption("Enter your current skills and see which top in-demand skills you have and which are gaps.")
     user_skill_input = st.text_input("Your skills (comma-separated)",
                                       placeholder="e.g. Python, SQL, machine learning, agile, git",
@@ -262,7 +255,7 @@ with tab_postings:
             if missing_skills:
                 st.markdown("**Priority gaps** (sorted by market demand):")
                 st.markdown(
-                    " &nbsp;·&nbsp; ".join(
+                    " &nbsp;Â·&nbsp; ".join(
                         f'<span style="background:rgba(99,102,241,0.15);border:1px solid #6366f1;'
                         f'border-radius:4px;padding:2px 8px;color:#a5b4fc;">{sk}</span>'
                         for sk in missing_skills[:8]
@@ -271,13 +264,12 @@ with tab_postings:
                 )
     else:
         st.info("Type your skills above to see your gap analysis.")
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Export
+    # â”€â”€ Export
     
-    st.markdown('<div class="section-title">📥 Export market data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“¥ Export market data</div>', unsafe_allow_html=True)
     if not skills.empty:
         export_parts = []
         skills_export = skills.reset_index()
@@ -291,45 +283,44 @@ with tab_postings:
             export_parts.append("\n=== SALARY BY ROLE ===")
             export_parts.append(sal.reset_index().to_csv(index=False))
         csv_bytes = "\n".join(export_parts).encode()
-        st.download_button("⬇ Download market data (CSV)", csv_bytes,
+        st.download_button("â¬‡ Download market data (CSV)", csv_bytes,
                            file_name="job_market_pulse_export.csv", mime="text/csv")
     else:
         st.caption("No data to export.")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — LIVE INDIA LABOR DATA (World Bank)
-# ══════════════════════════════════════════════════════════════════════════════
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# TAB 2 â€” LIVE INDIA LABOR DATA (World Bank)
+# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 with tab_live:
 
     st.markdown("""
     <div style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2);
                 border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;
                 display:flex; gap:0.75rem; align-items:flex-start;">
-        <div style="font-size:1.3rem;">🌐</div>
+        <div style="font-size:1.3rem;">ðŸŒ</div>
         <div>
             <div style="font-size:0.82rem; font-weight:700; color:#34d399;
                         text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                World Bank Open Data — India</div>
+                World Bank Open Data â€” India</div>
             <div style="font-size:0.85rem; color:#94a3b8; line-height:1.55;">
                 Real official labor market statistics for India sourced live from the
                 <strong style="color:#e2e8f0;">World Bank API</strong> (free, no key required).
-                Data covers 1991–2023 (1–2 year reporting lag is normal for official statistics).
-                This complements the scenario simulator — use it to ground your shock analysis in real data.
+                Data covers 1991â€“2023 (1â€“2 year reporting lag is normal for official statistics).
+                This complements the scenario simulator â€” use it to ground your shock analysis in real data.
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    with st.spinner("Fetching live World Bank data for India…"):
+    with st.spinner("Fetching live World Bank data for Indiaâ€¦"):
         live_data = fetch_labor_market_pulse("India")
 
     if not live_data:
         st.error("Could not fetch data from World Bank API. Check internet connectivity.")
         st.stop()
 
-    # ── AI Insight Box ─────────────────────────────────────────────────────────
+    # â”€â”€ AI Insight Box â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     labor_insights = generate_labor_market_insights(live_data)
     if labor_insights:
         bullets_html = "".join(
@@ -342,22 +333,22 @@ with tab_live:
         <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
                     border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.4rem;">
             <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.6rem;">
-                <span style="font-size:1.1rem;">💡</span>
+                <span style="font-size:1.1rem;">ðŸ’¡</span>
                 <span style="font-size:0.78rem; font-weight:700; color:#818cf8;
                               text-transform:uppercase; letter-spacing:1px;">
-                    Labor Market Intelligence — Key Insights
+                    Labor Market Intelligence â€” Key Insights
                 </span>
             </div>
             <ul style="margin:0; padding-left:1.2rem;">{bullets_html}</ul>
         </div>
         """, unsafe_allow_html=True)
 
-    # ── KPI strip: most-recent value for key indicators
+    # â”€â”€ KPI strip: most-recent value for key indicators
     KEY_KPIS = [
-        ("Unemployment Rate (%)",       "📊", "neutral"),
-        ("Youth Unemployment 15-24 (%)","👶", "up"),
-        ("Labor Force Participation (%)","💪", "neutral"),
-        ("Vulnerable Employment (%)",   "⚠️", "up"),
+        ("Unemployment Rate (%)",       "ðŸ“Š", "neutral"),
+        ("Youth Unemployment 15-24 (%)","ðŸ‘¶", "up"),
+        ("Labor Force Participation (%)","ðŸ’ª", "neutral"),
+        ("Vulnerable Employment (%)",   "âš ï¸", "up"),
     ]
     kpi_cols = st.columns(len(KEY_KPIS))
     for col, (label, icon, dt) in zip(kpi_cols, KEY_KPIS):
@@ -370,7 +361,7 @@ with tab_live:
                 if len(series) >= 2:
                     prev = series.iloc[-2]["Value"]
                     chg = round(latest_val - prev, 2)
-                    arrow = "▲" if chg > 0 else "▼"
+                    arrow = "â–²" if chg > 0 else "â–¼"
                     delta = f"{arrow} {abs(chg)}pp vs {latest_year - 1}"
                 st.markdown(
                     render_kpi_card(icon, label, f"{latest_val:.1f}%", delta, dt),
@@ -382,9 +373,9 @@ with tab_live:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Indicator selector + time-series chart
+    # â”€â”€ Indicator selector + time-series chart
     
-    st.markdown('<div class="section-title">📈 Historical Trend — Select Indicator</div>',
+    st.markdown('<div class="section-title">ðŸ“ˆ Historical Trend â€” Select Indicator</div>',
                 unsafe_allow_html=True)
 
     available_labels = list(live_data.keys())
@@ -422,16 +413,15 @@ with tab_live:
         st.plotly_chart(fig_ts, use_container_width=True)
     else:
         st.info("Select at least one indicator above.")
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Unemployment breakdown: Male vs Female vs Youth
+    # â”€â”€ Unemployment breakdown: Male vs Female vs Youth
     col_l, col_r = st.columns(2)
 
     with col_l:
         
-        st.markdown('<div class="section-title">👥 Unemployment by Gender & Age Group</div>',
+        st.markdown('<div class="section-title">ðŸ‘¥ Unemployment by Gender & Age Group</div>',
                     unsafe_allow_html=True)
         breakdown_labels = [
             "Unemployment Rate (%)",
@@ -457,11 +447,10 @@ with tab_live:
             xaxis_title="Year", yaxis_title="%",
         )
         st.plotly_chart(breakdown_fig, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     with col_r:
         
-        st.markdown('<div class="section-title">📊 Latest Snapshot — All Indicators</div>',
+        st.markdown('<div class="section-title">ðŸ“Š Latest Snapshot â€” All Indicators</div>',
                     unsafe_allow_html=True)
         snapshot_rows = []
         for lbl, series in live_data.items():
@@ -473,15 +462,15 @@ with tab_live:
                     "Indicator": lbl.replace(" (%)", ""),
                     "Latest Year": int(latest["Year"]),
                     "Value (%)": round(latest["Value"], 2),
-                    "YoY Change": f"{'▲' if chg and chg > 0 else '▼'} {abs(chg)}" if chg is not None else "—",
+                    "YoY Change": f"{'â–²' if chg and chg > 0 else 'â–¼'} {abs(chg)}" if chg is not None else "â€”",
                 })
         if snapshot_rows:
             snap_df = pd.DataFrame(snapshot_rows)
 
             def _color_change(val):
-                if isinstance(val, str) and "▲" in val:
+                if isinstance(val, str) and "â–²" in val:
                     return "color: #f87171"
-                if isinstance(val, str) and "▼" in val:
+                if isinstance(val, str) and "â–¼" in val:
                     return "color: #34d399"
                 return ""
 
@@ -490,12 +479,11 @@ with tab_live:
                 hide_index=True,
                 height=320,
             )
-        st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Export live data
+    # â”€â”€ Export live data
     st.markdown("<br>", unsafe_allow_html=True)
     
-    st.markdown('<div class="section-title">📥 Export Live Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“¥ Export Live Data</div>', unsafe_allow_html=True)
     export_frames = []
     for lbl, series in live_data.items():
         if series is not None and not series.empty:
@@ -506,10 +494,9 @@ with tab_live:
         export_df = pd.concat(export_frames, ignore_index=True)[["Indicator", "Year", "Value"]]
         csv_bytes = export_df.to_csv(index=False).encode()
         st.download_button(
-            "⬇ Download World Bank India Labor Data (CSV)",
+            "â¬‡ Download World Bank India Labor Data (CSV)",
             csv_bytes,
             file_name="india_labor_market_worldbank.csv",
             mime="text/csv",
         )
         st.caption("Source: World Bank Open Data | Indicator codes: SL.UEM.*, SL.TLF.*, SL.EMP.*")
-    st.markdown("</div>", unsafe_allow_html=True)

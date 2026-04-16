@@ -727,6 +727,4 @@ with st.expander("📚 Advanced Simulation Guide"):
     - Investment timing
     - Policy cycle analysis
     - Economic forecasting
-    """)
-
-st.markdown("</div>", unsafe_allow_html=True)
+    """)
