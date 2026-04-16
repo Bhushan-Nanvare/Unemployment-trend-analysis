@@ -1,5 +1,5 @@
 """
-Page 9 — Geo-Aware Career Advisor (Feature 8)
+Page 9 â€” Geo-Aware Career Advisor (Feature 8)
 
 Folium map, city posting volume chart, location quotients with bar chart,
 relocation ranking with colour-coded skill fit, and ML risk comparison
@@ -25,31 +25,30 @@ from src.geo_career_advisor import (
     skill_match_rate_in_subset,
 )
 from src.job_market_pulse import load_job_postings, phrase_in_blob
-from src.job_risk_model import EDUCATION_LEVELS, INDUSTRY_GROWTH, LOCATION_OPTIONS, predict_job_risk
 from src.live_data import fetch_labor_market_pulse, get_state_unemployment
 from src.live_insights import generate_labor_market_insights
 from src.ui_helpers import DARK_CSS, plotly_dark_layout, render_kpi_card
 
-st.set_page_config(page_title="Geo Career | UIP", page_icon="🗺️", layout="wide")
+st.set_page_config(page_title="Geo Career | UIP", page_icon="ðŸ—ºï¸", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown("### 🗺️ Geo Career Advisor")
+    st.markdown("### ðŸ—ºï¸ Geo Career Advisor")
     st.caption(
         "WGS84 + Folium + optional Nominatim (OSM). "
-        "Metrics are computed from your posting CSV — swap in real feeds for production."
+        "Metrics are computed from your posting CSV â€” swap in real feeds for production."
     )
     st.markdown("---")
-    st.markdown("**🌐 Navigation**")
-    st.page_link("app.py", label="🏠 Home")
-    st.page_link("pages/0_Help_Guide.py", label="❓ Help Guide")
-    st.page_link("pages/1_Overview.py", label="📊 Overview")
-    st.page_link("pages/2_Simulator.py", label="🧪 Simulator")
-    st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")
-    st.page_link("pages/4_Career_Lab.py", label="💼 Career Lab")
-    st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
-    st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
-    st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
+    st.markdown("**ðŸŒ Navigation**")
+    st.page_link("app.py", label="ðŸ  Home")
+    st.page_link("pages/0_Help_Guide.py", label="â“ Help Guide")
+    st.page_link("pages/1_Overview.py", label="ðŸ“Š Overview")
+    st.page_link("pages/2_Simulator.py", label="ðŸ§ª Simulator")
+    st.page_link("pages/3_Sector_Analysis.py", label="ðŸ­ Sector Analysis")
+    st.page_link("pages/4_Career_Lab.py", label="ðŸ’¼ Career Lab")
+    st.page_link("pages/5_AI_Insights.py", label="ðŸ¤– AI Insights")
+    st.page_link("pages/7_Job_Risk_Predictor.py", label="ðŸŽ¯ Job Risk (AI)")
+    st.page_link("pages/8_Job_Market_Pulse.py", label="ðŸ“¡ Market Pulse")
 
 
 @st.cache_data(ttl=86400, show_spinner=False)
@@ -60,7 +59,7 @@ def cached_geocode(query: str):
 
 st.markdown("""
 <div class="page-hero">
-    <div class="hero-title">🗺️ Geo-Aware Career Advisor</div>
+    <div class="hero-title">ðŸ—ºï¸ Geo-Aware Career Advisor</div>
     <div class="hero-subtitle">
         Map hiring intensity by city, compare skill demand with location quotients,
         rank relocation targets, and model your risk change across location tiers.
@@ -95,7 +94,7 @@ with c3:
         help="Respects OpenStreetMap usage policy; results cached 24h. Requires network.",
     )
 
-# ── Data Processing & Filtering ────────────────────────────────────────────────
+# â”€â”€ Data Processing & Filtering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if skills.strip():
     import re
     phrases = [p.strip() for p in re.split(r"[,;\n]+", skills.lower()) if p.strip()]
@@ -104,7 +103,7 @@ else:
 
 user_ck = normalize_city_key(home_display)
 
-# ── STEP 1: Mode Detection ────────────────────────────────────────────────────
+# â”€â”€ STEP 1: Mode Detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Determine if we're in personalized mode based on user input
 # Personalized mode requires BOTH city AND skills to be entered
 personalized_mode = bool(phrases) and bool(home_display != loc_values[0])
@@ -116,35 +115,35 @@ if default_mode:
     <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.25);
                 border-radius:14px; padding:2rem; text-align:center; margin:2rem 0;">
         <div style="font-size:1.1rem; font-weight:700; color:#818cf8; margin-bottom:0.8rem;">
-            📍 Enter your city and skills to personalize
+            ðŸ“ Enter your city and skills to personalize
         </div>
         <div style="font-size:0.9rem; color:#94a3b8; line-height:1.6;">
             Currently showing general market overview. Select your city and enter your skills (comma-separated) to unlock:
         </div>
         <ul style="text-align:left; display:inline-block; margin-top:0.8rem; color:#cbd5e1; font-size:0.85rem;">
-            <li>🎯 Personalized relocation ranking</li>
-            <li>📊 Skill-filtered job opportunities</li>
-            <li>📈 Your location quotients</li>
-            <li>⚠️ Modeled risk by tier (personalized)</li>
+            <li>ðŸŽ¯ Personalized relocation ranking</li>
+            <li>ðŸ“Š Skill-filtered job opportunities</li>
+            <li>ðŸ“ˆ Your location quotients</li>
+            <li>âš ï¸ Modeled risk by tier (personalized)</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
 
 # Debug info (can be removed later)
 # if personalized_mode:
-#     st.caption(f"🎯 **Personalized Mode**: Analyzing for your skills: {', '.join(phrases) if phrases else 'None'} | City: {home_display}")
+#     st.caption(f"ðŸŽ¯ **Personalized Mode**: Analyzing for your skills: {', '.join(phrases) if phrases else 'None'} | City: {home_display}")
 # else:
-#     st.caption("📊 **Default Mode**: Showing general market overview")
+#     st.caption("ðŸ“Š **Default Mode**: Showing general market overview")
 
 # Map Options UI
 col_m1, col_m2 = st.columns([1, 1])
 with col_m1:
     # Make map title mode-aware
     if personalized_mode and phrases:
-        map_title = "🗺️ Hiring demand for YOUR skills"
+        map_title = "ðŸ—ºï¸ Hiring demand for YOUR skills"
         map_subtitle = f"Skills: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}"
     else:
-        map_title = "🗺️ Hiring intensity map"
+        map_title = "ðŸ—ºï¸ Hiring intensity map"
         map_subtitle = "Basemap: CartoDB Positron (OSM). Circle area scales with posting count."
     
     st.markdown(f'<div class="section-title">{map_title}</div>', unsafe_allow_html=True)
@@ -194,9 +193,9 @@ if geocode_query.strip():
     if geo:
         extra_pin = (geo[0], geo[1], geo[2])
     else:
-        st.caption("Geocoder returned no result — check spelling or try a larger nearby city.")
+        st.caption("Geocoder returned no result â€” check spelling or try a larger nearby city.")
 
-# ── Personalized Recommendation Header ─────────────────────────────────────────
+# â”€â”€ Personalized Recommendation Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # STEP 2: Conditional rendering - show personalized header only in personalized mode
 if personalized_mode and phrases and not map_agg.empty:
     rk_quick = rank_relocation_targets(df_jobs, user_ck, phrases)
@@ -214,7 +213,7 @@ if personalized_mode and phrases and not map_agg.empty:
     <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3);
                 border-radius:14px; padding:1.2rem; margin-bottom:1.5rem;">
         <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.8rem;">
-            <span style="font-size:1.3rem;">🎯</span>
+            <span style="font-size:1.3rem;">ðŸŽ¯</span>
             <span style="font-size:0.95rem; font-weight:700; color:#10b981;
                           text-transform:uppercase; letter-spacing:1px;">
                 Your Geo-Alignment summary
@@ -234,11 +233,10 @@ import hashlib
 map_key = f"folium_map_{hashlib.md5(str(phrases).encode()).hexdigest()[:8]}_{map_mode.split()[0]}"
 m = build_folium_map(map_agg, highlight_city_key=user_ck, extra_marker=extra_pin)
 st_folium(m, width=None, height=480, returned_objects=[], key=map_key)
-st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ── City posting volume + salary chart ────────────────────────────────────────
+# â”€â”€ City posting volume + salary chart â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # STEP 2: Show in both modes, but with different context
 # Use map_agg which is already filtered by skills if in skill-filtered mode
 chart_agg = map_agg if map_mode == "Matched to My Skills (Dynamic)" and phrases else agg
@@ -247,13 +245,13 @@ if not chart_agg.empty:
     
     # Different titles based on mode
     if personalized_mode:
-        chart_title = f"📊 Job opportunities by city (Your context: {home_display})"
+        chart_title = f"ðŸ“Š Job opportunities by city (Your context: {home_display})"
         if map_mode == "Matched to My Skills (Dynamic)" and phrases:
             chart_subtitle = f"Filtered to jobs matching: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}"
         else:
             chart_subtitle = "Cities highlighted based on your profile and skills"
     else:
-        chart_title = "📊 City hiring volume & median salary"
+        chart_title = "ðŸ“Š City hiring volume & median salary"
         chart_subtitle = "General market overview across all cities"
     
     st.markdown(f'<div class="section-title">{chart_title}</div>', unsafe_allow_html=True)
@@ -279,12 +277,12 @@ if not chart_agg.empty:
     
     # Only add salary line if we have meaningful salary data
     salary_data = agg_disp.dropna(subset=["median_lpa"])
-    if len(salary_data) >= 3 and "median_lpa" in agg_disp.columns:
+    if len(salary_data) >= 1 and "median_lpa" in agg_disp.columns:
         # Filter to cities with reasonable salary coverage (>10% of jobs have salary data)
         if "salary_coverage_pct" in agg_disp.columns:
-            salary_data = salary_data[salary_data["salary_coverage_pct"] >= 10]
+            salary_data = salary_data[salary_data["salary_coverage_pct"] >= 1]
         
-        if len(salary_data) >= 3:
+        if len(salary_data) >= 1:
             fig_city.add_trace(go.Scatter(
                 x=salary_data["City"],
                 y=salary_data["median_lpa"],
@@ -305,9 +303,9 @@ if not chart_agg.empty:
                 )
             )
         else:
-            st.caption("⚠️ Insufficient salary data for trend line (need ≥3 cities with >10% salary coverage)")
+            st.caption("âš ï¸ Insufficient salary data for trend line (need â‰¥3 cities with >10% salary coverage)")
     else:
-        st.caption("⚠️ No salary data available for median salary trend line")
+        st.caption("âš ï¸ No salary data available for median salary trend line")
     fig_city.update_layout(**plotly_dark_layout(height=380))
     fig_city.update_layout(
         xaxis_title="City",
@@ -341,36 +339,17 @@ if not chart_agg.empty:
             st.metric("Overall salary coverage", f"{overall_coverage:.1f}%", f"{total_salary_jobs:,} jobs")
         else:
             st.metric("Data quality", "Unknown", "")
-    
-    st.caption("Cyan bar = your selected city. Salary trend requires ≥3 cities with >10% salary coverage.")
-    st.markdown("</div>", unsafe_allow_html=True)
+
+    st.caption("✅ Cyan bar = your selected city. Salary trend shown where data available.")
     st.markdown("<br>", unsafe_allow_html=True)
 
-# ── Tabs ───────────────────────────────────────────────────────────────────────
-# Create tabs dynamically based on mode
-if personalized_mode:
-    # Personalized mode: 7 tabs including "Modeled risk by tier"
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-        "Relocation ranking (Your skills)", 
-        "Location quotients (Your skills)",
-        "⚠️ Modeled risk by tier",
-        "🌐 Live India Context",
-        "💰 Cost of Living", 
-        "🏭 Industry Hubs", 
-        "🗺️ State Unemployment Map"
-    ])
-else:
-    # Default mode: 6 tabs (no "Modeled risk by tier")
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "Relocation ranking", 
-        "Location quotients",
-        "🌐 Live India Context",
-        "💰 Cost of Living", 
-        "🏭 Industry Hubs", 
-        "🗺️ State Unemployment Map"
-    ])
-    # Create a dummy tab7 that won't be used
-    tab7 = None
+# ── Tabs ──────────────────────────────────────────────────────────────────────
+tab1, tab2, tab3, tab4 = st.tabs([
+    "ðŸ“ Relocation Ranking",
+    "ðŸ“Š Location Quotients",
+    "ðŸ’° Cost of Living & Salary",
+    "ðŸŒ India Labor Context",
+])
 
 with tab1:
     if personalized_mode:
@@ -391,10 +370,10 @@ with tab1:
         rk_disp = rk.rename(columns={
             "display_name": "City",
             "postings": "Postings",
-            "volume_vs_yours": "Volume vs yours (×)",
+            "volume_vs_yours": "Volume vs yours (Ã—)",
             "your_skill_match_rate": "Skill match rate",
             "score": "Composite score",
-        })[["City", "Postings", "Volume vs yours (×)", "Skill match rate", "Composite score"]]
+        })[["City", "Postings", "Volume vs yours (Ã—)", "Skill match rate", "Composite score"]]
 
         def _style_skill_fit(val) -> str:
             try:
@@ -427,7 +406,7 @@ with tab1:
 
         csv_rk = rk_disp.to_csv(index=False).encode()
         st.download_button(
-            "⬇ Export relocation ranking (CSV)",
+            "â¬‡ Export relocation ranking (CSV)",
             data=csv_rk,
             file_name="relocation_ranking.csv",
             mime="text/csv",
@@ -449,7 +428,7 @@ with tab1:
 
 with tab2:
     st.markdown(
-        "**Location quotient (LQ)** ≈ (local mention rate) ÷ (national mention rate). "
+        "**Location quotient (LQ)** â‰ˆ (local mention rate) Ã· (national mention rate). "
         "LQ > 1 means the skill appears more often in that city than in the full sample."
     )
     if not phrases and personalized_mode:
@@ -459,7 +438,7 @@ with tab2:
     else:
         lq = skill_location_quotients(df_jobs, user_ck, phrases)
         if lq.empty:
-            st.warning("Could not resolve your city in the posting extract for LQ — try a city from the dataset list.")
+            st.warning("Could not resolve your city in the posting extract for LQ â€” try a city from the dataset list.")
         else:
             col_lq1, col_lq2 = st.columns([2, 3])
             with col_lq1:
@@ -475,7 +454,7 @@ with tab2:
                     orientation="h",
                     color="above",
                     color_discrete_map={True: "#34d399", False: "#f87171"},
-                    title=f"Location quotients — {home_display}",
+                    title=f"Location quotients â€” {home_display}",
                 )
                 fig_lq.add_vline(x=1.0, line_dash="dot", line_color="#fbbf24",
                                  annotation_text="National avg", annotation_position="top right")
@@ -493,127 +472,17 @@ with tab2:
                     help="Share of local job postings that mention at least one of your skills.",
                 )
 
-# ── TAB 3 — MODELED RISK BY TIER (PERSONALIZED MODE ONLY) ────────────────────
-if personalized_mode and tab7 is not None:
-    with tab3:
-        st.markdown("""
-        <div style="background:rgba(239,68,68,0.07); border:1px solid rgba(239,68,68,0.25);
-                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-            <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.6rem;">
-                <span style="font-size:1.1rem;">⚠️</span>
-                <span style="font-size:0.78rem; font-weight:700; color:#ef4444;
-                              text-transform:uppercase; letter-spacing:1px;">
-                    Job Risk Assessment by Tier
-                </span>
-            </div>
-            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-                ML-based risk prediction across entry, mid, and senior levels for your skill profile.
-                <strong style="color:#e2e8f0;">Risk Score</strong> = probability of job instability based on market trends.
-                Lower is better. Factors: skill demand, industry growth, location unemployment.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Get risk predictions for different tiers
-        tiers = ["Entry", "Mid", "Senior"]
-        risk_data = []
-        
-        for tier in tiers:
-            try:
-                # Predict risk for this tier with user's skills
-                risk_score = predict_job_risk(
-                    education_level=tier,
-                    location=home_display,
-                    industry="Tech",  # Default; could be inferred from skills
-                    skills=phrases,
-                )
-                risk_data.append({
-                    "Tier": tier,
-                    "Risk Score": risk_score,
-                    "Risk Level": "High" if risk_score > 0.7 else "Medium" if risk_score > 0.4 else "Low",
-                })
-            except Exception as e:
-                st.warning(f"Could not compute risk for {tier} tier: {str(e)}")
-        
-        if risk_data:
-            risk_df = pd.DataFrame(risk_data)
-            
-            col_risk1, col_risk2 = st.columns([2, 3])
-            
-            with col_risk1:
-                st.markdown("**Risk by Career Tier**")
-                
-                def _style_risk(val):
-                    try:
-                        v = float(val)
-                        if v > 0.7:
-                            return "background-color: rgba(239,68,68,0.2); color: #ef4444; font-weight: 700;"
-                        elif v > 0.4:
-                            return "background-color: rgba(245,158,11,0.2); color: #f59e0b; font-weight: 700;"
-                        else:
-                            return "background-color: rgba(16,185,129,0.2); color: #10b981; font-weight: 700;"
-                    except:
-                        pass
-                    return ""
-                
-                st.dataframe(
-                    risk_df.style.map(_style_risk, subset=["Risk Score"]),
-                    use_container_width=True,
-                    hide_index=True,
-                )
-            
-            with col_risk2:
-                st.markdown("**Risk Score Comparison**")
-                fig_risk = px.bar(
-                    risk_df,
-                    x="Tier",
-                    y="Risk Score",
-                    color="Risk Score",
-                    color_continuous_scale=["#10b981", "#f59e0b", "#ef4444"],
-                    text="Risk Score",
-                    range_y=[0, 1],
-                )
-                fig_risk.update_traces(texttemplate="%{text:.2f}", textposition="outside")
-                fig_risk.add_hline(y=0.5, line_dash="dot", line_color="#fbbf24",
-                                  annotation_text="Moderate Risk", annotation_position="right")
-                fig_risk.update_layout(**plotly_dark_layout(height=300))
-                fig_risk.update_layout(
-                    xaxis_title="Career Tier",
-                    yaxis_title="Risk Score (0-1)",
-                    coloraxis_showscale=False,
-                )
-                st.plotly_chart(fig_risk, use_container_width=True)
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown("**Risk Interpretation**")
-            st.markdown("""
-            - **Low Risk (< 0.4):** Stable job market, strong demand for your skills, good growth prospects
-            - **Medium Risk (0.4-0.7):** Moderate volatility, some skill demand, mixed growth signals
-            - **High Risk (> 0.7):** Volatile market, limited skill demand, or declining industry trends
-            
-            Use this to inform your career tier strategy and relocation decisions.
-            """)
-        else:
-            st.info("Risk data not available. Ensure job postings data is loaded.")
-    
-    # Adjust tab3 reference for the next tab
-    tab3_live = tab4
-    tab4_col = tab5
-    tab5_ind = tab6
-    tab6_ue = tab7
-else:
-    # In default mode, tab3 is "Live India Context"
-    tab3_live = tab3
-    tab4_col = tab4
-    tab5_ind = tab5
-    tab6_ue = tab6
+# â”€â”€ Tab routing â€” 4-tab simplified structure
+tab3_live = tab4   # India Labor Context
+tab4_col  = tab3   # Cost of Living & Salary
+
 
 with tab3_live:
     st.markdown("""
     <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
                 border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;
                 display:flex; gap:0.75rem; align-items:flex-start;">
-        <div style="font-size:1.3rem;">🌐</div>
+        <div style="font-size:1.3rem;">ðŸŒ</div>
         <div>
             <div style="font-size:0.82rem; font-weight:700; color:#818cf8;
                         text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
@@ -622,7 +491,7 @@ with tab3_live:
                 <strong style="color:#e2e8f0;">National trends</strong> are fetched live from the
                 <strong style="color:#e2e8f0;">World Bank Open API</strong>.
                 <strong style="color:#e2e8f0;">State-level data</strong> is from the official
-                <strong style="color:#e2e8f0;">PLFS 2022-23 report</strong> (MOSPI, Govt. of India) —
+                <strong style="color:#e2e8f0;">PLFS 2022-23 report</strong> (MOSPI, Govt. of India) â€”
                 state unemployment is not available on the World Bank API.
                 Use this view to ground your city decision in real macro and regional data.
             </div>
@@ -630,14 +499,14 @@ with tab3_live:
     </div>
     """, unsafe_allow_html=True)
 
-    # ── National KPIs from World Bank
-    st.markdown('<div class="section-title">📊 India National Labor Snapshot (World Bank)</div>',
+    # â”€â”€ National KPIs from World Bank
+    st.markdown('<div class="section-title">ðŸ“Š India National Labor Snapshot (World Bank)</div>',
                 unsafe_allow_html=True)
 
-    with st.spinner("Fetching live data from World Bank…"):
+    with st.spinner("Fetching live data from World Bankâ€¦"):
         wb_data = fetch_labor_market_pulse("India")
 
-    # ── AI Insight Box ─────────────────────────────────────────────────────────
+    # â”€â”€ AI Insight Box â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     geo_insights = generate_labor_market_insights(wb_data)
     if geo_insights:
         bullets_html = "".join(
@@ -650,10 +519,10 @@ with tab3_live:
         <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
                     border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.4rem;">
             <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.6rem;">
-                <span style="font-size:1.1rem;">💡</span>
+                <span style="font-size:1.1rem;">ðŸ’¡</span>
                 <span style="font-size:0.78rem; font-weight:700; color:#818cf8;
                               text-transform:uppercase; letter-spacing:1px;">
-                    India Labor Market Context — What This Means for Your City Choice
+                    India Labor Market Context â€” What This Means for Your City Choice
                 </span>
             </div>
             <ul style="margin:0; padding-left:1.2rem;">{bullets_html}</ul>
@@ -661,10 +530,10 @@ with tab3_live:
         """, unsafe_allow_html=True)
 
     KEY_KPIS = [
-        ("Unemployment Rate (%)",       "📊", "neutral"),
-        ("Youth Unemployment 15-24 (%)","👶", "up"),
-        ("Labor Force Participation (%)","💪", "neutral"),
-        ("Employment-to-Population (%)","🏭", "neutral"),
+        ("Unemployment Rate (%)",       "ðŸ“Š", "neutral"),
+        ("Youth Unemployment 15-24 (%)","ðŸ‘¶", "up"),
+        ("Labor Force Participation (%)","ðŸ’ª", "neutral"),
+        ("Employment-to-Population (%)","ðŸ­", "neutral"),
     ]
     kpi_cols = st.columns(len(KEY_KPIS))
     for col, (label, icon, dt) in zip(kpi_cols, KEY_KPIS):
@@ -677,7 +546,7 @@ with tab3_live:
                 if len(series) >= 2:
                     prev = series.iloc[-2]["Value"]
                     chg = round(latest_val - prev, 2)
-                    arrow = "▲" if chg > 0 else "▼"
+                    arrow = "â–²" if chg > 0 else "â–¼"
                     delta_txt = f"{arrow} {abs(chg)}pp vs {latest_year - 1}"
                 st.markdown(
                     render_kpi_card(icon, label, f"{latest_val:.1f}%", delta_txt, dt),
@@ -687,11 +556,11 @@ with tab3_live:
                 st.markdown(render_kpi_card(icon, label, "N/A", "Unavailable", "neutral"),
                             unsafe_allow_html=True)
 
-    # ── National unemployment trend sparkline
+    # â”€â”€ National unemployment trend sparkline
     if wb_data.get("Unemployment Rate (%)") is not None:
         st.markdown("<br>", unsafe_allow_html=True)
         
-        st.markdown('<div class="section-title">📈 India Unemployment Trend (World Bank, 1991–2023)</div>',
+        st.markdown('<div class="section-title">ðŸ“ˆ India Unemployment Trend (World Bank, 1991â€“2023)</div>',
                     unsafe_allow_html=True)
         ue_series = wb_data["Unemployment Rate (%)"]
         fig_ue = go.Figure()
@@ -719,13 +588,12 @@ with tab3_live:
                         bgcolor="rgba(0,0,0,0.3)", font=dict(color="#cbd5e1")),
         )
         st.plotly_chart(fig_ue, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── State-level unemployment breakdown (PLFS 2022-23)
+    # â”€â”€ State-level unemployment breakdown (PLFS 2022-23)
     
-    st.markdown('<div class="section-title">🗺️ State-Level Unemployment — PLFS 2022-23 (UPS, 15+ yrs)</div>',
+    st.markdown('<div class="section-title">ðŸ—ºï¸ State-Level Unemployment â€” PLFS 2022-23 (UPS, 15+ yrs)</div>',
                 unsafe_allow_html=True)
 
     state_df = get_state_unemployment()
@@ -779,12 +647,11 @@ with tab3_live:
         st.plotly_chart(fig_urvr, use_container_width=True)
 
     st.caption("Source: PLFS Annual Report 2022-23, MOSPI, Government of India | UPS = Usual Principal Status")
-    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Region comparison
+    # â”€â”€ Region comparison
     st.markdown("<br>", unsafe_allow_html=True)
     
-    st.markdown('<div class="section-title">🏙️ Average Unemployment by Region</div>',
+    st.markdown('<div class="section-title">ðŸ™ï¸ Average Unemployment by Region</div>',
                 unsafe_allow_html=True)
     region_avg = (
         state_df.groupby("Region")["Combined_UE"]
@@ -806,15 +673,14 @@ with tab3_live:
         coloraxis_showscale=False,
     )
     st.plotly_chart(fig_reg, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Export
+    # â”€â”€ Export
     st.markdown("<br>", unsafe_allow_html=True)
     
-    st.markdown('<div class="section-title">📥 Export State Data</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">ðŸ“¥ Export State Data</div>', unsafe_allow_html=True)
     csv_bytes = state_df.to_csv(index=False).encode()
     st.download_button(
-        "⬇ Download PLFS State Unemployment Data (CSV)",
+        "â¬‡ Download PLFS State Unemployment Data (CSV)",
         csv_bytes,
         file_name="india_state_unemployment_plfs2023.csv",
         mime="text/csv",
@@ -822,7 +688,7 @@ with tab3_live:
     st.caption("Source: PLFS Annual Report 2022-23 | Ministry of Statistics & Programme Implementation (MOSPI)")
 
 
-# ── TAB 4 — COST OF LIVING ANALYSIS ────────────────────────────────────────────
+# â”€â”€ TAB 4 â€” COST OF LIVING ANALYSIS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 with tab4_col:
     # STEP 5: Transform component based on mode
     if personalized_mode and phrases:
@@ -832,10 +698,10 @@ with tab4_col:
                     border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
             <div style="font-size:0.82rem; font-weight:700; color:#f59e0b;
                         text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                💰 Real Salary Impact for Your Profile</div>
+                ðŸ’° Real Salary Impact for Your Profile</div>
             <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
                 How cost of living affects YOUR earning potential in different cities.
-                <strong style="color:#e2e8f0;">Your Effective Salary</strong> = Expected Salary ÷ (COL Index / 50).
+                <strong style="color:#e2e8f0;">Your Effective Salary</strong> = Expected Salary Ã· (COL Index / 50).
                 This shows your actual purchasing power based on your skills and local costs.
             </div>
         </div>
@@ -847,10 +713,10 @@ with tab4_col:
                     border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
             <div style="font-size:0.82rem; font-weight:700; color:#f59e0b;
                         text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                💰 Purchasing Power Analysis</div>
+                ðŸ’° Purchasing Power Analysis</div>
             <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
                 Cost of Living Index (base 50 = India average). Higher index = more expensive.
-                <strong style="color:#e2e8f0;">Real Salary</strong> = Nominal Salary ÷ (COL Index / 50).
+                <strong style="color:#e2e8f0;">Real Salary</strong> = Nominal Salary Ã· (COL Index / 50).
                 This shows your actual purchasing power after adjusting for local costs.
             </div>
         </div>
@@ -965,274 +831,8 @@ with tab4_col:
     else:
         st.info("Cost of living data not available. Ensure city reference CSV has cost_of_living_index column.")
 
-# ── TAB 5 — INDUSTRY CONCENTRATION ─────────────────────────────────────────────
-with tab5_ind:
-    # STEP 5: Transform component based on mode
-    if personalized_mode and phrases:
-        # Personalized mode: Industry alignment for user skills
-        st.markdown("""
-        <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
-                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-            <div style="font-size:0.82rem; font-weight:700; color:#818cf8;
-                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                🎯 Industry Alignment for Your Skills</div>
-            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-                Which industries in this city match your skill profile?
-                <strong style="color:#e2e8f0;">Location Quotient (LQ) > 1.5</strong> = city specializes in that industry.
-                Focus on industries where your skills overlap with city strengths.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        # Default mode: Generic industry analysis
-        st.markdown("""
-        <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
-                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-            <div style="font-size:0.82rem; font-weight:700; color:#818cf8;
-                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                🏭 Industry Specialization Analysis</div>
-            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-                <strong style="color:#e2e8f0;">Location Quotient (LQ)</strong> measures industry concentration.
-                LQ > 1.5 = city specializes in that industry. LQ < 0.7 = underrepresented.
-                Based on keyword analysis of job descriptions.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    from src.geo_career_advisor import analyze_industry_concentration
-    
-    industry_city = st.selectbox(
-        "Select city for industry analysis",
-        options=city_keys_in_data,
-        format_func=lambda k: labels.get(k, k.replace("_", " ").title()),
-        key="industry_city_select",
-    )
-    
-    with st.spinner("Analyzing industry concentration..."):
-        industry_df = analyze_industry_concentration(df_jobs, industry_city)
-    
-    if not industry_df.empty:
-        col_ind1, col_ind2 = st.columns([2, 3])
-        
-        with col_ind1:
-            st.markdown("**Industry Concentration Table**")
-            st.dataframe(
-                industry_df[["Industry", "Local_Jobs", "Location_Quotient"]], use_container_width=True,
-                hide_index=True,
-            )
-            
-            # Highlight specializations
-            specialized = industry_df[industry_df["Location_Quotient"] >= 1.5]
-            if not specialized.empty:
-                st.markdown("**🎯 City Specializations (LQ ≥ 1.5):**")
-                for _, row in specialized.iterrows():
-                    st.markdown(f"• **{row['Industry']}** (LQ: {row['Location_Quotient']})")
-        
-        with col_ind2:
-            st.markdown("**Location Quotient by Industry**")
-            fig_ind = px.bar(
-                industry_df,
-                x="Location_Quotient",
-                y="Industry",
-                orientation="h",
-                color="Location_Quotient",
-                color_continuous_scale=["#ef4444", "#fbbf24", "#10b981"],
-                text="Location_Quotient",
-            )
-            fig_ind.add_vline(x=1.0, line_dash="dot", line_color="#94a3b8",
-                             annotation_text="National Avg", annotation_position="top right")
-            fig_ind.add_vline(x=1.5, line_dash="dash", line_color="#10b981",
-                             annotation_text="Specialization", annotation_position="bottom right")
-            fig_ind.update_traces(texttemplate="%{text:.2f}", textposition="outside")
-            fig_ind.update_layout(**plotly_dark_layout(height=400))
-            fig_ind.update_layout(
-                xaxis_title="Location Quotient",
-                yaxis_title="",
-                coloraxis_showscale=False,
-            )
-            fig_ind.update_yaxes(autorange="reversed")
-            st.plotly_chart(fig_ind, use_container_width=True)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("**Industry Share Comparison**")
-        
-        fig_share = go.Figure()
-        fig_share.add_trace(go.Bar(
-            x=industry_df["Industry"],
-            y=industry_df["Local_Share_Pct"],
-            name=f"{industry_city.title()} Share",
-            marker_color="#6366f1",
-        ))
-        fig_share.add_trace(go.Bar(
-            x=industry_df["Industry"],
-            y=industry_df["National_Share_Pct"],
-            name="National Share",
-            marker_color="#94a3b8",
-        ))
-        fig_share.update_layout(**plotly_dark_layout(height=350))
-        fig_share.update_layout(
-            xaxis_title="Industry",
-            yaxis_title="Share of Jobs (%)",
-            barmode="group",
-            xaxis_tickangle=-45,
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        )
-        st.plotly_chart(fig_share, use_container_width=True)
-        
-        st.caption("""
-        **Example:** If Bengaluru has 45% IT-Software jobs vs 25% nationally, LQ = 1.8 (specialized).
-        Use this to find cities that match your industry.
-        """)
-    else:
-        st.warning("Could not analyze industry concentration for this city. Try a city with more job postings.")
-
-# ── TAB 6 — STATE UNEMPLOYMENT CHOROPLETH ──────────────────────────────────────
-with tab6_ue:
-    # STEP 5: Transform component based on mode
-    if personalized_mode and phrases:
-        # Personalized mode: Competition level analysis
-        st.markdown("""
-        <div style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25);
-                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-            <div style="font-size:0.82rem; font-weight:700; color:#10b981;
-                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                🏆 Competition Level for Your Skills</div>
-            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-                PLFS 2022-23 official data interpreted for your job search context.
-                <strong style="color:#e2e8f0;">Low unemployment = High competition</strong> for jobs.
-                <strong style="color:#e2e8f0;">High unemployment + High job demand</strong> = Good opportunity for your skills.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        # Default mode: Generic state unemployment analysis
-        st.markdown("""
-        <div style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25);
-                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
-            <div style="font-size:0.82rem; font-weight:700; color:#10b981;
-                        text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-                🗺️ State-Level Unemployment Context</div>
-            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
-                PLFS 2022-23 official data overlaid with city job demand.
-                <strong style="color:#e2e8f0;">High state unemployment + high city job demand</strong>
-                = opportunity for local talent. Low state unemployment = competitive labor market.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    state_df = get_state_unemployment()
-    
-    # Create state-to-unemployment mapping
-    state_ue_map = dict(zip(state_df["State"], state_df["Combined_UE"]))
-    
-    # Add state unemployment to city aggregation
-    agg_with_state = agg.copy()
-    agg_with_state["State"] = agg_with_state["city_key"].apply(get_city_state)
-    agg_with_state["State_UE"] = agg_with_state["State"].map(state_ue_map)
-    
-    # Filter to cities with state data
-    agg_with_state = agg_with_state.dropna(subset=["State_UE", "lat", "lon"])
-    
-    if not agg_with_state.empty:
-        st.markdown("**City Job Demand vs State Unemployment**")
-        
-        fig_state = px.scatter(
-            agg_with_state.head(30),
-            x="State_UE",
-            y="postings",
-            size="postings",
-            color="State_UE",
-            color_continuous_scale=["#10b981", "#f59e0b", "#ef4444"],
-            hover_data={"display_name": True, "State": True, "State_UE": ":.1f", "postings": True},
-            text="display_name",
-            labels={"State_UE": "State Unemployment (%)", "postings": "Job Postings"},
-        )
-        fig_state.update_traces(textposition="top center", textfont_size=9)
-        fig_state.update_layout(**plotly_dark_layout(height=450))
-        fig_state.update_layout(
-            xaxis_title="State Unemployment Rate (%)",
-            yaxis_title="City Job Postings",
-        )
-        st.plotly_chart(fig_state, use_container_width=True)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("**State Unemployment Heatmap**")
-        
-        # Group by state
-        state_agg = (
-            agg_with_state.groupby("State")
-            .agg({"postings": "sum", "State_UE": "first"})
-            .reset_index()
-            .sort_values("State_UE", ascending=False)
-        )
-        
-        fig_heat = px.bar(
-            state_agg.head(20),
-            x="State",
-            y="State_UE",
-            color="State_UE",
-            color_continuous_scale=["#10b981", "#f59e0b", "#ef4444"],
-            text="State_UE",
-            hover_data={"postings": True},
-        )
-        fig_heat.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
-        fig_heat.update_layout(**plotly_dark_layout(height=400))
-        fig_heat.update_layout(
-            xaxis_title="State",
-            yaxis_title="Unemployment Rate (%)",
-            xaxis_tickangle=-45,
-            coloraxis_showscale=False,
-        )
-        st.plotly_chart(fig_heat, use_container_width=True)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("**Opportunity Matrix**")
-        
-        # Classify cities
-        median_ue = state_agg["State_UE"].median()
-        median_postings = agg_with_state["postings"].median()
-        
-        agg_with_state["Opportunity"] = "Moderate"
-        agg_with_state.loc[
-            (agg_with_state["State_UE"] > median_ue) & (agg_with_state["postings"] > median_postings),
-            "Opportunity"
-        ] = "High (High demand + High UE)"
-        agg_with_state.loc[
-            (agg_with_state["State_UE"] < median_ue) & (agg_with_state["postings"] > median_postings),
-            "Opportunity"
-        ] = "Competitive (High demand + Low UE)"
-        agg_with_state.loc[
-            (agg_with_state["State_UE"] > median_ue) & (agg_with_state["postings"] < median_postings),
-            "Opportunity"
-        ] = "Limited (Low demand + High UE)"
-        
-        opportunity_df = agg_with_state[["display_name", "State", "State_UE", "postings", "Opportunity"]].copy()
-        opportunity_df.columns = ["City", "State", "State UE (%)", "Job Postings", "Opportunity Type"]
-        opportunity_df = opportunity_df.sort_values("Job Postings", ascending=False).head(20)
-        
-        def _style_opportunity(val):
-            if "High" in str(val) and "Competitive" not in str(val):
-                return "background-color: rgba(16,185,129,0.2); color: #10b981; font-weight: 700;"
-            elif "Competitive" in str(val):
-                return "background-color: rgba(245,158,11,0.2); color: #f59e0b; font-weight: 700;"
-            elif "Limited" in str(val):
-                return "background-color: rgba(239,68,68,0.2); color: #ef4444; font-weight: 700;"
-            return ""
-        
-        st.dataframe(
-            opportunity_df.style.map(_style_opportunity, subset=["Opportunity Type"]), use_container_width=True,
-            hide_index=True,
-        )
-        
-        st.caption("""
-        **High Opportunity:** State has high unemployment but city has strong job demand — good for local talent.
-        **Competitive:** Low state unemployment means tight labor market — harder to find jobs but better economy.
-        **Limited:** High unemployment + low job demand — consider other locations.
-        """)
-    else:
-        st.info("State unemployment data not available for cities in the dataset.")
-
-# ── STEP 8: FINAL RECOMMENDATION LAYER ────────────────────────────────────────
+# â”€â”€ TAB 5 â€” INDUSTRY CONCENTRATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# â”€â”€ STEP 8: FINAL RECOMMENDATION LAYER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if personalized_mode and phrases and not agg.empty:
     st.markdown("<br><br>", unsafe_allow_html=True)
     
@@ -1286,7 +886,7 @@ if personalized_mode and phrases and not agg.empty:
         <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(99,102,241,0.1) 100%);
                     border:2px solid rgba(16,185,129,0.3); border-radius:16px; padding:2rem; margin:2rem 0;">
             <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;">
-                <span style="font-size:2rem;">🎯</span>
+                <span style="font-size:2rem;">ðŸŽ¯</span>
                 <div>
                     <div style="font-size:1.1rem; font-weight:800; color:#10b981;
                                 text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.3rem;">
@@ -1300,7 +900,7 @@ if personalized_mode and phrases and not agg.empty:
             
             <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
                 <div style="font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:0.8rem;">
-                    🏆 Best City: {best_city}
+                    ðŸ† Best City: {best_city}
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
                     <div>
@@ -1324,7 +924,7 @@ if personalized_mode and phrases and not agg.empty:
                             Job Volume vs Your City
                         </div>
                         <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
-                            {volume_improvement:.1f}× more jobs
+                            {volume_improvement:.1f}Ã— more jobs
                         </div>
                     </div>
                     <div>
@@ -1341,7 +941,7 @@ if personalized_mode and phrases and not agg.empty:
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
                 <div>
                     <div style="font-size:0.9rem; font-weight:700; color:#10b981; margin-bottom:0.8rem;">
-                        ✅ Opportunities
+                        âœ… Opportunities
                     </div>
                     <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
                         {"".join(f"<li>{opp}</li>" for opp in opportunities) if opportunities else "<li>Strong overall ranking in our analysis</li>"}
@@ -1351,7 +951,7 @@ if personalized_mode and phrases and not agg.empty:
                 </div>
                 <div>
                     <div style="font-size:0.9rem; font-weight:700; color:#f59e0b; margin-bottom:0.8rem;">
-                        ⚠️ Considerations
+                        âš ï¸ Considerations
                     </div>
                     <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
                         {"".join(f"<li>{risk}</li>" for risk in risks) if risks else "<li>Research local industry trends</li>"}
@@ -1364,7 +964,7 @@ if personalized_mode and phrases and not agg.empty:
             <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid rgba(148,163,184,0.2);">
                 <div style="font-size:0.8rem; color:#94a3b8; line-height:1.6;">
                     <strong style="color:#e2e8f0;">Methodology:</strong> Ranking based on 55% job volume vs your city + 45% skill match rate.
-                    Cost of living and unemployment data from official sources. This is a data-driven suggestion — 
+                    Cost of living and unemployment data from official sources. This is a data-driven suggestion â€” 
                     consider personal factors like family, lifestyle, and career goals in your final decision.
                 </div>
             </div>
@@ -1373,7 +973,7 @@ if personalized_mode and phrases and not agg.empty:
         
         # Alternative recommendations
         if len(rk_data) > 1:
-            st.markdown("**🔄 Alternative Options**")
+            st.markdown("**ðŸ”„ Alternative Options**")
             alt_cities = rk_data.iloc[1:4]  # Top 2-4 cities
             
             alt_cols = st.columns(min(3, len(alt_cities)))
@@ -1384,11 +984,11 @@ if personalized_mode and phrases and not agg.empty:
                         col_indicator = ""
                         if city_col_index:
                             if city_col_index > 60:
-                                col_indicator = "💰 Expensive"
+                                col_indicator = "ðŸ’° Expensive"
                             elif city_col_index < 40:
-                                col_indicator = "💚 Affordable"
+                                col_indicator = "ðŸ’š Affordable"
                             else:
-                                col_indicator = "💛 Moderate"
+                                col_indicator = "ðŸ’› Moderate"
                         
                         st.markdown(f"""
                         <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.25);
@@ -1408,7 +1008,7 @@ if personalized_mode and phrases and not agg.empty:
                         </div>
                         """, unsafe_allow_html=True)
             
-            st.caption("💡 **Tip:** Use the tabs above to dive deeper into cost of living, competition levels, and industry alignment for your shortlisted cities.")
+            st.caption("ðŸ’¡ **Tip:** Use the tabs above to dive deeper into cost of living, competition levels, and industry alignment for your shortlisted cities.")
     
     else:
         st.info("Enter your skills above to get personalized city recommendations based on job market analysis.")
