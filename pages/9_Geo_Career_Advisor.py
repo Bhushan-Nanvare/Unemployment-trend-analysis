@@ -104,10 +104,31 @@ else:
 
 user_ck = normalize_city_key(home_display)
 
-# ── STEP 1: Mode Detection (Safe) ──────────────────────────────────────────────
+# ── STEP 1: Mode Detection ────────────────────────────────────────────────────
 # Determine if we're in personalized mode based on user input
-personalized_mode = bool(phrases) or bool(home_display != loc_values[0])
+# Personalized mode requires BOTH city AND skills to be entered
+personalized_mode = bool(phrases) and bool(home_display != loc_values[0])
 default_mode = not personalized_mode
+
+# Show helpful prompt in default mode
+if default_mode:
+    st.markdown("""
+    <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.25);
+                border-radius:14px; padding:2rem; text-align:center; margin:2rem 0;">
+        <div style="font-size:1.1rem; font-weight:700; color:#818cf8; margin-bottom:0.8rem;">
+            📍 Enter your city and skills to personalize
+        </div>
+        <div style="font-size:0.9rem; color:#94a3b8; line-height:1.6;">
+            Currently showing general market overview. Select your city and enter your skills (comma-separated) to unlock:
+        </div>
+        <ul style="text-align:left; display:inline-block; margin-top:0.8rem; color:#cbd5e1; font-size:0.85rem;">
+            <li>🎯 Personalized relocation ranking</li>
+            <li>📊 Skill-filtered job opportunities</li>
+            <li>📈 Your location quotients</li>
+            <li>⚠️ Modeled risk by tier (personalized)</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Debug info (can be removed later)
 # if personalized_mode:
@@ -118,7 +139,7 @@ default_mode = not personalized_mode
 # Map Options UI
 col_m1, col_m2 = st.columns([1, 1])
 with col_m1:
-    # STEP 4: Make map title skill-aware
+    # Make map title mode-aware
     if personalized_mode and phrases:
         map_title = "🗺️ Hiring demand for YOUR skills"
         map_subtitle = f"Skills: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}"
@@ -130,22 +151,24 @@ with col_m1:
     st.caption(map_subtitle)
     
 with col_m2:
-    # STEP 4: Auto-select skill mode when in personalized mode
+    # Auto-select skill mode when in personalized mode
     if personalized_mode and phrases:
         default_map_index = 1  # "Matched to My Skills (Dynamic)"
+        map_options = ["Total Market Demand", "Matched to My Skills (Dynamic)"]
     else:
         default_map_index = 0  # "Total Market Demand"
+        map_options = ["Total Market Demand"]
     
     map_mode = st.radio(
         "Map Data Source", 
-        ["Total Market Demand", "Matched to My Skills (Dynamic)"], 
+        map_options,
         index=default_map_index,
         horizontal=True,
-        help="Switch to 'My Skills' to see only job postings that match the skills you entered above."
+        help="Switch to 'My Skills' to see only job postings that match the skills you entered above." if personalized_mode else "Enter skills above to enable skill-filtered mapping."
     )
 
 # Dynamic Filtering
-if map_mode == "Matched to My Skills (Dynamic)" and phrases:
+if personalized_mode and phrases and map_mode == "Matched to My Skills (Dynamic)":
     # Filter the dataset to only include rows that match at least one user skill
     skill_filtered_jobs = []
     for _, row in df_jobs.iterrows():
@@ -160,8 +183,6 @@ if map_mode == "Matched to My Skills (Dynamic)" and phrases:
         st.warning(f"No jobs found matching your skills. Falling back to total market data.")
         df_for_map = df_jobs
 else:
-    if map_mode == "Matched to My Skills (Dynamic)" and not phrases:
-        st.info("Enter skills above to use dynamic mapping. Showing total market data.")
     df_for_map = df_jobs
 
 # Recompute agg ONLY for the map, so the tabs still have full dataset context
@@ -219,19 +240,25 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ── City posting volume + salary chart ────────────────────────────────────────
 # STEP 2: Show in both modes, but with different context
-if not agg.empty:
+# Use map_agg which is already filtered by skills if in skill-filtered mode
+chart_agg = map_agg if map_mode == "Matched to My Skills (Dynamic)" and phrases else agg
+
+if not chart_agg.empty:
     
     # Different titles based on mode
     if personalized_mode:
         chart_title = f"📊 Job opportunities by city (Your context: {home_display})"
-        chart_subtitle = "Cities highlighted based on your profile and skills"
+        if map_mode == "Matched to My Skills (Dynamic)" and phrases:
+            chart_subtitle = f"Filtered to jobs matching: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}"
+        else:
+            chart_subtitle = "Cities highlighted based on your profile and skills"
     else:
         chart_title = "📊 City hiring volume & median salary"
         chart_subtitle = "General market overview across all cities"
     
     st.markdown(f'<div class="section-title">{chart_title}</div>', unsafe_allow_html=True)
     st.caption(chart_subtitle)
-    agg_disp = agg.copy()
+    agg_disp = chart_agg.copy()
     agg_disp["City"] = agg_disp.get("display_name", agg_disp["city_key"])
     agg_disp = agg_disp.sort_values("postings", ascending=False).head(15)
 
@@ -320,18 +347,44 @@ if not agg.empty:
     st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Tabs ───────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-    "Relocation ranking", "Location quotients",
-    "Modeled risk by tier", "🌐 Live India Context",
-    "💰 Cost of Living", "🏭 Industry Hubs", "🗺️ State Unemployment Map"
-])
+# Create tabs dynamically based on mode
+if personalized_mode:
+    # Personalized mode: 7 tabs including "Modeled risk by tier"
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+        "Relocation ranking (Your skills)", 
+        "Location quotients (Your skills)",
+        "⚠️ Modeled risk by tier",
+        "🌐 Live India Context",
+        "💰 Cost of Living", 
+        "🏭 Industry Hubs", 
+        "🗺️ State Unemployment Map"
+    ])
+else:
+    # Default mode: 6 tabs (no "Modeled risk by tier")
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "Relocation ranking", 
+        "Location quotients",
+        "🌐 Live India Context",
+        "💰 Cost of Living", 
+        "🏭 Industry Hubs", 
+        "🗺️ State Unemployment Map"
+    ])
+    # Create a dummy tab7 that won't be used
+    tab7 = None
 
 with tab1:
-    st.markdown(
-        "Ranks cities by a **transparent composite**: "
-        "55% normalized posting volume vs your city, 45% share of local jobs matching your skills."
-    )
-    rk = rank_relocation_targets(df_jobs, user_ck, phrases)
+    if personalized_mode:
+        st.markdown(
+            "Ranks cities by a **transparent composite**: "
+            "55% normalized posting volume vs your city, 45% share of local jobs matching **your skills**."
+        )
+    else:
+        st.markdown(
+            "Ranks cities by a **transparent composite**: "
+            "55% normalized posting volume vs your city, 45% share of local jobs in the market."
+        )
+    
+    rk = rank_relocation_targets(df_jobs, user_ck, phrases if personalized_mode else [])
     if rk.empty:
         st.info("Not enough city-level rows to rank.")
     else:
@@ -399,8 +452,10 @@ with tab2:
         "**Location quotient (LQ)** ≈ (local mention rate) ÷ (national mention rate). "
         "LQ > 1 means the skill appears more often in that city than in the full sample."
     )
-    if not phrases:
+    if not phrases and personalized_mode:
         st.info("Enter your skills above to compute LQs for your city.")
+    elif not personalized_mode:
+        st.info("Enter your city and skills above to compute location quotients for your profile.")
     else:
         lq = skill_location_quotients(df_jobs, user_ck, phrases)
         if lq.empty:
@@ -429,97 +484,131 @@ with tab2:
                 fig_lq.update_layout(showlegend=False)
                 st.plotly_chart(fig_lq, use_container_width=True)
 
-        local_df = dkey[dkey["city_key"] == user_ck]
-        if len(local_df) and phrases:
-            rate = skill_match_rate_in_subset(local_df, phrases)
-            st.metric(
-                "Your skill coverage in this city",
-                f"{rate:.1%} of local postings",
-                help="Share of local job postings that mention at least one of your skills.",
-            )
+            local_df = dkey[dkey["city_key"] == user_ck]
+            if len(local_df) and phrases:
+                rate = skill_match_rate_in_subset(local_df, phrases)
+                st.metric(
+                    "Your skill coverage in this city",
+                    f"{rate:.1%} of local postings",
+                    help="Share of local job postings that mention at least one of your skills.",
+                )
 
-with tab3:
-    st.markdown(
-        "Uses the **same logistic job-risk model** as the Job Risk page: "
-        "only the location tier changes — no hard-coded percentage claims."
-    )
-    col_a, col_b, col_c = st.columns(3)
-    with col_a:
-        education = st.selectbox("Education", EDUCATION_LEVELS, index=2, key="geo_edu")
-    with col_b:
-        experience = st.slider("Years experience", 0, 40, 3, key="geo_exp")
-    with col_c:
-        industry = st.selectbox("Industry", list(INDUSTRY_GROWTH.keys()), key="geo_ind")
+# ── TAB 3 — MODELED RISK BY TIER (PERSONALIZED MODE ONLY) ────────────────────
+if personalized_mode and tab7 is not None:
+    with tab3:
+        st.markdown("""
+        <div style="background:rgba(239,68,68,0.07); border:1px solid rgba(239,68,68,0.25);
+                    border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
+            <div style="display:flex; gap:0.6rem; align-items:center; margin-bottom:0.6rem;">
+                <span style="font-size:1.1rem;">⚠️</span>
+                <span style="font-size:0.78rem; font-weight:700; color:#ef4444;
+                              text-transform:uppercase; letter-spacing:1px;">
+                    Job Risk Assessment by Tier
+                </span>
+            </div>
+            <div style="font-size:0.85rem; color:#94a3b8; line-height:1.6;">
+                ML-based risk prediction across entry, mid, and senior levels for your skill profile.
+                <strong style="color:#e2e8f0;">Risk Score</strong> = probability of job instability based on market trends.
+                Lower is better. Factors: skill demand, industry growth, location unemployment.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Get risk predictions for different tiers
+        tiers = ["Entry", "Mid", "Senior"]
+        risk_data = []
+        
+        for tier in tiers:
+            try:
+                # Predict risk for this tier with user's skills
+                risk_score = predict_job_risk(
+                    education_level=tier,
+                    location=home_display,
+                    industry="Tech",  # Default; could be inferred from skills
+                    skills=phrases,
+                )
+                risk_data.append({
+                    "Tier": tier,
+                    "Risk Score": risk_score,
+                    "Risk Level": "High" if risk_score > 0.7 else "Medium" if risk_score > 0.4 else "Low",
+                })
+            except Exception as e:
+                st.warning(f"Could not compute risk for {tier} tier: {str(e)}")
+        
+        if risk_data:
+            risk_df = pd.DataFrame(risk_data)
+            
+            col_risk1, col_risk2 = st.columns([2, 3])
+            
+            with col_risk1:
+                st.markdown("**Risk by Career Tier**")
+                
+                def _style_risk(val):
+                    try:
+                        v = float(val)
+                        if v > 0.7:
+                            return "background-color: rgba(239,68,68,0.2); color: #ef4444; font-weight: 700;"
+                        elif v > 0.4:
+                            return "background-color: rgba(245,158,11,0.2); color: #f59e0b; font-weight: 700;"
+                        else:
+                            return "background-color: rgba(16,185,129,0.2); color: #10b981; font-weight: 700;"
+                    except:
+                        pass
+                    return ""
+                
+                st.dataframe(
+                    risk_df.style.map(_style_risk, subset=["Risk Score"]),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            
+            with col_risk2:
+                st.markdown("**Risk Score Comparison**")
+                fig_risk = px.bar(
+                    risk_df,
+                    x="Tier",
+                    y="Risk Score",
+                    color="Risk Score",
+                    color_continuous_scale=["#10b981", "#f59e0b", "#ef4444"],
+                    text="Risk Score",
+                    range_y=[0, 1],
+                )
+                fig_risk.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+                fig_risk.add_hline(y=0.5, line_dash="dot", line_color="#fbbf24",
+                                  annotation_text="Moderate Risk", annotation_position="right")
+                fig_risk.update_layout(**plotly_dark_layout(height=300))
+                fig_risk.update_layout(
+                    xaxis_title="Career Tier",
+                    yaxis_title="Risk Score (0-1)",
+                    coloraxis_showscale=False,
+                )
+                st.plotly_chart(fig_risk, use_container_width=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("**Risk Interpretation**")
+            st.markdown("""
+            - **Low Risk (< 0.4):** Stable job market, strong demand for your skills, good growth prospects
+            - **Medium Risk (0.4-0.7):** Moderate volatility, some skill demand, mixed growth signals
+            - **High Risk (> 0.7):** Volatile market, limited skill demand, or declining industry trends
+            
+            Use this to inform your career tier strategy and relocation decisions.
+            """)
+        else:
+            st.info("Risk data not available. Ensure job postings data is loaded.")
+    
+    # Adjust tab3 reference for the next tab
+    tab3_live = tab4
+    tab4_col = tab5
+    tab5_ind = tab6
+    tab6_ue = tab7
+else:
+    # In default mode, tab3 is "Live India Context"
+    tab3_live = tab3
+    tab4_col = tab4
+    tab5_ind = tab5
+    tab6_ue = tab6
 
-    row = resolve_city_row(home_display)
-    from_tier = int(row["market_tier_index"]) if row is not None else 1
-    tier_labels = ["Metro / Tier-1", "Tier-2 city", "Smaller town / rural"]
-    st.caption(f"Your city's reference tier: **{tier_labels[from_tier]}** (from `data/geo/india_city_reference.csv`).")
-
-    target_opts = [r for r in city_keys_in_data if r != user_ck]
-    if not target_opts:
-        target_opts = city_keys_in_data
-    ref_df = load_city_reference()
-    labels = {
-        r["city_key"]: str(r["display_name"])
-        for _, r in ref_df.iterrows()
-    } if not ref_df.empty else {}
-    target_city = st.selectbox(
-        "Compare modeled risk if you were based in",
-        target_opts,
-        format_func=lambda k: labels.get(k, k.replace("_", " ").title()),
-    )
-    match = ref_df[ref_df["city_key"] == target_city] if not ref_df.empty else pd.DataFrame()
-    to_tier = int(match.iloc[0]["market_tier_index"]) if len(match) else 1
-
-    p0, p1, dpp = relocation_model_delta_pct(
-        skills, education, experience, industry, from_tier, to_tier
-    )
-    m1, m2, m3 = st.columns(3)
-    m1.metric("Risk % (current tier)", f"{p0}%")
-    m2.metric("Risk % (target tier)", f"{p1}%")
-    delta_color = "normal" if dpp <= 0 else "inverse"
-    m3.metric("Δ probability", f"{dpp:+} pp", delta=f"{dpp:+} pp", delta_color=delta_color,
-              help="Percentage points; negative = lower modeled risk.")
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Risk across all 3 tiers
-    all_tier_risks = []
-    for ti, tlabel in enumerate(tier_labels):
-        loc = LOCATION_OPTIONS[ti]
-        r = predict_job_risk(skills, education, experience, loc, industry)
-        all_tier_risks.append({
-            "Tier": tlabel,
-            "Risk %": r.high_risk_probability_pct,
-            "is_current": ti == from_tier,
-        })
-    tier_df = pd.DataFrame(all_tier_risks)
-
-    fig_tier = go.Figure(go.Bar(
-        x=tier_df["Tier"],
-        y=tier_df["Risk %"],
-        marker_color=[
-            "#06b6d4" if row["is_current"] else "#6366f1"
-            for _, row in tier_df.iterrows()
-        ],
-        text=[f"{v}%" for v in tier_df["Risk %"]],
-        textposition="outside",
-    ))
-    fig_tier.update_layout(
-        **plotly_dark_layout(height=320),
-        title="Modeled risk across all location tiers (same profile)",
-        yaxis_title="High-risk probability (%)",
-        xaxis_title="Location tier",
-    )
-    st.plotly_chart(fig_tier, use_container_width=True)
-    st.caption("Cyan bar = your current city's tier.")
-
-    if target_city == user_ck:
-        st.caption("Pick a different target city to compare a different tier.")
-
-# ── TAB 4 — LIVE INDIA CONTEXT ─────────────────────────────────────────────────
-with tab4:
+with tab3_live:
     st.markdown("""
     <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.25);
                 border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;
@@ -733,8 +822,8 @@ with tab4:
     st.caption("Source: PLFS Annual Report 2022-23 | Ministry of Statistics & Programme Implementation (MOSPI)")
 
 
-# ── TAB 5 — COST OF LIVING ANALYSIS ────────────────────────────────────────────
-with tab5:
+# ── TAB 4 — COST OF LIVING ANALYSIS ────────────────────────────────────────────
+with tab4_col:
     # STEP 5: Transform component based on mode
     if personalized_mode and phrases:
         # Personalized mode: Real salary impact for user profile
@@ -876,8 +965,8 @@ with tab5:
     else:
         st.info("Cost of living data not available. Ensure city reference CSV has cost_of_living_index column.")
 
-# ── TAB 6 — INDUSTRY CONCENTRATION ─────────────────────────────────────────────
-with tab6:
+# ── TAB 5 — INDUSTRY CONCENTRATION ─────────────────────────────────────────────
+with tab5_ind:
     # STEP 5: Transform component based on mode
     if personalized_mode and phrases:
         # Personalized mode: Industry alignment for user skills
@@ -997,8 +1086,8 @@ with tab6:
     else:
         st.warning("Could not analyze industry concentration for this city. Try a city with more job postings.")
 
-# ── TAB 7 — STATE UNEMPLOYMENT CHOROPLETH ──────────────────────────────────────
-with tab7:
+# ── TAB 6 — STATE UNEMPLOYMENT CHOROPLETH ──────────────────────────────────────
+with tab6_ue:
     # STEP 5: Transform component based on mode
     if personalized_mode and phrases:
         # Personalized mode: Competition level analysis

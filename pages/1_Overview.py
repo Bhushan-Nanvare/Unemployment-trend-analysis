@@ -2,36 +2,16 @@
 Page 1 — Overview Dashboard
 Live KPIs, forecast trajectory with confidence bands, historical event overlays,
 and an evidence-based forecast seeded from real World Bank historical data.
-
-VALIDATION SYSTEM INTEGRATED:
-- Uses central_data.py for validated data loading
-- Displays quality indicators (🟢 🟡 🔴)
-- Shows data source labels and quality scores
-- Validation warnings visible to users
 """
 import streamlit as st
 import requests
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, render_data_source, plotly_dark_layout, API_BASE_URL
+from src.ui_helpers import DARK_CSS, render_kpi_card, render_badge, plotly_dark_layout, API_BASE_URL
 from src.historical_events import get_events_in_range
 from src.live_data import fetch_world_bank, fetch_gdp_growth, get_data_source_label
 from src.forecasting import ForecastingEngine
-from src.live_insights import generate_forecast_insights
-
-# NEW: Import validation system
-from src.central_data import load_unemployment, load_inflation, get_data_quality_report
-from src.validation_ui_helpers import (
-    render_quality_dashboard,
-    render_quality_summary_compact,
-    render_validation_warnings,
-    display_quality_metrics
-)
-
-@st.cache_data(ttl=86400, show_spinner=False)
-def get_gdp_growth():
-    return fetch_gdp_growth("India")
 
 st.set_page_config(page_title="Overview | UIP", page_icon="📊", layout="wide")
 st.markdown(DARK_CSS, unsafe_allow_html=True)
@@ -50,7 +30,7 @@ def get_baseline(horizon: int):
         )
         return simulate_scenario(req)
     except Exception as e:
-        print(f"Error calling simulate_scenario: {e}")
+        st.error(f"Error fetching baseline: {e}")
     return None
 
 # ─── Sidebar controls ──────────────────────────────────────────────────────────
@@ -60,15 +40,6 @@ with st.sidebar:
     show_events = st.checkbox("Show Historical Events", value=True)
     show_band = st.checkbox("Show Uncertainty Band", value=True)
     
-    # NEW: Data Quality Summary in Sidebar
-    st.markdown("---")
-    st.markdown("### 🔍 Data Quality")
-    try:
-        quality_report = get_data_quality_report()
-        st.markdown(render_quality_summary_compact(quality_report), unsafe_allow_html=True)
-    except Exception as e:
-        st.caption(f"⚠️ Quality report unavailable")
-    
     st.markdown("---")
     st.markdown("**🌐 Navigation**")
     st.page_link("app.py", label="🏠 Home")
@@ -77,10 +48,11 @@ with st.sidebar:
     st.page_link("pages/3_Sector_Analysis.py", label="🏭 Sector Analysis")
     st.page_link("pages/4_Career_Lab.py", label="💼 Career Lab")
     st.page_link("pages/5_AI_Insights.py", label="🤖 AI Insights")
-
     st.page_link("pages/7_Job_Risk_Predictor.py", label="🎯 Job Risk (AI)")
     st.page_link("pages/8_Job_Market_Pulse.py", label="📡 Market Pulse")
     st.page_link("pages/9_Geo_Career_Advisor.py", label="🗺️ Geo Career")
+    st.page_link("pages/10_Pricing.py", label="💰 Pricing")
+    st.page_link("pages/11_For_Business.py", label="🏢 For Business")
 
 # ─── Page hero ─────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -88,24 +60,6 @@ st.markdown("""
     <div class="hero-title">📊 Live Overview Dashboard</div>
     <div class="hero-subtitle">Real-time baseline forecast with uncertainty bands and historical event markers</div>
 </div>""", unsafe_allow_html=True)
-
-# ─── Data Quality Dashboard (NEW) ──────────────────────────────────────────────
-st.markdown("<br>", unsafe_allow_html=True)
-
-# Load and display data quality report
-try:
-    quality_report = get_data_quality_report()
-    st.markdown(render_quality_dashboard(quality_report), unsafe_allow_html=True)
-    
-    # Show validation warnings if any
-    all_warnings = (
-        quality_report['unemployment'].get('warnings', []) +
-        quality_report['inflation'].get('warnings', [])
-    )
-    if all_warnings:
-        st.markdown(render_validation_warnings(all_warnings), unsafe_allow_html=True)
-except Exception as e:
-    st.warning(f"⚠️ Could not load data quality report: {e}")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -142,19 +96,22 @@ with col4:
     label = ew.split(" ", 1)[-1] if " " in ew else ew
     st.markdown(render_kpi_card("🚦", "Risk Status", label, delta_type="neutral"), unsafe_allow_html=True)
 with col5:
-    gdp_df = get_gdp_growth()
-    if not gdp_df.empty:
-        gdp_latest = round(float(gdp_df.iloc[-1]["Value"]), 2)
-        gdp_yr = int(gdp_df.iloc[-1]["Year"])
-        gdp_prev = round(float(gdp_df.iloc[-2]["Value"]), 2) if len(gdp_df) >= 2 else None
-        gdp_delta = f"{'▲' if gdp_latest > (gdp_prev or 0) else '▼'} vs {gdp_prev}% prior yr" if gdp_prev else ""
-        gdp_type = "down" if gdp_latest > 0 else "up"  # high GDP = good for jobs
-        st.markdown(render_kpi_card("💹", f"GDP Growth ({gdp_yr})", f"{gdp_latest}%", gdp_delta, gdp_type), unsafe_allow_html=True)
-    else:
+    try:
+        gdp_df = get_gdp_growth()
+        if not gdp_df.empty:
+            gdp_latest = round(float(gdp_df.iloc[-1]["Value"]), 2)
+            gdp_yr = int(gdp_df.iloc[-1]["Year"])
+            gdp_prev = round(float(gdp_df.iloc[-2]["Value"]), 2) if len(gdp_df) >= 2 else None
+            gdp_delta = f"{'▲' if gdp_latest > (gdp_prev or 0) else '▼'} vs {gdp_prev}% prior yr" if gdp_prev else ""
+            gdp_type = "down" if gdp_latest > 0 else "up"  # high GDP = good for jobs
+            st.markdown(render_kpi_card("💹", f"GDP Growth ({gdp_yr})", f"{gdp_latest}%", gdp_delta, gdp_type), unsafe_allow_html=True)
+        else:
+            st.markdown(render_kpi_card("💹", "GDP Growth", "N/A", delta_type="neutral"), unsafe_allow_html=True)
+    except Exception as e:
         st.markdown(render_kpi_card("💹", "GDP Growth", "N/A", delta_type="neutral"), unsafe_allow_html=True)
 
 st.markdown(
-    f'<div style="text-align:right; margin-bottom:0.5rem;">{render_data_source(data_src)} · Method: {forecast_method}</div>',
+    f'<div style="text-align:right; margin-bottom:0.5rem; font-size:0.85rem; color:#64748b;">{data_src} · Method: {forecast_method}</div>',
     unsafe_allow_html=True
 )
 
@@ -253,8 +210,12 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-gdp_df_chart = get_gdp_growth()
-wb_hist = fetch_world_bank("India")
+try:
+    gdp_df_chart = get_gdp_growth()
+    wb_hist = fetch_world_bank("India")
+except Exception as e:
+    gdp_df_chart = pd.DataFrame()
+    wb_hist = pd.DataFrame()
 
 if not gdp_df_chart.empty and not wb_hist.empty:
     merged = pd.merge(

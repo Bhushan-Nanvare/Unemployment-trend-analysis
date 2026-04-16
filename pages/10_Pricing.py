@@ -219,7 +219,7 @@ st.markdown("""
     <div class="pricing-card featured">
         <div class="pricing-badge">Most Popular</div>
         <div class="pricing-tier">Premium</div>
-        <div class="pricing-price">₹999</div>
+        <div class="pricing-price">₹199</div>
         <div class="pricing-period">per month</div>
         <div class="pricing-description">
             For professionals and job seekers who want advanced career insights
@@ -239,27 +239,27 @@ st.markdown("""
         <button class="pricing-button primary">Upgrade to Premium</button>
     </div>
     
-    <!-- ENTERPRISE TIER -->
+    <!-- PROFESSIONAL TIER -->
     <div class="pricing-card">
-        <div class="pricing-tier">Enterprise</div>
-        <div class="pricing-price">Custom</div>
-        <div class="pricing-period">Contact sales</div>
+        <div class="pricing-tier">Professional</div>
+        <div class="pricing-price">₹299</div>
+        <div class="pricing-period">per month</div>
         <div class="pricing-description">
-            For organizations, governments, and institutions requiring custom solutions
+            For advanced users and small teams needing enterprise features
         </div>
         <ul class="pricing-features">
             <li>Everything in Premium, plus:</li>
+            <li>Multi-user access (up to 5 users)</li>
             <li>Custom data integration</li>
-            <li>White-label deployment</li>
-            <li>Multi-user access (10-100 seats)</li>
-            <li>API access with custom limits</li>
+            <li>API access (basic tier)</li>
+            <li>Advanced analytics & dashboards</li>
             <li>Custom shock scenarios</li>
-            <li>Policy impact modeling</li>
-            <li>Dedicated account manager</li>
-            <li>SLA guarantees</li>
-            <li>On-premise deployment option</li>
+            <li>Monthly strategy consultation</li>
+            <li>Dedicated support channel</li>
+            <li>Export to all formats</li>
+            <li>Team collaboration features</li>
         </ul>
-        <button class="pricing-button secondary">Contact Sales</button>
+        <button class="pricing-button primary">Upgrade to Professional</button>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -282,7 +282,7 @@ with col1:
             Integrate our forecasting engine into your applications
         </div>
         <div style="font-size: 1.5rem; font-weight: 700; color: #6366f1;">
-            From ₹4,999/mo
+            From ₹499/mo
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -299,7 +299,7 @@ with col2:
             Custom training for your team on labor market analysis
         </div>
         <div style="font-size: 1.5rem; font-weight: 700; color: #6366f1;">
-            From ₹49,999
+            From ₹2,999
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -316,7 +316,7 @@ with col3:
             Custom analysis and policy impact assessments
         </div>
         <div style="font-size: 1.5rem; font-weight: 700; color: #6366f1;">
-            ₹15,000/hour
+            ₹1,500/hour
         </div>
     </div>
     """, unsafe_allow_html=True)
