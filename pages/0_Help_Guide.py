@@ -70,7 +70,6 @@ with col3:
     </div>
     """, unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Recommended Journey
@@ -211,7 +210,6 @@ with tab4:
             </div>
             """, unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Key Features Summary
@@ -253,7 +251,6 @@ with col_feat2:
     - **Dark Theme**: Modern, professional interface design
     """)
 
-st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # FAQ Section
@@ -314,8 +311,6 @@ with st.expander("🔧 **What if I encounter technical issues?**"):
     
     The platform is designed with robust fallbacks to ensure functionality even when external APIs are unavailable.
     """)
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Contact and Support
 st.markdown('<div class="section-title">📞 Support & Contact</div>', unsafe_allow_html=True)

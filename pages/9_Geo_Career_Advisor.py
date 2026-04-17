@@ -10,7 +10,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 from streamlit_folium import st_folium
-from textwrap import dedent
 
 from src.geo_career_advisor import (
     aggregate_city_labour_market,
@@ -911,94 +910,43 @@ if personalized_mode and phrases and not agg.empty:
             "Consider networking and cultural fit",
         ])
 
-        opportunities_html = "".join(f"<li>{item}</li>" for item in opportunity_items)
-        risks_html = "".join(f"<li>{item}</li>" for item in risk_items)
+        # ── Final Recommendation card (compact HTML — no dedent, no grid CSS) ────
+        st.markdown(f"""<div style="background:linear-gradient(135deg,rgba(16,185,129,0.1) 0%,rgba(99,102,241,0.1) 100%);border:2px solid rgba(16,185,129,0.3);border-radius:16px;padding:1.5rem 2rem;margin:1.5rem 0;">
+<div style="display:flex;gap:1rem;align-items:center;margin-bottom:1rem;">
+<span style="font-size:2rem;">🎯</span>
+<div>
+<div style="font-size:1.1rem;font-weight:800;color:#10b981;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.25rem;">Final Recommendation</div>
+<div style="font-size:0.88rem;color:#94a3b8;">Based on your skills: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}</div>
+</div></div>
+<div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:1.2rem;margin-bottom:1rem;">
+<div style="font-size:1.25rem;font-weight:700;color:#f8fafc;margin-bottom:0.5rem;">🏆 Best City to Relocate: {best_city}</div>
+</div></div>""", unsafe_allow_html=True)
 
-        recommendation_html = dedent(f"""
-        <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(99,102,241,0.1) 100%);
-                    border:2px solid rgba(16,185,129,0.3); border-radius:16px; padding:2rem; margin:2rem 0;">
-            <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;">
-                <span style="font-size:2rem;">🎯</span>
-                <div>
-                    <div style="font-size:1.1rem; font-weight:800; color:#10b981;
-                                text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.3rem;">
-                        Final Recommendation
-                    </div>
-                    <div style="font-size:0.9rem; color:#94a3b8;">
-                        Based on your skills: {', '.join(phrases[:3])}{'...' if len(phrases) > 3 else ''}
-                    </div>
-                </div>
-            </div>
-            
-            <div style="background:rgba(0,0,0,0.2); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
-                <div style="font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:0.8rem;">
-                    🏆 Best City: {best_city}
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
-                    <div>
-                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
-                            Composite Score
-                        </div>
-                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
-                            {best_score:.2f}/1.00
-                        </div>
-                    </div>
-                    <div>
-                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
-                            Skill Match Rate
-                        </div>
-                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
-                            {best_skill_match:.1%}
-                        </div>
-                    </div>
-                    <div>
-                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
-                            Job Volume vs Your City
-                        </div>
-                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
-                            {volume_text}
-                        </div>
-                    </div>
-                    <div>
-                        <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; letter-spacing:1px;">
-                            Available Positions
-                        </div>
-                        <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
-                            {best_postings:,} jobs
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
-                <div>
-                    <div style="font-size:0.9rem; font-weight:700; color:#10b981; margin-bottom:0.8rem;">
-                        ✅ Opportunities
-                    </div>
-                    <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
-                        {opportunities_html}
-                    </ul>
-                </div>
-                <div>
-                    <div style="font-size:0.9rem; font-weight:700; color:#f59e0b; margin-bottom:0.8rem;">
-                        ⚠️ Considerations
-                    </div>
-                    <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
-                        {risks_html}
-                    </ul>
-                </div>
-            </div>
-            
-            <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid rgba(148,163,184,0.2);">
-                <div style="font-size:0.8rem; color:#94a3b8; line-height:1.6;">
-                    <strong style="color:#e2e8f0;">Methodology:</strong> Ranking based on 55% job volume vs your city + 45% skill match rate.
-                    Cost of living and unemployment data from official sources. This is a data-driven suggestion —
-                    consider personal factors like family, lifestyle, and career goals in your final decision.
-                </div>
-            </div>
-        </div>
-        """)
-        st.markdown(recommendation_html, unsafe_allow_html=True)
+        # Metrics row using native Streamlit widgets (always renders correctly)
+        m1, m2, m3, m4 = st.columns(4)
+        with m1:
+            st.metric("Composite Score", f"{best_score:.2f}/1.00")
+        with m2:
+            st.metric("Skill Match Rate", f"{best_skill_match:.1%}")
+        with m3:
+            st.metric("Job Volume vs Yours", volume_text)
+        with m4:
+            st.metric("Available Positions", f"{best_postings:,} jobs")
+
+        # Opportunities & Considerations columns
+        opp_col, risk_col = st.columns(2)
+        with opp_col:
+            st.markdown('<div style="font-size:0.92rem;font-weight:700;color:#10b981;margin-bottom:0.4rem;">✅ Opportunities</div>', unsafe_allow_html=True)
+            for item in opportunity_items:
+                st.markdown(f"- {item}")
+        with risk_col:
+            st.markdown('<div style="font-size:0.92rem;font-weight:700;color:#f59e0b;margin-bottom:0.4rem;">⚠️ Considerations</div>', unsafe_allow_html=True)
+            for item in risk_items:
+                st.markdown(f"- {item}")
+
+        st.caption("**Methodology:** Ranking based on 55% job volume vs your city + 45% skill match rate. "
+                   "Cost of living and unemployment data from official sources. This is a data-driven suggestion — "
+                   "consider personal factors like family, lifestyle, and career goals in your final decision.")
         
         # Alternative recommendations
         if len(rk_data) > 1:

@@ -128,7 +128,6 @@ with col_form:
     )
     
     run = st.button("🔮 Estimate risk", type="primary", use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -139,7 +138,6 @@ with col_form:
         help="Appends to your profile and re-runs the model.",
     )
     run_whatif = st.button("⚡ Run what-if", use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ─── Results Panel ─────────────────────────────────────────────────────────────

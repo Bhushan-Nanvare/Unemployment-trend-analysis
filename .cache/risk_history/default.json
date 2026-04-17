@@ -38,5 +38,13 @@
     "recession_risk": 27.0,
     "age_discrimination_risk": 23.1,
     "risk_level": "Low"
+  },
+  {
+    "timestamp": "2026-04-17T15:37:20.566655",
+    "overall_risk": 6.0,
+    "automation_risk": 36.0,
+    "recession_risk": 32.0,
+    "age_discrimination_risk": 6.8,
+    "risk_level": "Low"
   }
 ]

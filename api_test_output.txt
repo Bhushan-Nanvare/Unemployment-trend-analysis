@@ -1,0 +1,54 @@
+﻿python : Traceback (most recent call last):
+At line:1 char:1
++ python -X utf8 api_test.py 2>&1 | Out-File -Encoding utf8 api_test_ou ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\BHUSHAN\Downloads\san\san\api_test.py", line 112, in <module>
+    df = pre.load_data()
+AttributeError: 'Preprocessor' object has no attribute 'load_data'
+============================================================
+1. FASTAPI ENDPOINTS
+============================================================
+  OK   GET /data-status  [data status]
+  ERR  GET /health: HTTP 404
+  OK   GET /events  [historical events]
+  ERR  POST /simulate: HTTP 500: Internal Server Error
+  ERR  POST /compare-scenarios: HTTP 404: {"detail":"Not Found"}
+  ERR  POST /sector-analysis: HTTP 404: {"detail":"Not Found"}
+  ERR  POST /ai-insights: HTTP 404: {"detail":"Not Found"}
+
+============================================================
+2. LIVE DATA MODULES
+============================================================
+  OK   fetch_labor_market_pulse(India): 7 indicators
+       Unemployment Rate (%)                         latest=2025 val=4.22%
+       Youth Unemployment 15-24 (%)                  latest=2025 val=16.02%
+       Female Unemployment (%)                       latest=2025 val=4.14%
+  OK   fetch_gdp_growth(India): 35 rows, latest={'Year': 2024.0, 'Value': 6.495}
+
+============================================================
+3. PAGE-LEVEL SRC MODULE CHECKS
+============================================================
+  ERR  Overview page modules: 'Preprocessor' object has no attribute 'load_data'
+  ERR  Sector Analysis page modules: 'SectorAnalysis' object has no attribute 'analyze'
+  OK   Job Risk Predictor: risk=5.1% level=Low
+  OK   Salary Analyzer: Mid IT 5yr Metro = 17.3 LPA (INR, realistic)
+  OK   Job Market Pulse: 29,425 rows, 3 weeks vol, 17 salary roles
+  OK     cooc matrix=(8, 8), remote={'Remote': 0, 'Hybrid': 0, 'On-site': 29425}
+  OK     top skills: javascript, sql, java, html, communication
+  ERR  Geo Career Advisor modules: cannot import name 'get_city_advisory' from 'src.geo_career_advisor' (C:\Users\BHUSHAN\Downloads\san\san\.\src\geo_career_advisor.py)
+  OK   AI Insights: llm_insights + live_insights imported OK
+
+============================================================
+4. MOJIBAKE ENCODING CHECK (look for garbled chars)
+============================================================
+  OK   Encoding clean: pages/8_Job_Market_Pulse.py
+  OK   Encoding clean: pages/3_Sector_Analysis.py
+  OK   Encoding clean: pages/1_Overview.py
+  OK   Encoding clean: pages/7_Job_Risk_Predictor.py
+
+============================================================
+OVERALL: SOME ISSUES FOUND ΓÇö see above
+============================================================

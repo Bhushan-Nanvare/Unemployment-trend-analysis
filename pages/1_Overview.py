@@ -195,7 +195,6 @@ fig.update_layout(
                 bgcolor="rgba(0,0,0,0.3)", font=dict(color="#cbd5e1")),
 )
 st.plotly_chart(fig, use_container_width=True)
-st.markdown("</div>", unsafe_allow_html=True)
 
 # ─── GDP Growth vs Unemployment Chart ─────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
@@ -693,7 +692,6 @@ with col_l:
             <span style="color:#94a3b8; font-size:0.88rem;">{label}</span>
             <span style="color:#e2e8f0; font-weight:700; font-size:0.88rem;">{val}</span>
         </div>""", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_r:
     
@@ -702,7 +700,6 @@ with col_r:
         columns={"Predicted_Unemployment": "Unemployment Rate (%)"}
     ).round(2)
     st.dataframe(display_df, use_container_width=True, hide_index=True, height=260)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # ─── Evidence-Based Real-Data Forecast ─────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
@@ -909,5 +906,3 @@ else:
         "shocks, or structural breaks not already present in the data. Use the Simulator page "
         "to layer shocks on top of this baseline."
     )
-
-st.markdown("</div>", unsafe_allow_html=True)

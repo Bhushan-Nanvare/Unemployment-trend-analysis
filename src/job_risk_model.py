@@ -29,11 +29,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+import joblib
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+
+# ── Saved model location ────────────────────────────────────────────────────────
+# Trained once and reloaded on every subsequent startup (milliseconds vs seconds).
+MODEL_DIR  = Path(__file__).parent.parent / "models"
+MODEL_PATH  = MODEL_DIR / "job_risk_model.pkl"
 
 FEATURE_NAMES = [
     "skill_demand_score",
@@ -378,12 +384,45 @@ _FEATURE_MEANS: Optional[np.ndarray] = None
 MODEL_VERSION = "2.1.0"  # Updated: Improved skill scoring and realistic risk thresholds
 
 
+def _save_model(pipe: Pipeline, feature_means: np.ndarray) -> None:
+    """Persist the trained pipeline + feature means to disk."""
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "version":       MODEL_VERSION,
+        "pipe":          pipe,
+        "feature_means": feature_means,
+    }
+    joblib.dump(payload, MODEL_PATH)
+    print(f"[job_risk_model] Model v{MODEL_VERSION} saved → {MODEL_PATH}")
+
+
 def get_pipeline() -> Pipeline:
+    """Return the trained pipeline, loading from disk when possible."""
     global _PIPE, _FEATURE_MEANS
-    if _PIPE is None:
-        _PIPE = _train_pipeline()
-        X_all, _ = _load_real_training_data()
-        _FEATURE_MEANS = X_all.mean(axis=0)
+    if _PIPE is not None:
+        return _PIPE  # already cached in memory for this session
+
+    # ── Try loading the saved model first ───────────────────────────────────
+    if MODEL_PATH.exists():
+        try:
+            payload = joblib.load(MODEL_PATH)
+            if payload.get("version") == MODEL_VERSION:
+                _PIPE          = payload["pipe"]
+                _FEATURE_MEANS = payload["feature_means"]
+                print(f"[job_risk_model] Loaded saved model v{MODEL_VERSION} from {MODEL_PATH}")
+                return _PIPE
+            else:
+                print(f"[job_risk_model] Saved model version mismatch "
+                      f"({payload.get('version')} vs {MODEL_VERSION}) — retraining.")
+        except Exception as e:
+            print(f"[job_risk_model] Could not load saved model: {e} — retraining.")
+
+    # ── Train from scratch (first run or version change) ────────────────────
+    print(f"[job_risk_model] Training model v{MODEL_VERSION} on job postings data…")
+    _PIPE = _train_pipeline()
+    X_all, _ = _load_real_training_data()
+    _FEATURE_MEANS = X_all.mean(axis=0)
+    _save_model(_PIPE, _FEATURE_MEANS)  # persist for next startup
     return _PIPE
 
 

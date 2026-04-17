@@ -82,7 +82,6 @@ with col_cfg_a:
     rr_a = st.slider("Recovery Rate", 0.05, 0.6, max(0.05, float(pa["rr"])), 0.05, key="rr_a")
     policy_a = st.selectbox("Policy Response", POLICY_OPTIONS, key="pol_a")
     horizon_a = st.slider("Forecast Horizon (yrs)", 3, 10, 6, key="horiz_a")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_vs:
     st.markdown("<br><br><br><br><br><br><br>", unsafe_allow_html=True)
@@ -103,7 +102,6 @@ with col_cfg_b:
     rr_b = st.slider("Recovery Rate", 0.05, 0.6, max(0.05, float(pb["rr"])), 0.05, key="rr_b")
     policy_b = st.selectbox("Policy Response", POLICY_OPTIONS, index=1, key="pol_b")
     horizon_b = st.slider("Forecast Horizon (yrs)", 3, 10, 6, key="horiz_b")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 horizon = max(horizon_a, horizon_b)
 
@@ -207,10 +205,8 @@ with col_main:
     fig.update_layout(**plotly_dark_layout(height=380))
     fig.update_layout(xaxis_title="Year", yaxis_title="Unemployment Rate (%)")
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_side:
-    st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">🏆 Peak Bar</div>', unsafe_allow_html=True)
     bar_df = pd.DataFrame({
         "Scenario": ["Baseline", "Scenario A", "Scenario B"],
@@ -246,7 +242,6 @@ with col_side:
             </div>
         </div>
         """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)  # close glass-card
 
 
 # ─── Parameter + Indices table ────────────────────────────────────────────────
@@ -262,7 +257,6 @@ with col_p:
         "Scenario B": [f"{si_b*100:.0f}%", f"{sd_b} yrs", f"{rr_b*100:.0f}%", policy_b],
     }
     st.dataframe(pd.DataFrame(pdata), use_container_width=True, hide_index=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_i:
     
@@ -283,7 +277,6 @@ with col_i:
         ],
     }
     st.dataframe(pd.DataFrame(idata), use_container_width=True, hide_index=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ─── Sensitivity Analysis Tab ─────────────────────────────────────────────────
@@ -318,11 +311,8 @@ with col_sens1:
         sens_sd = st.slider("Base Shock Duration", 0, 5, int(ps["sd"]), key="sens_sd")
     with col_s3:
         sens_rr = st.slider("Base Recovery Rate", 0.05, 0.6, max(0.05, float(ps["rr"])), 0.05, key="sens_rr")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_sens2:
-    st.markdown('<div class="glass-card" style="height:100%">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">📊 Analysis Info</div>', unsafe_allow_html=True)
     st.markdown("""
     <div style="font-size:0.85rem; color:#94a3b8; line-height:1.7;">
@@ -331,7 +321,6 @@ with col_sens2:
         <strong style="color:#e2e8f0;">Safe Zone:</strong> Parameter combinations that keep UE < 8%
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # Run sensitivity analysis button
 col_run_sens = st.columns([3, 2, 3])
@@ -430,9 +419,7 @@ if sens_data:
             st.caption("Red = Decreases peak UE | Green = Increases peak UE | Wider bar = More sensitive parameter")
         else:
             st.info("No tornado data available")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-    
+
     with col_heatmap:
         
         st.markdown('<div class="section-title">🗺️ Heatmap - Shock Intensity × Recovery Rate</div>', unsafe_allow_html=True)
@@ -469,9 +456,7 @@ if sens_data:
             st.caption("Green = Safe (< 8%) | Yellow = Warning (8-10%) | Red = Danger (> 10%)")
         else:
             st.info("No heatmap data available")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-    
+
     # Critical Thresholds
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -508,8 +493,7 @@ if sens_data:
             st.plotly_chart(fig_thresh, use_container_width=True)
     
     st.caption(f"**Interpretation:** For each shock intensity level, this shows the minimum recovery rate needed to keep peak unemployment below {sens_data['threshold']}%")
-    st.markdown("</div>", unsafe_allow_html=True)
-    
+
     # Key Insights
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -534,8 +518,6 @@ if sens_data:
         
         for insight in insights:
             st.markdown(f"• {insight}")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 else:
     st.info("Click 'Run Sensitivity Analysis' above to see parameter sensitivity results")

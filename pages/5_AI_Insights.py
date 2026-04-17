@@ -314,7 +314,6 @@ st.markdown("<br>", unsafe_allow_html=True)
 col_tl, col_chart = st.columns([1, 1])
 
 with col_tl:
-    st.markdown('<div class="glass-card" style="max-height:500px; overflow-y:auto;">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">📖 Year-by-Year Story</div>', unsafe_allow_html=True)
     if story:
         _TYPE_ICON  = {"shock": "🔴", "recovery": "🔄", "stable": "🟢"}
@@ -348,7 +347,6 @@ with col_tl:
             """, unsafe_allow_html=True)
     else:
         st.info("No story data available")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_chart:
     
@@ -383,8 +381,6 @@ with col_chart:
         fig.update_layout(**plotly_dark_layout(height=420))
         fig.update_layout(xaxis_title="Year", yaxis_title="Unemployment Rate (%)")
         st.plotly_chart(fig, use_container_width=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ─── Policy Comparison ─────────────────────────────────────────────────────────
