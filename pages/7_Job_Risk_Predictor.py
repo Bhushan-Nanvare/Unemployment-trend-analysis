@@ -8,7 +8,6 @@ Runs entirely in-process (no FastAPI required).
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
-from datetime import datetime
 
 from src.job_risk_model import (
     EDUCATION_LEVELS,
@@ -29,7 +28,6 @@ from src.analytics.benchmark_engine import BenchmarkEngine
 from src.analytics.recommendation_engine import RecommendationEngine
 from src.analytics.career_path_modeler import CareerPathModeler
 from src.validation import ProfileValidator
-from src.reporting import RiskMonitor
 from src.ui_components.career_path_visualizer import CareerPathVisualizer
 
 st.set_page_config(page_title="Job Risk (AI) | UIP", page_icon="🎯", layout="wide")
@@ -223,10 +221,6 @@ with col_out:
         
         # Also get the detailed result for backward compatibility
         result = predict_job_risk(skills, education, experience, location, industry)
-        
-        # Store assessment in risk monitor
-        risk_monitor = RiskMonitor()
-        risk_monitor.store_assessment(risk_profile, user_id="default")
         
         st.session_state["last_job_risk"] = result
         st.session_state["risk_profile"] = risk_profile
@@ -571,154 +565,7 @@ with col_out:
                 else:
                     st.info("No career paths available. Try adjusting your profile.")
             
-            # Risk Monitoring Dashboard
-            st.markdown("---")
-            st.markdown("### 📊 Risk Monitoring Dashboard")
-            
-            risk_monitor = RiskMonitor()
-            history = risk_monitor.get_history(user_id="default")
-            
-            if len(history) >= 2:
-                # Display trend chart
-                st.markdown("#### Risk Score Trends Over Time")
-                
-                # Extract data for chart
-                timestamps = [h.timestamp for h in history]
-                dates = [datetime.fromisoformat(ts).strftime("%Y-%m-%d %H:%M") for ts in timestamps]
-                overall_risks = [h.overall_risk for h in history]
-                auto_risks = [h.automation_risk for h in history]
-                recession_risks = [h.recession_risk for h in history]
-                age_risks = [h.age_discrimination_risk for h in history]
-                
-                # Create line chart
-                fig_monitor = go.Figure()
-                
-                fig_monitor.add_trace(go.Scatter(
-                    x=dates, y=overall_risks,
-                    mode='lines+markers',
-                    name='Overall Risk',
-                    line=dict(color='#6366f1', width=3),
-                    marker=dict(size=8)
-                ))
-                
-                fig_monitor.add_trace(go.Scatter(
-                    x=dates, y=auto_risks,
-                    mode='lines+markers',
-                    name='Automation Risk',
-                    line=dict(color='#f59e0b', width=2),
-                    marker=dict(size=6)
-                ))
-                
-                fig_monitor.add_trace(go.Scatter(
-                    x=dates, y=recession_risks,
-                    mode='lines+markers',
-                    name='Recession Risk',
-                    line=dict(color='#ef4444', width=2),
-                    marker=dict(size=6)
-                ))
-                
-                fig_monitor.add_trace(go.Scatter(
-                    x=dates, y=age_risks,
-                    mode='lines+markers',
-                    name='Age Discrimination',
-                    line=dict(color='#8b5cf6', width=2),
-                    marker=dict(size=6)
-                ))
-                
-                fig_monitor.update_layout(
-                    **plotly_dark_layout(height=350),
-                    title=dict(
-                        text="Historical Risk Trends",
-                        font=dict(color="#94a3b8", size=14)
-                    ),
-                    xaxis_title="Assessment Date",
-                    yaxis_title="Risk Score (%)",
-                    yaxis=dict(range=[0, 100]),
-                    hovermode='x unified'
-                )
-                
-                st.plotly_chart(fig_monitor, use_container_width=True)
-                
-                # Rate of change metrics
-                st.markdown("#### Rate of Change Analysis")
-                rate_of_change = risk_monitor.compute_rate_of_change(user_id="default")
-                
-                col_roc1, col_roc2, col_roc3, col_roc4 = st.columns(4)
-                
-                with col_roc1:
-                    roc_overall = rate_of_change["overall"]
-                    st.metric(
-                        "Overall Risk",
-                        f"{roc_overall:+.2f} pts/mo",
-                        delta=f"{roc_overall:+.2f}",
-                        delta_color="inverse"
-                    )
-                
-                with col_roc2:
-                    roc_auto = rate_of_change["automation"]
-                    st.metric(
-                        "Automation Risk",
-                        f"{roc_auto:+.2f} pts/mo",
-                        delta=f"{roc_auto:+.2f}",
-                        delta_color="inverse"
-                    )
-                
-                with col_roc3:
-                    roc_recession = rate_of_change["recession"]
-                    st.metric(
-                        "Recession Risk",
-                        f"{roc_recession:+.2f} pts/mo",
-                        delta=f"{roc_recession:+.2f}",
-                        delta_color="inverse"
-                    )
-                
-                with col_roc4:
-                    roc_age = rate_of_change["age_discrimination"]
-                    st.metric(
-                        "Age Discrimination",
-                        f"{roc_age:+.2f} pts/mo",
-                        delta=f"{roc_age:+.2f}",
-                        delta_color="inverse"
-                    )
-                
-                # Generate rate of change summary text
-                def format_rate_text(rate: float, risk_type: str) -> str:
-                    """Format rate of change as human-readable text"""
-                    if abs(rate) < 0.1:
-                        return f"{risk_type} risk is stable"
-                    elif rate > 0:
-                        return f"{risk_type} risk is increasing by {abs(rate):.1f} points per month"
-                    else:
-                        return f"{risk_type} risk is decreasing by {abs(rate):.1f} points per month"
-                
-                st.caption(f"📈 {format_rate_text(roc_overall, 'Overall')}")
-                
-                # Significant changes
-                significant_changes = risk_monitor.identify_significant_changes(user_id="default")
-                
-                if significant_changes:
-                    st.markdown("#### ⚠️ Significant Changes Detected")
-                    st.caption("Changes greater than 10 percentage points between consecutive assessments:")
-                    
-                    for change in significant_changes:
-                        from_date = datetime.fromisoformat(change["from_timestamp"]).strftime("%Y-%m-%d")
-                        to_date = datetime.fromisoformat(change["to_timestamp"]).strftime("%Y-%m-%d")
-                        risk_type_label = change["risk_type"].replace("_", " ").title()
-                        
-                        direction_icon = "📈" if change["direction"] == "increased" else "📉"
-                        direction_color = "red" if change["direction"] == "increased" else "green"
-                        
-                        st.markdown(
-                            f"{direction_icon} **{risk_type_label}** {change['direction']} by "
-                            f"**{abs(change['change']):.1f} points** "
-                            f"({change['from_value']:.1f}% → {change['to_value']:.1f}%) "
-                            f"from {from_date} to {to_date}"
-                        )
-                
-            elif len(history) == 1:
-                st.info("📊 Complete at least one more assessment to see risk trends over time.")
-            else:
-                st.info("📊 Complete your first risk assessment to start tracking trends.")
+
 
         gauge = go.Figure(go.Indicator(
             mode="gauge+number",
