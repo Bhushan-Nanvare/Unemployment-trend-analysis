@@ -10,6 +10,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 from streamlit_folium import st_folium
+from textwrap import dedent
 
 from src.geo_career_advisor import (
     aggregate_city_labour_market,
@@ -303,9 +304,9 @@ if not chart_agg.empty:
                 )
             )
         else:
-            st.caption("âš ï¸ Insufficient salary data for trend line (need â‰¥3 cities with >10% salary coverage)")
+            st.caption("⚠️ Insufficient salary data for trend line (need >=3 cities with >10% salary coverage)")
     else:
-        st.caption("âš ï¸ No salary data available for median salary trend line")
+        st.caption("⚠️ No salary data available for median salary trend line")
     fig_city.update_layout(**plotly_dark_layout(height=380))
     fig_city.update_layout(
         xaxis_title="City",
@@ -880,9 +881,40 @@ if personalized_mode and phrases and not agg.empty:
         # Get current city comparison
         current_city_data = rk_data[rk_data["city_key"] == user_ck]
         current_postings = current_city_data.iloc[0]["postings"] if not current_city_data.empty else 0
-        volume_improvement = best_postings / current_postings if current_postings > 0 else 1
-        
-        st.markdown(f"""
+        volume_improvement = (best_postings / current_postings) if current_postings > 0 else None
+        if volume_improvement is None:
+            volume_text = "N/A (no baseline city volume)"
+        else:
+            volume_text = f"{volume_improvement:.1f}× more jobs"
+
+        opportunity_items = []
+        if opportunities:
+            opportunity_items.extend(opportunities)
+        else:
+            opportunity_items.append("Strong overall ranking in our analysis")
+        if volume_improvement is not None and volume_improvement > 1.05:
+            opportunity_items.append("Higher job volume than your current city")
+        elif volume_improvement is not None and volume_improvement < 0.95:
+            opportunity_items.append("Lower job volume than your current city")
+        else:
+            opportunity_items.append("Comparable job volume to your current city")
+        if best_skill_match > 0.4:
+            opportunity_items.append("Good skill-job alignment")
+
+        risk_items = []
+        if risks:
+            risk_items.extend(risks)
+        else:
+            risk_items.append("Research local industry trends")
+        risk_items.extend([
+            "Verify housing and commute options",
+            "Consider networking and cultural fit",
+        ])
+
+        opportunities_html = "".join(f"<li>{item}</li>" for item in opportunity_items)
+        risks_html = "".join(f"<li>{item}</li>" for item in risk_items)
+
+        recommendation_html = dedent(f"""
         <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(99,102,241,0.1) 100%);
                     border:2px solid rgba(16,185,129,0.3); border-radius:16px; padding:2rem; margin:2rem 0;">
             <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1.5rem;">
@@ -924,7 +956,7 @@ if personalized_mode and phrases and not agg.empty:
                             Job Volume vs Your City
                         </div>
                         <div style="font-size:1.1rem; font-weight:700; color:#34d399;">
-                            {volume_improvement:.1f}× more jobs
+                            {volume_text}
                         </div>
                     </div>
                     <div>
@@ -941,22 +973,18 @@ if personalized_mode and phrases and not agg.empty:
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
                 <div>
                     <div style="font-size:0.9rem; font-weight:700; color:#10b981; margin-bottom:0.8rem;">
-                        âœ… Opportunities
+                        ✅ Opportunities
                     </div>
                     <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
-                        {"".join(f"<li>{opp}</li>" for opp in opportunities) if opportunities else "<li>Strong overall ranking in our analysis</li>"}
-                        <li>Higher job volume than your current city</li>
-                        {"<li>Good skill-job alignment</li>" if best_skill_match > 0.4 else ""}
+                        {opportunities_html}
                     </ul>
                 </div>
                 <div>
                     <div style="font-size:0.9rem; font-weight:700; color:#f59e0b; margin-bottom:0.8rem;">
-                        âš ï¸ Considerations
+                        ⚠️ Considerations
                     </div>
                     <ul style="margin:0; padding-left:1.2rem; color:#cbd5e1; font-size:0.85rem; line-height:1.6;">
-                        {"".join(f"<li>{risk}</li>" for risk in risks) if risks else "<li>Research local industry trends</li>"}
-                        <li>Verify housing and commute options</li>
-                        <li>Consider networking and cultural fit</li>
+                        {risks_html}
                     </ul>
                 </div>
             </div>
@@ -969,7 +997,8 @@ if personalized_mode and phrases and not agg.empty:
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
+        st.markdown(recommendation_html, unsafe_allow_html=True)
         
         # Alternative recommendations
         if len(rk_data) > 1:

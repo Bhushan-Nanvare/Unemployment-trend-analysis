@@ -77,8 +77,8 @@ try:
         lm = sa.LOCATION_MULTIPLIERS[loc]
         loc_adj = base * lm
         lpa = loc_adj / 100_000
-        flag = "  ✓" if 3 <= lpa <= 200 else "  ⚠ SUSPICIOUS"
-        print(f"  {role:12s} {exp:2d}yr  =>  base ₹{base:>10,.0f}  loc-adj ₹{loc_adj:>10,.0f}  ({lpa:.1f} LPA){flag}")
+        flag = "  OK" if 3 <= lpa <= 200 else "  WARN SUSPICIOUS"
+        print(f"  {role:12s} {exp:2d}yr  =>  base INR {base:>10,.0f}  loc-adj INR {loc_adj:>10,.0f}  ({lpa:.1f} LPA){flag}")
 except Exception as e:
     print(f"  ERR: {e}")
     traceback.print_exc()
@@ -107,8 +107,8 @@ try:
     recs = re.generate_recommendations(FRP(), FRP(), 500_000)
     for r in recs:
         lo, hi = r.salary_impact
-        flag = "✓ INR" if lo >= 10_000 else "⚠ Looks like USD (too small)"
-        print(f"  {r.action[:55]:<55} impact: ₹{lo:,}–₹{hi:,}  {flag}")
+        flag = "OK INR" if lo >= 10_000 else "WARN Looks like USD (too small)"
+        print(f"  {r.action[:55]:<55} impact: INR {lo:,} to INR {hi:,}  {flag}")
 except Exception as e:
     print(f"  ERR: {e}")
     traceback.print_exc()
@@ -168,6 +168,6 @@ except Exception as e:
 # ── Result ───────────────────────────────────────────────────────────────────
 print()
 print("=" * 60)
-print("RESULT:", "ALL CHECKS PASSED ✓" if all_ok else "SOME CHECKS FAILED — see above")
+print("RESULT:", "ALL CHECKS PASSED" if all_ok else "SOME CHECKS FAILED - see above")
 print("=" * 60)
 sys.exit(0 if all_ok else 1)
