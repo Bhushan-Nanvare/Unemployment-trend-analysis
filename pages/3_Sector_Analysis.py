@@ -43,7 +43,7 @@ st.markdown("""
 
 from src.api import simulate_scenario, ScenarioRequest
 
-tab_sim, tab_live = st.tabs(["🧪 Scenario Simulation", "🌐 Live World Bank Data"])
+tab_sim, tab_live = st.tabs(["🧪 Scenario Simulation", "📄 Offline Reference"])
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1 — SCENARIO SIMULATION
@@ -286,37 +286,18 @@ with tab_live:
     <div style="background:rgba(6,182,212,0.07); border:1px solid rgba(6,182,212,0.2);
                 border-radius:14px; padding:1rem 1.4rem; margin-bottom:1.5rem;">
         <div style="font-size:0.78rem; font-weight:700; color:#06b6d4; text-transform:uppercase;
-                    letter-spacing:1px; margin-bottom:0.3rem;">🌐 Data Source</div>
+                    letter-spacing:1px; margin-bottom:0.3rem;">📄 Data Source</div>
         <div style="font-size:0.88rem; color:#94a3b8; line-height:1.6;">
-            Employment and GDP share figures come from the
-            <strong style="color:#e2e8f0;">World Bank Open Data API</strong> (free, no key required).
-            Values are the most recently published annual figures — typically 1–2 years behind the
-            current calendar year due to national statistical reporting lags.
-            Indicators: <code>SL.AGR/IND/SRV.EMPL.ZS</code> (employment share) ·
-            <code>NV.AGR/IND/SRV/IND.MANF.ZS</code> (GDP share). Cached for 24 hours.
+            Live World Bank API data has been disabled for reliability on Streamlit Cloud.
+            This tab is kept as a placeholder for future offline sector reference datasets.
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    @st.cache_data(ttl=86400)
-    def load_live_sector_data():
-        return fetch_sector_indicators("India")
-
-    col_btn, _ = st.columns([1, 4])
-    with col_btn:
-        if st.button("🔄 Refresh Live Data", key="refresh_live"):
-            st.cache_data.clear()
-            st.rerun()
-
-    with st.spinner("Fetching sector data from World Bank API…"):
-        live_df = load_live_sector_data()
+    live_df = fetch_sector_indicators("India")
 
     if live_df.empty:
-        st.warning("""
-        ⚠️ Could not retrieve live sector data from the World Bank API.
-        This may be due to network issues or API rate limiting.
-        Please check your internet connection and try refreshing.
-        """)
+        st.info("Offline sector reference data is not available in this build.")
     else:
         # ── AI Insights ────────────────────────────────────────────────────────
         sector_insights = generate_sector_insights(live_df)

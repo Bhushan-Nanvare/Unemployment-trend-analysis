@@ -1,13 +1,12 @@
 """
 live_data.py
-Fetches current unemployment and sector data from the World Bank Open API
-(free, no API key required).
-Falls back to local CSV for unemployment when the API is unavailable.
+Offline data access layer.
 
-World Bank API docs: https://datahelpdesk.worldbank.org/knowledgebase/articles/889392
+This project previously fetched live time series from the World Bank Open API.
+For Streamlit Cloud reliability (network/rate-limit variability), we now run in
+offline-only mode and load curated local CSVs bundled with the repo.
 """
 import time
-import requests
 import pandas as pd
 from pathlib import Path
 from typing import Optional
@@ -16,6 +15,9 @@ WB_API = "https://api.worldbank.org/v2/country/{iso}/indicator/SL.UEM.TOTL.ZS"
 WB_INDICATOR_API = "https://api.worldbank.org/v2/country/{iso}/indicator/{indicator}"
 FALLBACK_CSV = Path("data/raw/india_unemployment.csv")
 COUNTRY_ISO = {"India": "IN"}
+
+# Disable all live HTTP calls (Streamlit Cloud reliability).
+OFFLINE_ONLY = True
 
 # ── World Bank sector indicators ───────────────────────────────────────────────
 # These three sector categories (Agriculture, Industry, Services) are the standard
@@ -54,11 +56,8 @@ _cache: dict = {}          # key → {"df": pd.DataFrame, "ts": float}
 
 def fetch_world_bank(country: str = "India", per_page: int = 65) -> pd.DataFrame:
     """
-    Pulls unemployment rate from realistic local data first, then World Bank API as fallback.
+    Offline-only: pulls unemployment rate from realistic local data.
     Returns DataFrame with columns: Year (int), Unemployment_Rate (float).
-    
-    Note: World Bank API data for India shows questionable trends post-2019,
-    so we prioritize curated realistic data that reflects actual economic conditions.
     """
     iso = COUNTRY_ISO.get(country, "IN")
     cache_key = f"{country}_{per_page}"
@@ -67,47 +66,14 @@ def fetch_world_bank(country: str = "India", per_page: int = 65) -> pd.DataFrame
     if entry and (time.time() - entry["ts"]) < _CACHE_TTL_SECONDS:
         return entry["df"]
 
-    # First try realistic local data
+    # Use realistic local data
     realistic_df = _load_fallback(country)
     if not realistic_df.empty and len(realistic_df) >= 20:
         # Use realistic data if it has sufficient coverage
         _cache[cache_key] = {"df": realistic_df, "ts": time.time()}
         return realistic_df
 
-    # Fallback to World Bank API (with known data quality issues)
-    url = WB_API.format(iso=iso)
-    params = {"format": "json", "per_page": per_page, "mrv": per_page}
-
-    try:
-        resp = requests.get(url, params=params, timeout=10)
-        resp.raise_for_status()
-        data = resp.json()
-
-        if not data or len(data) < 2 or not data[1]:
-            raise ValueError("Empty response from World Bank API")
-
-        records = []
-        for entry_raw in data[1]:
-            yr = entry_raw.get("date")
-            val = entry_raw.get("value")
-            if yr and val is not None:
-                try:
-                    records.append({"Year": int(yr), "Unemployment_Rate": float(val)})
-                except (ValueError, TypeError):
-                    continue
-
-        if not records:
-            raise ValueError("No valid records in API response")
-
-        df = pd.DataFrame(records).sort_values("Year").reset_index(drop=True)
-        df = df.dropna(subset=["Unemployment_Rate"])
-        df = df[df["Unemployment_Rate"] > 0]
-
-        _cache[cache_key] = {"df": df, "ts": time.time()}
-        return df
-
-    except Exception:
-        return _load_fallback(country)
+    return realistic_df
 
 
 def _load_fallback(country: str = "India") -> pd.DataFrame:
@@ -129,35 +95,11 @@ def _load_fallback(country: str = "India") -> pd.DataFrame:
 
 
 def get_data_source_label(country: str = "India") -> str:
-    """Returns whether data came from realistic local data, live API, or fallback.
-
-    Checks the in-process cache first — if fetch_world_bank() already succeeded
-    this session the answer is known without making a second HTTP call.
-    """
-    # Check if realistic data is being used
+    """Describe the current data mode (offline-only)."""
     realistic_path = Path("data/raw/india_unemployment_realistic.csv")
     if realistic_path.exists():
-        return "🟢 Realistic Data — Curated India trends"
-    
-    # If ANY per_page key for this country is in a valid (non-expired) cache entry,
-    # the API was reachable and we know the answer without a second HTTP call.
-    now = time.time()
-    for key, val in _cache.items():
-        if key.startswith(f"{country}_") and (now - val["ts"]) < _CACHE_TTL_SECONDS:
-            return "🟡 World Bank API — Data quality concerns"
-    # Cache miss — make a minimal probe request.
-    iso = COUNTRY_ISO.get(country, "IN")
-    try:
-        resp = requests.get(
-            WB_API.format(iso=iso),
-            params={"format": "json", "per_page": 1, "mrv": 1},
-            timeout=5,
-        )
-        if resp.status_code == 200:
-            return "🟡 World Bank API — Data quality concerns"
-    except Exception:
-        pass
-    return "🔴 Offline — Local CSV fallback"
+        return "🟡 Offline — Curated local CSV (no live API)"
+    return "🟡 Offline — Local CSV (no live API)"
 
 
 def clear_cache() -> None:
@@ -189,9 +131,12 @@ def _fetch_indicator_series(
     Returns DataFrame with columns: Year (int), Value (float).
     Returns empty DataFrame on any error.
     """
+    if OFFLINE_ONLY:
+        return pd.DataFrame(columns=["Year", "Value"])
     url = WB_INDICATOR_API.format(iso=iso, indicator=indicator)
     params = {"format": "json", "per_page": per_page, "mrv": per_page}
     try:
+        import requests
         resp = requests.get(url, params=params, timeout=12)
         resp.raise_for_status()
         data = resp.json()
@@ -230,6 +175,8 @@ def fetch_gdp_growth(country: str = "India", per_page: int = 35) -> pd.DataFrame
     if entry and (time.time() - entry["ts"]) < _CACHE_TTL_SECONDS:
         return entry["df"]
 
+    if OFFLINE_ONLY:
+        return pd.DataFrame(columns=["Year", "Value"])
     for attempt in range(2):
         df = _fetch_indicator_series("NY.GDP.MKTP.KD.ZG", iso=iso, per_page=per_page)
         if not df.empty:
@@ -252,13 +199,15 @@ def fetch_labor_market_pulse(country: str = "India") -> dict:
     if entry and (time.time() - entry["ts"]) < _CACHE_TTL_SECONDS:
         return entry["df"]
 
-    iso = COUNTRY_ISO.get(country, "IN")
+    # Offline-only: provide what we have locally.
+    # We can always provide the unemployment series from the bundled CSV.
     result = {}
-    for label, code in LABOR_MARKET_INDICATORS.items():
-        series = _fetch_indicator_series(code, iso)
-        if not series.empty:
-            result[label] = series
-
+    if country.lower() == "india":
+        ue = fetch_world_bank("India")
+        if ue is not None and not ue.empty:
+            result["Unemployment Rate (%)"] = ue.rename(
+                columns={"Unemployment_Rate": "Value"}
+            )[["Year", "Value"]].copy()
     if result:
         _cache[cache_key] = {"df": result, "ts": time.time()}
     return result
@@ -277,9 +226,12 @@ def _fetch_single_indicator(
     We ask for up to `mrv` most-recent values and take the first non-null one,
     because some series have a 1-2 year reporting lag.
     """
+    if OFFLINE_ONLY:
+        return None
     url = WB_INDICATOR_API.format(iso=iso, indicator=indicator)
     params = {"format": "json", "mrv": mrv}
     try:
+        import requests
         resp = requests.get(url, params=params, timeout=25)
         resp.raise_for_status()
         data = resp.json()
@@ -312,6 +264,9 @@ def fetch_sector_indicators(country: str = "India") -> pd.DataFrame:
     entry = _cache.get(cache_key)
     if entry and (time.time() - entry["ts"]) < _CACHE_TTL_SECONDS:
         return entry["df"]
+
+    if OFFLINE_ONLY:
+        return pd.DataFrame(columns=["Sector", "Employment_Share", "GDP_Share", "Source"])
 
     iso = COUNTRY_ISO.get(country, "IN")
     rows = []

@@ -56,7 +56,7 @@ st.markdown("""
     </div>
 </div>""", unsafe_allow_html=True)
 
-tab_postings, tab_live = st.tabs(["📋 Job Postings Analysis", "🌐 Live India Labor Data"])
+tab_postings, tab_live = st.tabs(["📋 Job Postings Analysis", "📄 Offline Labor Data"])
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1 — JOB POSTINGS ANALYSIS
@@ -537,52 +537,21 @@ with tab_live:
                 border-radius:14px; padding:1rem 1.5rem; margin-bottom:1.5rem;">
         <div style="font-size:0.82rem; font-weight:700; color:#34d399;
                     text-transform:uppercase; letter-spacing:1px; margin-bottom:0.3rem;">
-            🌐 World Bank Open Data — India
+            📄 Offline mode
         </div>
         <div style="font-size:0.85rem; color:#94a3b8; line-height:1.55;">
-            Official labor market statistics for India sourced live from the
-            <strong style="color:#e2e8f0;">World Bank Open Data API</strong>
-            (free, no authentication required). Data covers 1991–2023;
-            1–2 year reporting lag is normal for national statistics.
-            World averages fetched from the same API for direct comparison.
+            Live World Bank API data has been disabled for reliability on Streamlit Cloud.
+            This view now shows only what’s available from bundled offline datasets.
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    col_r, _ = st.columns([1, 4])
-    with col_r:
-        if st.button("🔄 Refresh Data", key="refresh_live_pulse"):
-            st.cache_data.clear()
-            st.rerun()
-
-    @st.cache_data(ttl=86400)
-    def _load_india_labor():
-        return fetch_labor_market_pulse("India")
-
-    @st.cache_data(ttl=86400)
-    def _load_world_labor():
-        try:
-            return fetch_labor_market_pulse("World")
-        except Exception:
-            return {}
-
-    @st.cache_data(ttl=86400)
-    def _load_gdp():
-        try:
-            return fetch_gdp_growth("India")
-        except Exception:
-            return None
-
-    with st.spinner("Fetching live World Bank data…"):
-        live_data  = _load_india_labor()
-        world_data = _load_world_labor()
-        gdp_df     = _load_gdp()
+    live_data = fetch_labor_market_pulse("India")
+    world_data = {}
+    gdp_df = None
 
     if not live_data:
-        st.error(
-            "⚠️ Could not fetch India labor data from the World Bank API. "
-            "Please check your internet connection and try Refresh."
-        )
+        st.info("No offline labor indicator dataset is available here (job postings analysis is still fully functional).")
     else:
         # ── AI Insights ────────────────────────────────────────────────────────
         labor_insights = generate_labor_market_insights(live_data)
@@ -682,60 +651,7 @@ with tab_live:
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── GDP growth overlay ─────────────────────────────────────────────────
-        ue_series = live_data.get("Unemployment Rate (%)")
-        if gdp_df is not None and not gdp_df.empty and ue_series is not None and not ue_series.empty:
-            st.markdown(
-                '<div class="section-title">📉 Unemployment vs GDP Growth — Okun\'s Relationship</div>',
-                unsafe_allow_html=True,
-            )
-            st.markdown("""
-            <div style="font-size:0.82rem; color:#64748b; margin-bottom:0.5rem;">
-                Overlaying India's GDP growth (left axis) against unemployment (right axis).
-                Per Okun's Law, unemployment typically rises when GDP growth falls below ~6.5%
-                (India's potential rate). Divergences signal structural labour market stress.
-            </div>""", unsafe_allow_html=True)
-
-            gdp_merged = gdp_df.rename(columns={"GDP_Growth": "gdp"}) if "GDP_Growth" in gdp_df.columns else None
-            if gdp_merged is None and "Value" in gdp_df.columns:
-                gdp_merged = gdp_df.rename(columns={"Value": "gdp"})
-
-            if gdp_merged is not None and "Year" in gdp_merged.columns:
-                fig_okun = go.Figure()
-                fig_okun.add_trace(go.Bar(
-                    x=gdp_merged["Year"], y=gdp_merged["gdp"],
-                    name="GDP Growth (%)",
-                    marker_color="rgba(16,185,129,0.55)",
-                    yaxis="y1",
-                    hovertemplate="<b>GDP Growth</b><br>%{x}: %{y:.2f}%<extra></extra>",
-                ))
-                fig_okun.add_trace(go.Scatter(
-                    x=ue_series["Year"], y=ue_series["Value"],
-                    name="Unemployment (%)",
-                    line=dict(color="#ef4444", width=2.5),
-                    marker=dict(size=5),
-                    yaxis="y2",
-                    hovertemplate="<b>Unemployment</b><br>%{x}: %{y:.2f}%<extra></extra>",
-                ))
-                # Potential growth reference line
-                fig_okun.add_hline(
-                    y=6.5, line_dash="dot",
-                    line_color="rgba(99,102,241,0.5)", line_width=1.5,
-                    annotation_text="~6.5% potential (IMF/RBI)", annotation_position="top right",
-                    annotation_font_color="#818cf8",
-                )
-                layout_cfg = plotly_dark_layout(height=380, showlegend=True)
-                layout_cfg.update(dict(
-                    xaxis_title="Year",
-                    yaxis=dict(title="GDP Growth (%)", color="#10b981",
-                               gridcolor="rgba(255,255,255,0.05)"),
-                    yaxis2=dict(title="Unemployment (%)", color="#ef4444",
-                                overlaying="y", side="right",
-                                gridcolor="rgba(255,255,255,0)"),
-                ))
-                fig_okun.update_layout(**layout_cfg)
-                st.plotly_chart(fig_okun, use_container_width=True)
-                st.markdown("<br>", unsafe_allow_html=True)
+        # GDP growth overlay removed in offline-only mode.
 
         # ── Gender & age breakdown ─────────────────────────────────────────────
         col_l, col_r = st.columns(2)
@@ -814,15 +730,10 @@ with tab_live:
 
         # ── India vs World benchmarks (NEW) ────────────────────────────────────
         st.markdown(
-            '<div class="section-title">🌍 India vs World — Key Benchmarks</div>',
+            '<div class="section-title">🌍 Benchmarks</div>',
             unsafe_allow_html=True,
         )
-        st.markdown("""
-        <div style="font-size:0.82rem; color:#64748b; margin-bottom:0.8rem; line-height:1.5;">
-            Live comparison of India's latest published values against World Bank global averages
-            (same API, "World" aggregate). Both sourced from the World Bank Open Data API —
-            no hardcoded values.
-        </div>""", unsafe_allow_html=True)
+        st.info("India vs World benchmarks are unavailable in offline-only mode.")
 
         BENCH_INDICATORS = [
             "Unemployment Rate (%)",
@@ -905,7 +816,7 @@ with tab_live:
             else:
                 st.info("Benchmark comparison unavailable — could not fetch World average data. Check internet connection.")
 
-        # ── Export live data ──────────────────────────────────────────────────
+        # ── Export offline data ───────────────────────────────────────────────
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown('<div class="section-title">📥 Export Live Data</div>',
                     unsafe_allow_html=True)
@@ -919,12 +830,11 @@ with tab_live:
             export_df = pd.concat(export_frames, ignore_index=True)[["Indicator", "Year", "Value"]]
             csv_bytes = export_df.to_csv(index=False).encode()
             st.download_button(
-                "⬇️ Download World Bank India Labor Data (CSV)",
+                "⬇️ Download India labor indicators (CSV)",
                 csv_bytes,
-                file_name="india_labor_market_worldbank.csv",
+                file_name="india_labor_market_offline.csv",
                 mime="text/csv",
             )
             st.caption(
-                "Source: World Bank Open Data · Indicators: SL.UEM.*, SL.TLF.*, SL.EMP.* · "
-                "All values are official published national statistics."
+                "Source: Offline dataset bundled with this app."
             )
