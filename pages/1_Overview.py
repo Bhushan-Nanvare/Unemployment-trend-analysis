@@ -311,130 +311,265 @@ if not gdp_df_chart.empty and not wb_hist.empty:
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown(f"""
-    <div style="background:rgba(99,102,241,0.07); border:1px solid rgba(99,102,241,0.2);
-                border-radius:10px; padding:0.8rem 1.2rem; font-size:0.87rem; color:#94a3b8;">
-        📐 <strong style="color:#818cf8;">Economic Relationship Analysis:</strong>
-        Historical correlation between GDP growth and unemployment = <strong style="color:#e2e8f0;">{corr:.2f}</strong>
-        — a {direction} relationship
-        {'(as expected — higher growth → lower unemployment)' if corr < 0 else '(weaker than expected for India due to informal sector)'}.{okun_info}
-    </div>
-    """, unsafe_allow_html=True)
-else:
-    st.info("GDP growth data unavailable — check World Bank API connectivity.")
+# ── Forward-Looking Recession Risk Indicator ───────────────────────────────────
 
-st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# ── Recession Risk Indicator ───────────────────────────────────────────────────
-
-st.markdown('<div class="section-title">🚨 Recession Risk Indicator</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">🚨 Forward-Looking Recession Risk Indicator</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="font-size:0.85rem; color:#64748b; margin-bottom:1rem; line-height:1.6;">
-    A composite risk score based on <strong style="color:#e2e8f0;">GDP growth deceleration</strong>,
-    <strong style="color:#e2e8f0;">unemployment trend</strong>, and
-    <strong style="color:#e2e8f0;">forecast trajectory</strong>.
-    Industry-standard early warning signal for economic downturns.
+    A <strong style="color:#e2e8f0;">forward-looking</strong> composite built from five independent
+    leading signals — Sahm Rule, GDP momentum, output gap, 2-year forecast trajectory, and
+    Okun's Law consistency — calibrated for India's economic structure.
+    Each signal independently detects deteriorating conditions <em>before</em> a recession is confirmed.
 </div>
 """, unsafe_allow_html=True)
 
-@st.cache_data(ttl=86400, show_spinner=False)
-def compute_recession_risk():
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def compute_forward_recession_risk():
+    """
+    Forward-looking recession risk indicator for India.
+    Five independent leading signals, each scored 0-100, then weighted into a composite.
+
+    Signal 1 — Sahm Rule (adapted for annual data)
+        Classic NBER early-warning: recession flags when UE rises ≥0.5pp above recent trough.
+        Adapted here for annual data (India); threshold calibrated at 0.4pp (annual series
+        are smoother than monthly, so a lower delta is equally informative).
+
+    Signal 2 — GDP Growth Momentum (2nd derivative)
+        Not just whether GDP is low, but whether it is *decelerating*.
+        Rapid deceleration (falling >1.5pp/yr) historically precedes recessions.
+
+    Signal 3 — Output Gap vs Potential (6.5%)
+        India's consensus potential growth is ~6-7%. GDP growing well below potential
+        signals excess slack and rising recession risk.
+
+    Signal 4 — 2-Year UE Forecast Trajectory
+        Uses the in-app ForecastingEngine (ensemble) to check whether unemployment
+        is statistically projected to rise over the next two years — a genuine
+        forward-looking signal.
+
+    Signal 5 — Okun's Law Consistency Check
+        Okun's Law: GDP growth and unemployment move in opposite directions.
+        Violation (both rising, or GDP high but UE also high) flags structural stress.
+    """
     gdp_df = fetch_gdp_growth("India")
-    ue_df = fetch_world_bank("India")
-    
-    if gdp_df.empty or ue_df.empty or len(gdp_df) < 3 or len(ue_df) < 3:
-        return None, "Insufficient data"
-    
-    # GDP growth deceleration (last 3 years)
-    gdp_recent = gdp_df.tail(3)
-    gdp_trend = (gdp_recent.iloc[-1]["Value"] - gdp_recent.iloc[0]["Value"]) / 2
-    gdp_latest = gdp_recent.iloc[-1]["Value"]
-    
-    # Unemployment trend (last 3 years)
-    ue_recent = ue_df.tail(3)
-    ue_trend = (ue_recent.iloc[-1]["Unemployment_Rate"] - ue_recent.iloc[0]["Unemployment_Rate"]) / 2
-    ue_latest = ue_recent.iloc[-1]["Unemployment_Rate"]
-    
-    # Risk scoring (0-100 scale)
-    risk_score = 0
-    factors = []
-    
-    # Factor 1: GDP growth below 4% (India's potential growth ~6-7%)
-    if gdp_latest < 4.0:
-        risk_score += 30
-        factors.append(f"GDP growth at {gdp_latest:.1f}% (below 4% threshold)")
-    elif gdp_latest < 5.5:
-        risk_score += 15
-        factors.append(f"GDP growth at {gdp_latest:.1f}% (moderate)")
-    
-    # Factor 2: GDP decelerating
-    if gdp_trend < -0.5:
-        risk_score += 25
-        factors.append(f"GDP decelerating ({gdp_trend:.1f}pp/yr)")
-    elif gdp_trend < 0:
-        risk_score += 10
-        factors.append(f"GDP slowing ({gdp_trend:.1f}pp/yr)")
-    
-    # Factor 3: Unemployment rising
-    if ue_trend > 0.3:
-        risk_score += 25
-        factors.append(f"Unemployment rising ({ue_trend:+.1f}pp/yr)")
-    elif ue_trend > 0.1:
-        risk_score += 10
-        factors.append(f"Unemployment edging up ({ue_trend:+.1f}pp/yr)")
-    
-    # Factor 4: Unemployment above 6%
-    if ue_latest > 6.0:
-        risk_score += 20
-        factors.append(f"Unemployment at {ue_latest:.1f}% (elevated)")
-    
-    risk_score = min(risk_score, 100)
-    
-    if risk_score >= 60:
-        risk_label = "🔴 High Risk"
-        risk_color = "#ef4444"
-    elif risk_score >= 35:
-        risk_label = "🟡 Moderate Risk"
-        risk_color = "#f59e0b"
+    ue_df  = fetch_world_bank("India")
+
+    if gdp_df.empty or ue_df.empty or len(gdp_df) < 4 or len(ue_df) < 4:
+        return None, "Insufficient historical data (need ≥4 years)"
+
+    gdp_sorted = gdp_df.sort_values("Year").reset_index(drop=True)
+    ue_sorted  = ue_df.sort_values("Year").reset_index(drop=True)
+    gdp_vals   = gdp_sorted["Value"].values
+    ue_vals    = ue_sorted["Unemployment_Rate"].values
+
+    signals = {}
+
+    # ── Signal 1: Adapted Sahm Rule ────────────────────────────────────────────
+    # Original Sahm: 3-month UE avg rises ≥0.5pp above prior 12-month minimum.
+    # Annual adaptation: current UE vs minimum of the last 4 years.
+    recent_trough = float(ue_vals[-4:].min())
+    current_ue    = float(ue_vals[-1])
+    sahm_delta    = current_ue - recent_trough
+
+    if sahm_delta >= 1.0:
+        sahm_score, sahm_sig = 95, "🔴 Triggered (≥1.0pp rise)"
+    elif sahm_delta >= 0.4:
+        sahm_score, sahm_sig = 65, "🟡 Warning (≥0.4pp rise)"
+    elif sahm_delta >= 0.15:
+        sahm_score, sahm_sig = 30, "🟡 Watch (edging up)"
     else:
-        risk_label = "🟢 Low Risk"
-        risk_color = "#10b981"
-    
+        sahm_score, sahm_sig = 8, "🟢 Clear"
+
+    signals["Sahm Rule (UE Rise from Trough)"] = {
+        "score": sahm_score,
+        "signal": sahm_sig,
+        "detail": f"UE {sahm_delta:+.2f}pp above {recent_trough:.1f}% trough (threshold: 0.4pp)",
+        "weight": 0.30,
+    }
+
+    # ── Signal 2: GDP Growth Momentum (2nd derivative) ─────────────────────────
+    # Rate of change of the growth rate — deceleration is the leading signal,
+    # not the level. We take the 2-year average momentum to reduce noise.
+    if len(gdp_vals) >= 4:
+        mom_1 = float(gdp_vals[-1] - gdp_vals[-2])   # latest year-on-year change
+        mom_2 = float(gdp_vals[-2] - gdp_vals[-3])   # prior year-on-year change
+        momentum = (mom_1 + mom_2) / 2.0              # 2-year average momentum
+
+        if momentum < -2.0:
+            mom_score, mom_sig = 92, "🔴 Sharp Deceleration (>2pp/yr)"
+        elif momentum < -0.8:
+            mom_score, mom_sig = 62, "🟡 Decelerating (0.8–2pp/yr)"
+        elif momentum < -0.2:
+            mom_score, mom_sig = 30, "🟡 Mild Slowdown"
+        else:
+            mom_score, mom_sig = 6, "🟢 Stable / Accelerating"
+
+        signals["GDP Momentum (2nd Derivative)"] = {
+            "score": mom_score,
+            "signal": mom_sig,
+            "detail": f"Avg 2-yr GDP momentum: {momentum:+.2f}pp/yr",
+            "weight": 0.25,
+        }
+
+    # ── Signal 3: Potential Output Gap ─────────────────────────────────────────
+    # India's consensus potential growth ≈ 6.5% (IMF / RBI estimates).
+    # Large negative gap = output running well below capacity = recession risk.
+    INDIA_POTENTIAL = 6.5
+    gdp_latest = float(gdp_vals[-1])
+    gap = gdp_latest - INDIA_POTENTIAL     # negative → below potential
+
+    if gap < -3.5:
+        gap_score, gap_sig = 90, "🔴 Large Negative Gap (>3.5pp below)"
+    elif gap < -2.0:
+        gap_score, gap_sig = 60, "🟡 Below Potential (2–3.5pp)"
+    elif gap < -0.5:
+        gap_score, gap_sig = 28, "🟡 Marginally Below Potential"
+    else:
+        gap_score, gap_sig = 5, "🟢 At / Above Potential"
+
+    signals["Output Gap (Potential ≈ 6.5%)"] = {
+        "score": gap_score,
+        "signal": gap_sig,
+        "detail": f"GDP at {gdp_latest:.1f}% vs potential {INDIA_POTENTIAL}% (gap: {gap:+.1f}pp)",
+        "weight": 0.20,
+    }
+
+    # ── Signal 4: 2-Year UE Forecast Trajectory ────────────────────────────────
+    # Run the ensemble forecasting engine; if UE is projected to rise
+    # over the next 2 years that is a genuine forward-looking warning.
+    try:
+        engine = ForecastingEngine(forecast_horizon=3, method="ensemble")
+        fc = engine.forecast_with_confidence(ue_sorted)
+        if fc is not None and len(fc) >= 2:
+            fc_2yr    = float(fc["Predicted_Unemployment"].iloc[1])
+            fc_delta  = fc_2yr - current_ue
+
+            if fc_delta > 1.2:
+                traj_score, traj_sig = 90, "🔴 Rising Sharply (+>1.2pp forecast)"
+            elif fc_delta > 0.5:
+                traj_score, traj_sig = 62, "🟡 Rising (+0.5–1.2pp forecast)"
+            elif fc_delta > 0.15:
+                traj_score, traj_sig = 32, "🟡 Edging Up"
+            else:
+                traj_score, traj_sig = 8, "🟢 Stable / Falling"
+
+            signals["2-Year UE Forecast (Ensemble)"] = {
+                "score": traj_score,
+                "signal": traj_sig,
+                "detail": (
+                    f"UE projected at {fc_2yr:.1f}% in 2 yrs "
+                    f"({fc_delta:+.2f}pp from current {current_ue:.1f}%)"
+                ),
+                "weight": 0.15,
+            }
+    except Exception:
+        pass   # forecast unavailable → signal omitted, weights renormalise
+
+    # ── Signal 5: Okun's Law Consistency Check ─────────────────────────────────
+    # Okun's Law: when GDP grows robustly, unemployment should fall.
+    # A violation (both moving the wrong way, or GDP well above potential
+    # while UE is also elevated) flags structural fragility.
+    if len(gdp_vals) >= 2 and len(ue_vals) >= 2:
+        gdp_chg = float(gdp_vals[-1] - gdp_vals[-2])
+        ue_chg  = float(ue_vals[-1]  - ue_vals[-2])
+
+        # Hard violation: growth collapsing AND UE rising
+        # Soft violation: GDP merely slowing while UE also rises
+        if gdp_chg < 1.5 and ue_chg > 0.25:
+            okun_score, okun_sig = 85, "🔴 Okun Violation (growth & UE diverging)"
+            okun_detail = (
+                f"GDP Δ {gdp_chg:+.1f}pp — UE Δ {ue_chg:+.2f}pp: "
+                "labour market not responding to growth"
+            )
+        elif gdp_chg < 4.0 and ue_chg > 0.0:
+            okun_score, okun_sig = 45, "🟡 Weak Okun Relationship"
+            okun_detail = (
+                f"GDP slowing ({gdp_chg:+.1f}pp) while UE also rising ({ue_chg:+.2f}pp)"
+            )
+        else:
+            okun_score, okun_sig = 8, "🟢 Normal (GDP ↑ → UE ↓)"
+            okun_detail = "GDP and unemployment moving in expected opposing directions"
+
+        signals["Okun's Law Consistency"] = {
+            "score": okun_score,
+            "signal": okun_sig,
+            "detail": okun_detail,
+            "weight": 0.10,
+        }
+
+    # ── Weighted composite ──────────────────────────────────────────────────────
+    total_w   = sum(s["weight"] for s in signals.values())
+    composite = (
+        sum(s["score"] * s["weight"] for s in signals.values()) / total_w
+        if total_w > 0 else 0
+    )
+    composite = min(round(composite, 1), 100)
+
+    if composite >= 65:
+        label   = "🔴 High Risk"
+        color   = "#ef4444"
+        outlook = (
+            "Multiple leading indicators are flashing red. "
+            "Elevated probability of economic contraction within 12 months."
+        )
+    elif composite >= 40:
+        label   = "🟡 Moderate Risk"
+        color   = "#f59e0b"
+        outlook = (
+            "Several forward-looking signals are weakening. "
+            "Monitor closely — conditions could deteriorate."
+        )
+    elif composite >= 20:
+        label   = "🟡 Low-Moderate Risk"
+        color   = "#84cc16"
+        outlook = (
+            "Economy is showing resilience but one or two signals warrant caution."
+        )
+    else:
+        label   = "🟢 Low Risk"
+        color   = "#10b981"
+        outlook = (
+            "Leading indicators broadly positive. "
+            "Continued expansion is the base-case scenario."
+        )
+
     return {
-        "score": risk_score,
-        "label": risk_label,
-        "color": risk_color,
-        "factors": factors,
-        "gdp_latest": gdp_latest,
-        "ue_latest": ue_latest,
+        "score":   composite,
+        "label":   label,
+        "color":   color,
+        "outlook": outlook,
+        "signals": signals,
     }, None
 
-risk_data, risk_err = compute_recession_risk()
+
+risk_data, risk_err = compute_forward_recession_risk()
 
 if risk_err:
     st.info(f"Recession risk indicator unavailable: {risk_err}")
 else:
-    col_risk1, col_risk2 = st.columns([1, 2])
-    
-    with col_risk1:
-        # Gauge chart
+    # ── Layout: gauge left | signal cards right ─────────────────────────────
+    col_gauge, col_signals = st.columns([1, 2])
+
+    with col_gauge:
         fig_gauge = go.Figure(go.Indicator(
             mode="gauge+number",
             value=risk_data["score"],
-            title={"text": "Risk Score", "font": {"color": "#e2e8f0", "size": 16}},
-            number={"font": {"color": "#e2e8f0", "size": 32}},
+            title={"text": "Composite Risk Score", "font": {"color": "#e2e8f0", "size": 14}},
+            number={"suffix": " / 100", "font": {"color": "#e2e8f0", "size": 28}},
             gauge={
-                "axis": {"range": [0, 100], "tickcolor": "#64748b"},
-                "bar": {"color": risk_data["color"]},
-                "bgcolor": "rgba(0,0,0,0.2)",
+                "axis": {"range": [0, 100], "tickcolor": "#64748b",
+                          "tickvals": [0, 20, 40, 65, 100],
+                          "ticktext": ["0", "20", "40", "65", "100"]},
+                "bar":  {"color": risk_data["color"]},
+                "bgcolor":     "rgba(0,0,0,0.2)",
                 "borderwidth": 2,
                 "bordercolor": "#334155",
                 "steps": [
-                    {"range": [0, 35], "color": "rgba(16,185,129,0.15)"},
-                    {"range": [35, 60], "color": "rgba(245,158,11,0.15)"},
-                    {"range": [60, 100], "color": "rgba(239,68,68,0.15)"},
+                    {"range": [0,  20], "color": "rgba(16,185,129,0.18)"},
+                    {"range": [20, 40], "color": "rgba(132,204,22,0.15)"},
+                    {"range": [40, 65], "color": "rgba(245,158,11,0.15)"},
+                    {"range": [65,100], "color": "rgba(239,68,68,0.15)"},
                 ],
                 "threshold": {
                     "line": {"color": risk_data["color"], "width": 4},
@@ -447,38 +582,98 @@ else:
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font={"color": "#e2e8f0"},
-            height=280,
-            margin=dict(l=20, r=20, t=40, b=20),
+            height=300,
+            margin=dict(l=20, r=20, t=50, b=10),
         )
         st.plotly_chart(fig_gauge, use_container_width=True)
-        
+
         st.markdown(f"""
-        <div style="text-align:center; font-size:1.1rem; font-weight:700; color:{risk_data['color']}; margin-top:-1rem;">
+        <div style="text-align:center; font-size:1.15rem; font-weight:700;
+                    color:{risk_data['color']}; margin-top:-0.5rem;">
             {risk_data['label']}
         </div>
-        """, unsafe_allow_html=True)
-    
-    with col_risk2:
-        st.markdown("**Risk Factors:**")
-        if risk_data["factors"]:
-            for factor in risk_data["factors"]:
-                st.markdown(f"• {factor}")
-        else:
-            st.markdown("• No significant risk factors detected")
-            st.markdown(f"• GDP growth healthy at {risk_data['gdp_latest']:.1f}%")
-            st.markdown(f"• Unemployment stable at {risk_data['ue_latest']:.1f}%")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("""
-        <div style="font-size:0.82rem; color:#64748b; line-height:1.6;">
-            <strong style="color:#94a3b8;">Methodology:</strong>
-            Risk score combines GDP growth level & trend with unemployment level & trend.
-            Thresholds calibrated for India's economic structure (potential growth ~6-7%, structural UE ~4-5%).
-            This is an <strong style="color:#94a3b8;">early warning indicator</strong>, not a recession prediction.
+        <div style="text-align:center; font-size:0.8rem; color:#64748b;
+                    margin-top:0.5rem; line-height:1.5; padding:0 0.5rem;">
+            {risk_data['outlook']}
         </div>
         """, unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
+    with col_signals:
+        st.markdown(
+            '<div style="font-size:0.87rem; font-weight:700; color:#94a3b8; '
+            'margin-bottom:0.7rem; text-transform:uppercase; letter-spacing:1px;">'
+            '⚡ Leading Signal Dashboard</div>',
+            unsafe_allow_html=True,
+        )
+
+        def _signal_color(score):
+            if score >= 65:
+                return "rgba(239,68,68,0.10)", "rgba(239,68,68,0.35)"
+            elif score >= 38:
+                return "rgba(245,158,11,0.10)", "rgba(245,158,11,0.35)"
+            else:
+                return "rgba(16,185,129,0.10)", "rgba(16,185,129,0.30)"
+
+        for sig_name, sig_info in risk_data["signals"].items():
+            bg, border = _signal_color(sig_info["score"])
+            weight_pct  = int(sig_info["weight"] * 100)
+            score_bar_w = int(sig_info["score"])
+            if sig_info["score"] >= 65:
+                bar_col = "#ef4444"
+            elif sig_info["score"] >= 38:
+                bar_col = "#f59e0b"
+            else:
+                bar_col = "#10b981"
+
+            st.markdown(f"""
+            <div style="background:{bg}; border:1px solid {border}; border-radius:12px;
+                        padding:0.8rem 1.1rem; margin-bottom:0.65rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.84rem; font-weight:700; color:#e2e8f0;">
+                        {sig_name}
+                    </span>
+                    <span style="font-size:0.78rem; color:#64748b; white-space:nowrap; margin-left:0.5rem;">
+                        weight: {weight_pct}%
+                    </span>
+                </div>
+                <div style="display:flex; align-items:center; gap:0.7rem; margin-top:0.4rem;">
+                    <span style="font-size:0.83rem; color:#cbd5e1; min-width:230px;">
+                        {sig_info['signal']}
+                    </span>
+                    <div style="flex:1; background:rgba(255,255,255,0.06); border-radius:999px; height:6px;">
+                        <div style="width:{score_bar_w}%; background:{bar_col};
+                                    border-radius:999px; height:6px;"></div>
+                    </div>
+                    <span style="font-size:0.78rem; color:#64748b; white-space:nowrap;">
+                        {int(sig_info['score'])}/100
+                    </span>
+                </div>
+                <div style="font-size:0.78rem; color:#64748b; margin-top:0.35rem; line-height:1.45;">
+                    {sig_info['detail']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # ── Methodology note ──────────────────────────────────────────────────────
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="background:rgba(99,102,241,0.06); border:1px solid rgba(99,102,241,0.18);
+                border-radius:12px; padding:1rem 1.4rem; font-size:0.82rem; color:#64748b; line-height:1.7;">
+        <strong style="color:#818cf8;">Methodology — 5 Leading Signals (India-calibrated):</strong>
+        <ul style="margin:0.5rem 0 0; padding-left:1.2rem; color:#94a3b8;">
+            <li><strong style="color:#e2e8f0;">Sahm Rule (30%)</strong> — Flags when unemployment rises ≥0.4pp above its 4-year trough (annual adaptation of Claudia Sahm's NBER indicator).</li>
+            <li><strong style="color:#e2e8f0;">GDP Momentum (25%)</strong> — 2nd derivative of GDP growth — rapid deceleration historically leads recessions by 2–4 quarters.</li>
+            <li><strong style="color:#e2e8f0;">Output Gap (20%)</strong> — Difference between actual and potential GDP growth (~6.5% for India per IMF/RBI estimates). Large negative gap = excess slack.</li>
+            <li><strong style="color:#e2e8f0;">2-Year UE Forecast (15%)</strong> — Ensemble time-series projection of unemployment trajectory. A rising forecast is a genuine forward-looking signal.</li>
+            <li><strong style="color:#e2e8f0;">Okun's Law (10%)</strong> — Checks GDP–unemployment consistency. Violations (UE rising despite GDP growth) flag structural deterioration.</li>
+        </ul>
+        <div style="margin-top:0.6rem;">
+            Score 0–20 = Low Risk &nbsp;|&nbsp; 20–40 = Low-Moderate &nbsp;|&nbsp;
+            40–65 = Moderate &nbsp;|&nbsp; 65–100 = High Risk.
+            This is a <strong style="color:#94a3b8;">leading early-warning tool</strong>, not a recession prediction.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ─── Metrics + Table ──────────────────────────────────────────────────────────
 col_l, col_r = st.columns([1, 1])

@@ -13,27 +13,33 @@ from analytics import SalaryEstimate
 class SalaryAnalyzer:
     """Computes location-adjusted and risk-adjusted salary estimates"""
     
-    # Base salary factors
+    # Base salary factors — all values in Indian Rupees (INR)
+    # Base ₹3,50,000 (3.5 LPA) for an Entry-level role with average industry and 0 experience.
+    # Multiplied by role, industry, and experience factors to get realistic India market estimates.
+    BASE_SALARY_INR = 350_000  # ₹3.5 LPA base anchor
+
     BASE_SALARY_FACTORS = {
         "role_level_multiplier": {
+            # Entry: ~₹3.5–5 LPA  |  Mid: ~₹8–12 LPA  |  Senior: ~₹16–25 LPA
+            # Lead: ~₹30–45 LPA   |  Executive: ~₹60–90 LPA
             "Entry": 1.0,
-            "Mid": 1.4,
-            "Senior": 1.9,
-            "Lead": 2.5,
-            "Executive": 3.5,
+            "Mid": 2.2,
+            "Senior": 4.5,
+            "Lead": 8.0,
+            "Executive": 14.0,
         },
         "industry_multiplier": {
-            "Technology / software": 1.3,
+            "Technology / software": 1.30,
             "Financial services / fintech": 1.25,
             "Healthcare / biotech": 1.15,
-            "Renewable energy / climate": 1.20,
-            "Education / edtech": 0.90,
+            "Renewable energy / climate": 1.10,
+            "Education / edtech": 0.85,
             "Retail / e-commerce ops": 0.85,
-            "Manufacturing (traditional)": 0.95,
-            "Hospitality / tourism": 0.80,
+            "Manufacturing (traditional)": 0.90,
+            "Hospitality / tourism": 0.75,
             "Other / not listed": 1.00,
         },
-        "experience_multiplier": 0.03,  # 3% per year
+        "experience_multiplier": 0.03,  # 3% per year of experience
     }
     
     # Location cost-of-living multipliers
@@ -71,7 +77,7 @@ class SalaryAnalyzer:
         industry_mult = self.BASE_SALARY_FACTORS["industry_multiplier"].get(profile.industry, 1.0)
         exp_mult = 1.0 + (profile.experience_years * self.BASE_SALARY_FACTORS["experience_multiplier"])
         
-        base_salary = 50000 * role_mult * industry_mult * exp_mult
+        base_salary = self.BASE_SALARY_INR * role_mult * industry_mult * exp_mult
         
         # Step 2: Apply location multiplier
         location_mult = self.LOCATION_MULTIPLIERS.get(profile.location, 1.0)
@@ -127,7 +133,7 @@ class SalaryAnalyzer:
         
         if risk_penalty_pct > 0:
             parts.append(
-                f"Risk penalty: {risk_penalty_pct*100:.1f}% reduction due to overall risk of "
+                f"Risk penalty: {risk_penalty_pct:.1f}% reduction due to overall risk of "
                 f"{risk_profile.overall_risk:.1f}% (above {self.RISK_PENALTY_THRESHOLD}% threshold)."
             )
         else:

@@ -302,8 +302,12 @@ def skill_gap_analysis(
     return pd.DataFrame(rows)
 
 
-def salary_summary_by_role(df: pd.DataFrame) -> pd.DataFrame:
-    """Uses salary_min_lpa / salary_max_lpa midpoint when both present."""
+def salary_range_by_role(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Full salary distribution (min / p25 / median / p75 / max) per role bucket.
+    Uses salary_min_lpa as the low anchor and salary_max_lpa as the high anchor;
+    midpoint drives the central tendency metrics.
+    """
     if df.empty or "role_bucket" not in df.columns:
         return pd.DataFrame()
     d = df.copy()
@@ -311,12 +315,100 @@ def salary_summary_by_role(df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()
     smin = pd.to_numeric(d["salary_min_lpa"], errors="coerce")
     smax = pd.to_numeric(d["salary_max_lpa"], errors="coerce")
-    mid = (smin + smax) / 2.0
-    d["_salary_mid"] = mid
-    sub = d.dropna(subset=["_salary_mid"])
+    d["_mid"] = (smin + smax) / 2.0
+    d["_low"]  = smin
+    d["_high"] = smax
+    sub = d.dropna(subset=["_mid"])
     if sub.empty:
         return pd.DataFrame()
-    g = sub.groupby("role_bucket")["_salary_mid"].agg(["median", "mean", "count"])
-    g = g.sort_values("median", ascending=False)
-    g.columns = ["median_lpa", "mean_lpa", "postings"]
-    return g.round(2)
+    g = sub.groupby("role_bucket").agg(
+        min_lpa   =("_low",  "min"),
+        p25_lpa   =("_mid",  lambda x: x.quantile(0.25)),
+        median_lpa=("_mid",  "median"),
+        p75_lpa   =("_mid",  lambda x: x.quantile(0.75)),
+        max_lpa   =("_high", "max"),
+        postings  =("_mid",  "count"),
+    ).sort_values("median_lpa", ascending=False)
+    return g.round(1)
+
+
+def posting_volume_over_time(df: pd.DataFrame, freq: str = "W") -> pd.Series:
+    """
+    Count of postings per week or month (freq='W' or 'M').
+    Returns a Series indexed by period-start date.
+    """
+    if df.empty or "post_date" not in df.columns or df["post_date"].isna().all():
+        return pd.Series(dtype=int)
+    dated = df.dropna(subset=["post_date"]).copy()
+    dated["_period"] = (
+        dated["post_date"].dt.to_period(freq)
+        .apply(lambda p: p.start_time.date())
+    )
+    return dated.groupby("_period").size().rename("postings")
+
+
+def skill_cooccurrence(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
+    """
+    Returns a symmetric top_n × top_n DataFrame where cell (i,j) is
+    the number of postings mentioning both skill i and skill j.
+    Diagonal = individual skill counts for reference.
+    """
+    if df.empty or "_text" not in df.columns:
+        return pd.DataFrame()
+    overall = skill_demand_counts(df)
+    top_skills = list(overall.head(top_n).index)
+    if len(top_skills) < 2:
+        return pd.DataFrame()
+    text_series = df["_text"].fillna("")
+    presence = {
+        sk: text_series.str.contains(_phrase_regex(sk), regex=True, na=False)
+        for sk in top_skills
+    }
+    pres_df = pd.DataFrame(presence).astype(int)
+    cooc = pres_df.T.dot(pres_df)  # symmetric co-occurrence matrix
+    return cooc
+
+
+def remote_vs_onsite_counts(df: pd.DataFrame) -> Dict[str, int]:
+    """Split postings into Remote / Hybrid / On-site using the location field."""
+    if df.empty or "location" not in df.columns:
+        return {}
+    loc = df["location"].fillna("").astype(str).str.lower()
+    remote = int(loc.str.contains("remote",  na=False).sum())
+    hybrid = int(loc.str.contains("hybrid",  na=False).sum())
+    onsite = max(0, len(df) - remote - hybrid)
+    return {"Remote": remote, "Hybrid": hybrid, "On-site": onsite}
+
+
+def experience_distribution(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    If the DataFrame has an experience column (experience_min / min_experience /
+    experience_years / experience), returns posting counts per (role, bracket).
+    Returns empty DataFrame if no experience column found.
+    """
+    exp_col: Optional[str] = None
+    for candidate in ["experience_min", "min_experience", "experience_years", "experience"]:
+        if candidate in df.columns:
+            exp_col = candidate
+            break
+    if exp_col is None or df.empty:
+        return pd.DataFrame()
+    d = df.copy()
+    d["_exp"] = pd.to_numeric(d[exp_col], errors="coerce")
+    d = d.dropna(subset=["_exp", "role_bucket"])
+    if d.empty:
+        return pd.DataFrame()
+
+    def _bracket(v: float) -> str:
+        if v <= 1:  return "0–1 yr"
+        if v <= 3:  return "2–3 yr"
+        if v <= 5:  return "4–5 yr"
+        if v <= 8:  return "6–8 yr"
+        return "9+ yr"
+
+    d["bracket"] = d["_exp"].apply(_bracket)
+    return (
+        d.groupby(["role_bucket", "bracket"])
+         .size()
+         .reset_index(name="count")
+    )

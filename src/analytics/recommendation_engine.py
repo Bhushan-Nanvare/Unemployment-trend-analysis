@@ -43,11 +43,11 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action="Learn high-demand automation-resistant skills (Machine Learning, Cloud Computing, Leadership)",
                 risk_reduction=(10, 15),
-                salary_impact=(8000, 15000),
+                salary_impact=(80_000, 1_50_000),
                 time_to_implement="6-12 months",
-                roi_score=self._calculate_roi(12.5, 11500, 9),
+                roi_score=self._calculate_roi(12.5, 1_15_000, 9),
                 priority="High",
-                explanation="These skills significantly reduce automation risk and command premium salaries in the market."
+                explanation="These skills significantly reduce automation risk and command premium salaries in the Indian market."
             ))
         
         # Recommendation 2: Role advancement
@@ -55,11 +55,11 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action=f"Target {self._next_role_level(profile.role_level)} roles with strategic responsibilities",
                 risk_reduction=(8, 12),
-                salary_impact=(15000, 25000),
+                salary_impact=(1_50_000, 2_50_000),
                 time_to_implement="1-2 years",
-                roi_score=self._calculate_roi(10, 20000, 18),
+                roi_score=self._calculate_roi(10, 2_00_000, 18),
                 priority="High",
-                explanation="Senior roles have lower recession vulnerability and better job security."
+                explanation="Senior roles have lower recession vulnerability and better job security in Indian companies."
             ))
         
         # Recommendation 3: Industry transition
@@ -67,9 +67,9 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action="Explore recession-resistant industries (Healthcare, Technology, Essential Services)",
                 risk_reduction=(15, 25),
-                salary_impact=(5000, 20000),
+                salary_impact=(50_000, 2_00_000),
                 time_to_implement="6-18 months",
-                roi_score=self._calculate_roi(20, 12500, 12),
+                roi_score=self._calculate_roi(20, 1_25_000, 12),
                 priority="High",
                 explanation="These industries show stronger resilience during economic downturns."
             ))
@@ -79,9 +79,9 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action="Consider larger, more established companies (1000+ employees)",
                 risk_reduction=(10, 15),
-                salary_impact=(0, 10000),
+                salary_impact=(0, 1_00_000),
                 time_to_implement="3-6 months",
-                roi_score=self._calculate_roi(12.5, 5000, 4.5),
+                roi_score=self._calculate_roi(12.5, 50_000, 4.5),
                 priority="Medium",
                 explanation="Larger companies typically offer more stability and resources during downturns."
             ))
@@ -91,11 +91,11 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action="Develop remote work capabilities and seek hybrid/remote roles",
                 risk_reduction=(5, 8),
-                salary_impact=(3000, 8000),
+                salary_impact=(30_000, 80_000),
                 time_to_implement="2-4 months",
-                roi_score=self._calculate_roi(6.5, 5500, 3),
+                roi_score=self._calculate_roi(6.5, 55_000, 3),
                 priority="Medium",
-                explanation="Remote capability expands job market access and provides flexibility."
+                explanation="Remote capability expands job market access across Indian cities and provides flexibility."
             ))
         
         # Recommendation 6: Certifications
@@ -103,11 +103,11 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action="Obtain industry certifications or pursue advanced degree",
                 risk_reduction=(8, 12),
-                salary_impact=(10000, 20000),
+                salary_impact=(1_00_000, 2_00_000),
                 time_to_implement="6-24 months",
-                roi_score=self._calculate_roi(10, 15000, 15),
+                roi_score=self._calculate_roi(10, 1_50_000, 15),
                 priority="Medium",
-                explanation="Advanced credentials reduce risk and increase earning potential."
+                explanation="Advanced credentials reduce risk and significantly increase earning potential in India."
             ))
         
         # Recommendation 7: Experience building
@@ -115,11 +115,11 @@ class RecommendationEngine:
             recommendations.append(Recommendation(
                 action="Focus on building experience depth in current role",
                 risk_reduction=(5, 10),
-                salary_impact=(5000, 10000),
+                salary_impact=(50_000, 1_00_000),
                 time_to_implement="Ongoing",
-                roi_score=self._calculate_roi(7.5, 7500, 12),
+                roi_score=self._calculate_roi(7.5, 75_000, 12),
                 priority="Low",
-                explanation="Each 5 years of experience reduces recession vulnerability by 5%."
+                explanation="Each 5 years of experience reduces recession vulnerability and boosts salary in India."
             ))
         
         # Sort by ROI score and return top recommendations
@@ -127,9 +127,9 @@ class RecommendationEngine:
         return recommendations[:5]
     
     def _calculate_roi(self, risk_reduction: float, salary_impact: float, time_months: float) -> float:
-        """Calculate ROI score for ranking"""
-        # ROI = (risk_reduction * 10 + salary_impact / 1000) / time_months
-        return (risk_reduction * 10 + salary_impact / 1000) / max(time_months, 1)
+        """Calculate ROI score for ranking (salary_impact in INR)"""
+        # Normalise INR salary impact: divide by 10,000 so the scale is comparable to risk_reduction
+        return (risk_reduction * 10 + salary_impact / 10_000) / max(time_months, 1)
     
     def _next_role_level(self, current: str) -> str:
         """Get next role level"""

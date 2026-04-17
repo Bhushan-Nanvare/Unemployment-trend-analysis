@@ -448,30 +448,34 @@ with col_out:
                             st.markdown(f"- {factor}")
                         st.markdown("")
             
-            # Salary Analysis
+            # ── Salary Analysis ────────────────────────────────────────────
             salary_est = st.session_state.get("salary_estimate")
             if salary_est:
                 st.markdown("---")
                 st.markdown("### 💰 Salary Impact Analysis")
-                
+                st.caption("Estimate in Indian Rupees (INR) · Based on role level, industry, experience, and location.")
+
                 col_sal1, col_sal2, col_sal3 = st.columns(3)
                 with col_sal1:
-                    st.metric("Base Salary", f"${salary_est.base_salary:,.0f}")
+                    st.metric("Base Salary", f"₹{salary_est.base_salary:,.0f}")
                 with col_sal2:
                     st.metric(
                         "Location Adjusted",
-                        f"${salary_est.location_adjusted:,.0f}",
+                        f"₹{salary_est.location_adjusted:,.0f}",
                         f"{(salary_est.location_multiplier - 1) * 100:+.0f}%"
                     )
                 with col_sal3:
                     st.metric(
                         "Risk Adjusted",
-                        f"${salary_est.risk_adjusted:,.0f}",
+                        f"₹{salary_est.risk_adjusted:,.0f}",
                         f"-{salary_est.risk_penalty_pct:.1f}%" if salary_est.risk_penalty_pct > 0 else "No penalty"
                     )
-                
-                st.caption(f"**Confidence Range:** ${salary_est.confidence_interval[0]:,.0f} - ${salary_est.confidence_interval[1]:,.0f}")
-                
+
+                st.caption(
+                    f"**80% Confidence Range:** "
+                    f"₹{salary_est.confidence_interval[0]:,.0f} – ₹{salary_est.confidence_interval[1]:,.0f}"
+                )
+
                 with st.expander("📊 Salary Calculation Details", expanded=False):
                     st.markdown(salary_est.explanation)
             
@@ -551,7 +555,7 @@ with col_out:
                         with col_r1:
                             st.metric("Risk Reduction", f"{rec.risk_reduction[0]}-{rec.risk_reduction[1]}%")
                         with col_r2:
-                            st.metric("Salary Impact", f"${rec.salary_impact[0]:,}-${rec.salary_impact[1]:,}")
+                            st.metric("Salary Impact", f"₹{rec.salary_impact[0]:,} – ₹{rec.salary_impact[1]:,}")
                         with col_r3:
                             st.metric("Time to Implement", rec.time_to_implement)
                         
@@ -839,7 +843,7 @@ with col_out:
             )
             st.plotly_chart(fig_wi, use_container_width=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 # ─── Export Report ─────────────────────────────────────────────────────────────
@@ -899,12 +903,12 @@ if res and inp:
         
         if salary_est:
             lines += [
-                "SALARY ANALYSIS",
+                "SALARY ANALYSIS (INR — Indian Rupees)",
                 "-" * 80,
-                f"  Base Salary          : ${salary_est.base_salary:,.0f}",
-                f"  Location Adjusted    : ${salary_est.location_adjusted:,.0f} ({salary_est.location_multiplier:.2f}x)",
-                f"  Risk Adjusted        : ${salary_est.risk_adjusted:,.0f} (-{salary_est.risk_penalty_pct:.1f}%)",
-                f"  Confidence Range     : ${salary_est.confidence_interval[0]:,.0f} - ${salary_est.confidence_interval[1]:,.0f}",
+                f"  Base Salary          : \u20b9{salary_est.base_salary:,.0f}",
+                f"  Location Adjusted    : \u20b9{salary_est.location_adjusted:,.0f} ({salary_est.location_multiplier:.2f}x)",
+                f"  Risk Adjusted        : \u20b9{salary_est.risk_adjusted:,.0f} (-{salary_est.risk_penalty_pct:.1f}%)",
+                f"  Confidence Range     : \u20b9{salary_est.confidence_interval[0]:,.0f} \u2013 \u20b9{salary_est.confidence_interval[1]:,.0f}",
                 "",
             ]
         
@@ -931,7 +935,7 @@ if res and inp:
                     f"  {i}. {rec.action}",
                     f"     Priority: {rec.priority} | ROI Score: {rec.roi_score:.2f}",
                     f"     Risk Reduction: {rec.risk_reduction[0]}-{rec.risk_reduction[1]}%",
-                    f"     Salary Impact: ${rec.salary_impact[0]:,}-${rec.salary_impact[1]:,}",
+                    f"     Salary Impact: \u20b9{rec.salary_impact[0]:,}\u2013\u20b9{rec.salary_impact[1]:,}",
                     f"     Time: {rec.time_to_implement}",
                     f"     {rec.explanation}",
                     "",
