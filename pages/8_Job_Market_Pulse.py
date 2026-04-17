@@ -1,7 +1,7 @@
 """
 Page 8 — Job Market Pulse
-Tab 1: Job Postings Analysis — skill demand, trends, salary range, co-occurrence.
-Tab 2: Live India Labor Data — real World Bank labor indicators + India vs World benchmarks.
+Tab 1: Job Postings Analysis — skill demand, trends, salary range.
+Tab 2: Offline Labor Data — limited offline indicators when available.
 """
 import io
 import pandas as pd
@@ -19,13 +19,12 @@ from src.job_market_pulse import (
     remote_vs_onsite_counts,
     role_demand_counts,
     salary_range_by_role,
-    skill_cooccurrence,
     skill_demand_counts,
     skill_gap_analysis,
     skill_momentum,
     weekly_skill_trends,
 )
-from src.live_data import fetch_gdp_growth, fetch_labor_market_pulse
+from src.live_data import fetch_labor_market_pulse
 from src.live_insights import generate_labor_market_insights
 from src.ui_helpers import DARK_CSS, render_kpi_card, plotly_dark_layout
 
@@ -52,7 +51,7 @@ st.markdown("""
 <div class="page-hero">
     <div class="hero-title">📡 Job Market Pulse</div>
     <div class="hero-subtitle">
-        Skill &amp; role demand from real job postings — plus live World Bank India labor indicators.
+        Skill &amp; role demand from real job postings — plus optional offline labor indicators.
     </div>
 </div>""", unsafe_allow_html=True)
 
@@ -402,51 +401,6 @@ with tab_postings:
             st.plotly_chart(fig_exp, use_container_width=True)
             st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── Skill co-occurrence heatmap (NEW) ────────────────────────────────
-        st.markdown(
-            '<div class="section-title">🔗 Skill Co-occurrence Heatmap</div>',
-            unsafe_allow_html=True,
-        )
-        st.markdown("""
-        <div style="font-size:0.82rem; color:#64748b; margin-bottom:0.5rem;">
-            How often do top skills appear together in the <em>same posting</em>?
-            High co-occurrence means employers bundle these skills together —
-            learning both increases your market fit significantly.
-        </div>""", unsafe_allow_html=True)
-        cooc = skill_cooccurrence(filtered, top_n=10)
-        if cooc.empty:
-            st.info("Not enough skill data to build co-occurrence matrix.")
-        else:
-            labels = list(cooc.columns)
-            z = cooc.values.tolist()
-            # Zero out diagonal for cleaner reading
-            for i in range(len(z)):
-                z[i][i] = 0
-            fig_cooc = go.Figure(go.Heatmap(
-                z=z,
-                x=labels, y=labels,
-                colorscale=[
-                    [0.0, "#0a0e1a"], [0.3, "#1e3a5f"],
-                    [0.6, "#6366f1"], [0.85, "#f59e0b"], [1.0, "#ef4444"],
-                ],
-                showscale=True,
-                text=[[str(v) if v > 0 else "" for v in row] for row in z],
-                texttemplate="%{text}",
-                textfont=dict(color="white", size=10),
-                hovertemplate="<b>%{x}</b> + <b>%{y}</b><br>Co-occurs in %{z} postings<extra></extra>",
-                colorbar=dict(
-                    title=dict(text="Postings", font=dict(color="#94a3b8")),
-                    tickfont=dict(color="#94a3b8"),
-                ),
-            ))
-            fig_cooc.update_layout(
-                **plotly_dark_layout(height=420),
-                margin=dict(l=10, r=10, t=20, b=10),
-            )
-            st.plotly_chart(fig_cooc, use_container_width=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
         # ── Personal skill gap analyzer ───────────────────────────────────────
         st.markdown(
             '<div class="section-title">🎯 Personal Skill Gap Analyzer</div>',
@@ -528,7 +482,7 @@ with tab_postings:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — LIVE INDIA LABOR DATA (World Bank)
+# TAB 2 — OFFLINE LABOR DATA
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_live:
 
@@ -806,19 +760,13 @@ with tab_live:
                 use_container_width=True,
                 hide_index=True,
             )
-            st.caption(
-                "Source: World Bank Open Data API · SL.UEM.*, SL.TLF.*, SL.EMP.* · "
-                "Latest available year (typically 2022–2023 for India)"
-            )
+            st.caption("Source: Offline dataset bundled with this app.")
         else:
-            if world_data:
-                st.info("Benchmark comparison unavailable — World Bank global aggregate data not returned for these indicators.")
-            else:
-                st.info("Benchmark comparison unavailable — could not fetch World average data. Check internet connection.")
+            st.info("Benchmark comparison unavailable in offline-only mode.")
 
         # ── Export offline data ───────────────────────────────────────────────
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="section-title">📥 Export Live Data</div>',
+        st.markdown('<div class="section-title">📥 Export Offline Data</div>',
                     unsafe_allow_html=True)
         export_frames = []
         for lbl, series in live_data.items():
