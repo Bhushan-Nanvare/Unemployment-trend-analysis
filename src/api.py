@@ -1,5 +1,5 @@
 import math
-from typing import Optional
+from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -36,12 +36,9 @@ class BacktestRequest(BaseModel):
     test_years: int = 5
 
 
-class SensitivityRequest(BaseModel):
-    base_shock_intensity: float
-    base_shock_duration: int
-    base_recovery_rate: float
-    forecast_horizon: int = 6
-    policy_name: Optional[str] = None
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
 
 
 def _load_prepared_series():

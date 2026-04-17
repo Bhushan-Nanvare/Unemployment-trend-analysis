@@ -160,7 +160,7 @@ class DynamicSkillDetector:
         
         # Check API credentials
         if not self.app_id or not self.app_key:
-            print("⚠️  Adzuna API credentials not configured")
+            print("WARN: Adzuna API credentials not configured")
             return None
         
         # Broad queries to capture diverse job market
@@ -174,10 +174,10 @@ class DynamicSkillDetector:
         
         all_jobs = []
         
-        print(f"📊 Fetching job corpus from Adzuna API...")
+        print("Fetching job corpus from Adzuna API...")
         
         for query in broad_queries:
-            print(f"  → Query: '{query}' (fetching {pages_per_query} pages)")
+            print(f"  -> Query: '{query}' (fetching {pages_per_query} pages)")
             
             for page in range(1, pages_per_query + 1):
                 try:
@@ -203,10 +203,10 @@ class DynamicSkillDetector:
                     time.sleep(0.5)
                     
                 except Exception as e:
-                    print(f"    ⚠️  Error on page {page}: {e}")
+                    print(f"    WARN: Error on page {page}: {e}")
                     continue
         
-        print(f"✅ Collected {len(all_jobs)} total job postings")
+        print(f"Collected {len(all_jobs)} total job postings")
         
         corpus = JobCorpus(
             jobs=all_jobs,
@@ -252,7 +252,7 @@ class DynamicSkillDetector:
         # Combine all text and normalize
         full_corpus = " ".join(text_parts).lower()
         
-        print(f"📝 Extracted text corpus: {len(full_corpus):,} characters")
+        print(f"Extracted text corpus: {len(full_corpus):,} characters")
         
         return full_corpus
     
@@ -279,7 +279,7 @@ class DynamicSkillDetector:
         """
         skill_data = {}
         
-        print(f"🔍 Extracting skills from corpus...")
+        print("Extracting skills from corpus...")
         
         # For each detection pattern, find matches
         for pattern in SKILL_DETECTION_PATTERNS:
@@ -304,7 +304,7 @@ class DynamicSkillDetector:
                     "recent_mentions": job_analysis["recent_mentions"]
                 }
         
-        print(f"✅ Detected {len(skill_data)} skills with mentions")
+        print(f"Detected {len(skill_data)} skills with mentions")
         
         return skill_data
     
@@ -383,7 +383,7 @@ class DynamicSkillDetector:
         if not skill_data:
             return []
         
-        print(f"📊 Normalizing scores...")
+        print("Normalizing scores...")
         
         # Find max values for normalization
         max_frequency = max(s["frequency"] for s in skill_data.values())
@@ -459,7 +459,7 @@ class DynamicSkillDetector:
         # Return top N
         top_skills = skills[:top_n]
         
-        print(f"🏆 Top {len(top_skills)} skills ranked")
+        print(f"Top {len(top_skills)} skills ranked")
         
         return top_skills
     
@@ -546,7 +546,7 @@ class DynamicSkillDetector:
             if (datetime.now() - cached_time).total_seconds() > self.cache_ttl:
                 return None
             
-            print(f"✅ Using cached job corpus ({data['total_jobs']} jobs)")
+            print(f"Using cached job corpus ({data['total_jobs']} jobs)")
             
             return JobCorpus(
                 jobs=data['jobs'],
@@ -572,9 +572,9 @@ class DynamicSkillDetector:
             with open(cache_path, 'w') as f:
                 json.dump(data, f)
             
-            print(f"💾 Cached job corpus")
+            print("Cached job corpus")
         except Exception as e:
-            print(f"⚠️  Cache save failed: {e}")
+            print(f"WARN: Cache save failed: {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -626,4 +626,4 @@ if __name__ == "__main__":
                   f"Freq: {skill['frequency']:4d}  "
                   f"Jobs: {skill['job_count']:3d}")
     else:
-        print(f"⚠️  {result.get('message', 'No skills detected')}")
+        print(f"WARN: {result.get('message', 'No skills detected')}")

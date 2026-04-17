@@ -38,7 +38,11 @@ class CareerAdvisor:
             return {"growth_resilience": 70, "growth_stress": 35, "risk_stress": 45}
 
     @staticmethod
-    def generate_advice(sector_impact_df: pd.DataFrame, shock_intensity: float = 0.0) -> dict:
+    def generate_advice(
+        sector_impact_df: pd.DataFrame,
+        shock_intensity: float = 0.0,
+        use_dynamic_skills: bool = False,
+    ) -> dict:
         """
         Generates career advice based on sector stress and resilience.
         shock_intensity is used to set dynamic classification thresholds.
@@ -77,17 +81,17 @@ class CareerAdvisor:
             elif stress > r_str:
                 advice["risk_sectors"].append(name)
 
-        # Get dynamically detected trending skills from job market
-        # NO predefined lists - automatically discovers what's trending
-        skill_demand = get_dynamic_trending_skills(top_n=15)
-        advice["skill_demand_data"] = skill_demand
-        
-        # Extract top skills by demand score
-        if skill_demand.get("skills"):
-            advice["recommended_skills"] = [
-                s["name"] for s in skill_demand["skills"]
-            ]
+        # Dynamic skill detection can be expensive (live job API calls) and is
+        # best-effort. Keep it opt-in so the core simulation stays fast/reliable.
+        if use_dynamic_skills:
+            try:
+                skill_demand = get_dynamic_trending_skills(top_n=15)
+            except Exception as e:
+                skill_demand = {"skills": [], "message": f"Dynamic skill detection failed: {e}"}
+            advice["skill_demand_data"] = skill_demand
+            advice["recommended_skills"] = [s["name"] for s in skill_demand.get("skills", [])]
         else:
+            advice["skill_demand_data"] = {"skills": [], "message": "Dynamic skill detection disabled"}
             advice["recommended_skills"] = []
 
         narrative = []

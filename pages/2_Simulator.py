@@ -133,7 +133,8 @@ def fetch(si, sd, rr, pol, h):
 # ─── Simulation state ─────────────────────────────────────────────────────────
 if run or "sim_a" not in st.session_state:
     with st.spinner("⚡ Running simulations..."):
-        st.session_state.sim_baseline = fetch(0.0, 0, 0.0, "None", horizon)
+        # Keep baseline consistent with the UI slider minimum for recovery_rate (0.05).
+        st.session_state.sim_baseline = fetch(0.0, 0, 0.05, "None", horizon)
         st.session_state.sim_a = fetch(si_a, sd_a, rr_a, policy_a, horizon)
         st.session_state.sim_b = fetch(si_b, sd_b, rr_b, policy_b, horizon)
 
